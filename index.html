@@ -313,6 +313,7 @@ table.logt .nt{max-width:28ch;color:var(--muted)}
 <footer>Transkribert fra dine bilder av boka. Planen, dagboka, byttene og avkrysningene lagres bare på denne enheten. Appen virker også uten nett etter første besøk.</footer>
 </div>
 
+<div class="updbar" id="exitbar" hidden role="status"><span>Trykk tilbake én gang til for å lukke appen</span></div>
 <script>
 const MENUS={
   bla:{name:"Blå meny",color:"bla",pages:"s. 53–79",
@@ -1059,21 +1060,33 @@ function render(){
   else if(state.view==="faste") renderFaste();
   else renderMenu(state.view);
 }
-function go(view,recipe=null){
-  state={view,recipe}; store.set("view",state);
-  try{history.replaceState(null,"","#"+(recipe||view))}catch(e){}
+const tok=st=>st.view==="ingr"?"ingrediens":(st.recipe||st.view);
+function snap(){try{history.replaceState({s:state,y:window.scrollY},"","#"+tok(state))}catch(e){}}
+window.__navDepth=0;
+function pushNav(next){
+  clearTimeout(window.__exitT);{const t=document.getElementById("exitbar");if(t)t.hidden=true}
+  window.__navDepth++; snap(); state=next;
+  if(state.view!=="ingr") store.set("view",{view:state.view,recipe:state.recipe});
+  try{history.pushState({s:state,y:0},"","#"+tok(state))}catch(e){}
   render(); window.scrollTo({top:0});
 }
+function go(view,recipe=null){ pushNav({view,recipe}); }
+window.addEventListener("popstate",e=>{
+  window.__navDepth=Math.max(0,window.__navDepth-1);
+  if(e.state&&e.state.root){const t=document.getElementById("exitbar");if(t){t.hidden=false;clearTimeout(window.__exitT);window.__exitT=setTimeout(()=>{t.hidden=true;try{history.pushState({s:state,y:window.scrollY},"","#"+tok(state))}catch(_){}} ,2500)}}
+  if(e.state&&e.state.s){state=e.state.s; if(state.view!=="ingr") store.set("view",{view:state.view,recipe:state.recipe}); render(); const y=e.state.y||0; requestAnimationFrame(()=>window.scrollTo(0,y));}
+  else if(fromHash()){render();window.scrollTo(0,0)}
+});
 document.addEventListener("click",e=>{
-  const ig=e.target.closest("[data-ingr]"); if(ig){e.preventDefault();const back=state.view==="ingr"?state.back:{view:state.view,recipe:state.recipe,fsub:state.fsub,fday:state.fday};state={view:"ingr",recipe:null,ingr:ig.dataset.ingr,itab:state.itab||"plan",back};try{history.replaceState(null,"","#ingrediens")}catch(_){}render();window.scrollTo({top:0});return}
-  const it=e.target.closest("[data-itab]"); if(it){state.itab=it.dataset.itab;render();return}
-  const bk=e.target.closest("[data-back]"); if(bk&&state.back){const b=state.back;state=Object.assign({},b);try{history.replaceState(null,"","#"+(b.recipe||b.view))}catch(_){}render();window.scrollTo({top:0});return}
+  const ig=e.target.closest("[data-ingr]"); if(ig){e.preventDefault();const back=state.view==="ingr"?state.back:{view:state.view,recipe:state.recipe,fsub:state.fsub,fday:state.fday};pushNav({view:"ingr",recipe:null,ingr:ig.dataset.ingr,itab:state.itab||"plan",back});return}
+  const it=e.target.closest("[data-itab]"); if(it){state.itab=it.dataset.itab;snap();render();return}
+  const bk=e.target.closest("[data-back]"); if(bk){if(history.state&&history.length>1&&window.__navDepth>0)history.back();else if(state.back)pushNav(Object.assign({},state.back));return}
   const r=e.target.closest("[data-recipe]"); if(r){go(R[r.dataset.recipe].menu,r.dataset.recipe);return}
   const g=e.target.closest("[data-go]"); if(g){go(g.dataset.go);return}
   const rs=e.target.closest("[data-reset]"); if(rs){store.set("shop-"+rs.dataset.reset,{});render();return}
   const sw=e.target.closest("[data-sw]"); if(sw){const S=getSwaps(),id=sw.dataset.sw,j=sw.dataset.j;S[id]=S[id]||{};if(sw.dataset.o==="")delete S[id][j];else S[id][j]=Number(sw.dataset.o);if(!Object.keys(S[id]).length)delete S[id];store.set("swaps",S);const y=window.scrollY;render();window.scrollTo(0,y);return}
-  const fs=e.target.closest("[data-fsub]"); if(fs){if(fs.dataset.fday)state.fday=Number(fs.dataset.fday);state.fsub=fs.dataset.fsub;render();return}
-  const fd=e.target.closest("[data-fday]"); if(fd){state.fday=Number(fd.dataset.fday);const y=window.scrollY;render();window.scrollTo(0,y);return}
+  const fs=e.target.closest("[data-fsub]"); if(fs){const n=Object.assign({},state,{fsub:fs.dataset.fsub});if(fs.dataset.fday)n.fday=Number(fs.dataset.fday);pushNav(n);return}
+  const fd=e.target.closest("[data-fday]"); if(fd){state.fday=Number(fd.dataset.fday);snap();const y=window.scrollY;render();window.scrollTo(0,y);return}
   const pr=e.target.closest("[data-preset]"); if(pr){const p=getPlan();p.days=presetDays(pr.dataset.preset);savePlan(p);render();return}
   const nf=e.target.closest("[data-newfast]"); if(nf){const c=document.getElementById("nf-confirm");
     if(nf.dataset.newfast==="1")c.hidden=false; else if(nf.dataset.newfast==="0")c.hidden=true;
@@ -1099,12 +1112,13 @@ function fromHash(){
   else return false;
   return true;
 }
-window.addEventListener("hashchange",()=>{const k=state.recipe||state.view;if((location.hash||"").slice(1)!==k&&fromHash())render()});
+
 (function init(){
   const h=(location.hash||"").slice(1);
   if(R[h]) state={view:R[h].menu,recipe:h};
   else if(MENUS[h]||h==="bytte"||h==="guide"||h==="faste") state={view:h,recipe:null};
   else {const s=store.get("view",null); if(s&&(MENUS[s.view]||s.view==="bytte"||s.view==="guide"||s.view==="faste")&&(!s.recipe||R[s.recipe])) state=s;}
+  try{history.replaceState({s:state,y:0,root:true},"","#"+tok(state));history.pushState({s:state,y:0},"","#"+tok(state))}catch(e){}
   render();
 })();
 </script>
