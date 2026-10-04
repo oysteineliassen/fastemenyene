@@ -315,6 +315,10 @@ table.logt td:not(.nt){white-space:nowrap}
 #iosx{position:absolute;top:8px;right:8px;width:32px;height:32px;border:0;background:none;color:var(--muted);font-size:16px;cursor:pointer;border-radius:50%}
 .iosbar::after{content:"";position:absolute;bottom:-9px;left:50%;transform:translateX(-50%) rotate(45deg);width:16px;height:16px;background:var(--surface);border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
 @media (min-width:700px){.iosbar::after{display:none}}
+table.logt tr.noterow td{white-space:normal;color:var(--muted);font-size:15px;line-height:1.5;padding-top:0;padding-bottom:12px;max-width:none}
+table.logt tr:has(+ tr.noterow) td{border-bottom:0}
+.nlab{display:block;font-family:var(--display);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--red);margin-bottom:2px}
+.ntx{position:sticky;left:0;width:min(100%,calc(100vw - 52px));max-width:70ch;white-space:pre-wrap}
 </style>
 
 </head>
@@ -995,8 +999,8 @@ function logHTML(p){
   const dot=v=>v?`<span class="dots">${"●".repeat(v)}<i>${"●".repeat(5-v)}</i></span>`:"–";
   return `<div class="section-h" style="margin-top:20px"><h3>Dagbok</h3><span>Fyll inn under «Dag for dag»</span></div>
   ${chart}
-  <div class="tablewrap"><table class="logt"><thead><tr><th>Dag</th><th>Måltider</th><th>Glyserol</th><th>Vekt</th><th>Energi</th><th>Sult</th><th>Søvn</th><th>Notat</th></tr></thead><tbody>
-  ${rows.map(r=>`<tr><td><button type="button" class="linkbtn" data-fday="${r.n}" data-fsub="idag">${r.n===6?"Etter":"Dag "+r.n}</button><br><small style="color:var(--muted)">${r.k?short(r.k):"dag 6, morgen"}</small></td><td>${r.n===6?"–":r.e+"/"+r.tot}</td><td>${r.n===1||r.n===6?"–":r.l.gly?"✓":""}</td><td>${parseFloat(String(r.l.kg||"").replace(",","."))>0?fmt(parseFloat(String(r.l.kg).replace(",",".")))+" kg":"–"}</td><td>${dot(Number(r.l.energi))}</td><td>${dot(Number(r.l.sult))}</td><td>${dot(Number(r.l.sovn))}</td><td class="nt">${esc(r.l.note||"")}</td></tr>`).join("")}
+  <div class="tablewrap"><table class="logt"><thead><tr><th>Dag</th><th>Måltider</th><th>Glyserol</th><th>Vekt</th><th>Energi</th><th>Sult</th><th>Søvn</th></tr></thead><tbody>
+  ${rows.map(r=>`<tr><td><button type="button" class="linkbtn" data-fday="${r.n}" data-fsub="idag">${r.n===6?"Etter":"Dag "+r.n}</button><br><small style="color:var(--muted)">${r.k?short(r.k):"dag 6, morgen"}</small></td><td>${r.n===6?"–":r.e+"/"+r.tot}</td><td>${r.n===1||r.n===6?"–":r.l.gly?"✓":""}</td><td>${parseFloat(String(r.l.kg||"").replace(",","."))>0?fmt(parseFloat(String(r.l.kg).replace(",",".")))+" kg":"–"}</td><td>${dot(Number(r.l.energi))}</td><td>${dot(Number(r.l.sult))}</td><td>${dot(Number(r.l.sovn))}</td></tr>${r.l.note&&r.l.note.trim()?`<tr class="noterow"><td colspan="7"><div class="ntx"><span class="nlab">Notat</span>${esc(r.l.note)}</div></td></tr>`:""}`).join("")}
   </tbody></table></div>`;
 }
 

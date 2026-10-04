@@ -1,5 +1,5 @@
-// Fastemenyene service worker – versjon 3ed82d5de0
-const CACHE="fastemenyene-3ed82d5de0";
+// Fastemenyene service worker – versjon cca4557184
+const CACHE="fastemenyene-cca4557184";
 const FONT_CACHE="fastemenyene-fonts";
 const ASSETS=[
   "./",
