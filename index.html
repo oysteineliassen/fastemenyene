@@ -1,0 +1,1034 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fastemenyene</title>
+<meta name="theme-color" content="#F3F4F0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#131614" media="(prefers-color-scheme: dark)">
+<meta name="description" content="Oppskrifter, plan, dagbok og handleliste for 5-dagers fasteimiterende diett.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Fastemenyene"><style>
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;color-scheme:light}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;font-size:14px}
+img{max-width:100%}
+[hidden]{display:none!important}
+.updbar{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);border-radius:999px;padding:10px 12px 10px 18px;display:flex;gap:12px;align-items:center;font-family:var(--display);font-size:15px;z-index:50;box-shadow:0 6px 20px rgba(0,0,0,.25);max-width:calc(100% - 32px)}
+.updbar button{background:var(--bg);color:var(--ink);border:0;border-radius:999px;padding:6px 14px;font-family:var(--display);font-weight:700;cursor:pointer}
+.offline-note{display:none}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap">
+<style>
+:root{
+  --bg:#F3F4F0; --surface:#FBFBF8; --ink:#1E2320; --muted:#5C645E; --line:#D9DDD5;
+  --bla:#2F6694; --gul:#9A7A12; --green:#3D7A45; --lilla:#6A5EA4; --oransje:#C8704F; --red:#B0423C;
+  --on-accent:#FFFFFF;
+  --accent:var(--green);
+  --display:"Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --serif:"Newsreader", Georgia, "Times New Roman", serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#131614; --surface:#1B1F1C; --ink:#E7EAE4; --muted:#9BA39C; --line:#2E3430;
+    --bla:#86B4E0; --gul:#DDBB5A; --green:#80B887; --lilla:#A89DE2; --oransje:#E79E80; --red:#E27B72; --on-accent:#131614;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#131614; --surface:#1B1F1C; --ink:#E7EAE4; --muted:#9BA39C; --line:#2E3430;
+  --bla:#86B4E0; --gul:#DDBB5A; --green:#80B887; --lilla:#A89DE2; --oransje:#E79E80; --red:#E27B72; --on-accent:#131614;
+}
+body{background:var(--bg);color:var(--ink);font-family:var(--serif);font-size:17px;line-height:1.5;}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:16px;padding-block:0 64px;}
+h1,h2,h3,h4,.nav button,.label,.pill,.btn{font-family:var(--display);}
+h1,h2,h3{text-wrap:balance;margin:0;line-height:1.1;}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);}
+.top .in{max-width:1080px;margin:0 auto;padding-inline:16px;display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;padding-block:12px}
+.brand{font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:-.01em;margin-right:auto}
+.brand small{font-weight:500;color:var(--muted);font-size:13px;letter-spacing:.02em;margin-left:6px}
+.nav{display:flex;gap:6px;flex-wrap:wrap}
+.nav button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:8px}
+.nav button .dot{width:10px;height:10px;border-radius:50%;background:var(--c)}
+.nav button[aria-current="true"]{background:var(--c);border-color:var(--c);color:var(--on-accent)}
+.nav button[aria-current="true"] .dot{background:var(--on-accent)}
+
+/* menu header */
+.band{margin-top:24px;border-radius:14px;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.2fr);background:var(--accent);color:var(--on-accent)}
+.harl{--d:var(--on-accent);min-height:140px;opacity:.9;
+  background:
+   conic-gradient(from -45deg at 50% 50%, transparent 0 25%, color-mix(in srgb,var(--accent) 55%, var(--d)) 0 50%, transparent 0 75%, color-mix(in srgb,var(--accent) 55%, var(--d)) 0) 0 0/28px 44px;
+  mask-image:linear-gradient(90deg,#000 60%,transparent);}
+.band .txt{padding:28px 28px 26px;display:flex;flex-direction:column;gap:10px;justify-content:center}
+.band h2{font-size:clamp(30px,5vw,46px);font-weight:700;letter-spacing:-.02em}
+.band .sub{font-family:var(--display);font-size:18px;opacity:.9;display:flex;align-items:center;gap:10px}
+.band .sub::before{content:"";width:40px;height:1px;background:currentColor}
+.band p{margin:0;max-width:60ch;font-size:16px;opacity:.95}
+.band .pages{font-family:var(--display);font-size:13px;letter-spacing:.06em;text-transform:uppercase;opacity:.85}
+@media (max-width:640px){.band{grid-template-columns:1fr}.harl{min-height:44px;mask-image:none}}
+
+.section-h{display:flex;align-items:baseline;gap:12px;margin:40px 0 14px;flex-wrap:wrap}
+.section-h h3{font-size:24px;font-weight:700;letter-spacing:-.01em}
+.section-h span{color:var(--muted);font-size:15px}
+
+/* day plan */
+.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.day{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.day h4{margin:0;font-size:18px;font-weight:700;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.day h4 small{font-weight:500;font-size:12px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.meal{display:grid;grid-template-columns:56px 1fr;gap:12px;align-items:center;text-align:left;background:none;border:0;padding:6px;margin:0 -6px;border-radius:8px;cursor:pointer}
+.meal:hover{background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.meal img,.meal .ph{width:56px;height:56px;object-fit:cover;border-radius:8px;background:var(--line)}
+.meal .ph{display:grid;place-items:center;color:var(--muted);font-family:var(--display);font-size:11px}
+.meal .k{font-family:var(--display);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.meal .n{display:block;font-size:17px;line-height:1.25}
+.meal.missing{cursor:default;opacity:.6}
+.meal.missing:hover{background:none}
+.note{color:var(--muted);font-size:15px;max-width:70ch}
+.note b{color:var(--ink);font-weight:600}
+
+/* food list (oransje) */
+.foods{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.foods li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line)}
+.foods li span:first-child{font-variant-numeric:tabular-nums;font-family:var(--display);font-weight:500;min-width:4.5em}
+.foods li span:last-child{flex:1}
+.foods li em{color:var(--muted)}
+
+/* shopping */
+.shop{columns:3 250px;column-gap:24px}
+.grp{break-inside:avoid;margin-bottom:22px}
+.grp h5{font-family:var(--display);font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+.item{display:grid;grid-template-columns:22px 1fr auto auto;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line);font-size:16px;cursor:pointer}
+.item input{width:18px;height:18px;accent-color:var(--accent);margin:0}
+.item .q{color:var(--muted);font-size:14px;white-space:nowrap}
+.item .g{font-family:var(--display);font-variant-numeric:tabular-nums;font-size:14px;min-width:3.2em;text-align:right}
+.item:has(input:checked) .nm{text-decoration:line-through;color:var(--muted)}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 12px;font-size:14px;cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+
+/* recipe */
+.back{margin-top:22px;display:inline-flex;gap:6px;align-items:center}
+.recipe{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:36px;margin-top:18px;align-items:start}
+.recipe figure{margin:0;position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px)}
+.recipe figure img{width:100%;border-radius:12px;display:block;aspect-ratio:4/5;object-fit:cover}
+.recipe figcaption{color:var(--muted);font-size:13px;margin-top:6px;font-family:var(--display)}
+.rhead{display:flex;flex-direction:column;gap:8px}
+.rhead .k{font-family:var(--display);font-weight:700;color:var(--accent);font-size:14px;letter-spacing:.02em}
+.rhead h2{font-size:clamp(28px,4.4vw,40px);font-weight:700;letter-spacing:-.02em}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.pill{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--muted)}
+.pill.warn{border-color:var(--accent);color:var(--accent)}
+.ing{list-style:none;padding:0;margin:20px 0 0;border-top:2px solid var(--ink)}
+.ing li{display:grid;grid-template-columns:22px 5.2em 1fr;gap:10px;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--line)}
+.ing input{width:18px;height:18px;accent-color:var(--accent);margin:0;align-self:center}
+.ing .amt{font-family:var(--display);font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ing li:has(input:checked) .nm,.ing li:has(input:checked) .amt{color:var(--muted);text-decoration:line-through}
+.swap{display:block;font-size:14px;color:var(--muted);margin-top:2px}
+.swap b{color:var(--red);font-weight:600;font-family:var(--display);font-size:12px;letter-spacing:.05em;text-transform:uppercase;margin-right:4px}
+.ing .sub-h{grid-template-columns:1fr;padding-top:14px;font-family:var(--display);font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.steps{counter-reset:s;list-style:none;padding:0;margin:26px 0 0;display:grid;gap:14px}
+.steps li{counter-increment:s;display:grid;grid-template-columns:32px 1fr;gap:8px;max-width:62ch}
+.steps li::before{content:counter(s);font-family:var(--display);font-weight:700;color:var(--accent);font-size:18px}
+.pn{display:flex;justify-content:space-between;gap:12px;margin-top:40px;border-top:1px solid var(--line);padding-top:16px;flex-wrap:wrap}
+.pn button{background:none;border:0;cursor:pointer;text-align:left;padding:0;max-width:48%}
+.pn button:last-child{text-align:right;margin-left:auto}
+.pn small{display:block;font-family:var(--display);font-size:12px;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+@media (max-width:760px){.recipe{grid-template-columns:1fr;gap:20px}.recipe figure{position:static}.recipe figure img{aspect-ratio:4/3}}
+
+/* swap page */
+.calc{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:14px;margin-top:24px}
+.calc .row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+.calc label{display:flex;flex-direction:column;gap:4px;font-family:var(--display);font-size:13px;color:var(--muted)}
+.calc select,.calc input,.search{font:inherit;font-size:16px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);max-width:100%}
+.calc input{width:7em}
+.res{display:flex;gap:10px;flex-wrap:wrap}
+.res .opt{border:1px solid var(--red);border-radius:10px;padding:10px 14px;display:flex;flex-direction:column}
+.res .opt .v{font-family:var(--display);font-size:24px;font-weight:700;color:var(--red);font-variant-numeric:tabular-nums}
+.res .or{align-self:center;color:var(--muted);font-style:italic}
+.tablewrap{overflow-x:auto;margin-top:14px}
+table{border-collapse:collapse;width:100%;font-size:16px}
+th{font-family:var(--display);font-weight:500;color:var(--red);text-align:left;font-size:15px;padding:8px 10px;border-bottom:1px solid var(--red)}
+td{padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+td:first-child{white-space:nowrap}
+td .eller{color:var(--red);font-style:italic;padding-inline:3px}
+.prose{max-width:66ch}
+.prose p{margin:0 0 12px}
+.warnbox{border-left:3px solid var(--red);padding:4px 0 4px 14px;color:var(--muted);font-size:15px;margin-top:16px;max-width:66ch}
+.search{width:100%;max-width:340px}
+footer{margin-top:56px;color:var(--muted);font-size:14px;border-top:1px solid var(--line);padding-top:16px}
+@media (prefers-reduced-motion:no-preference){main{animation:in .25s ease-out}}
+@keyframes in{from{opacity:.4;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+.keyfacts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:20px}
+.keyfacts div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.keyfacts b{font-family:var(--display);font-size:17px}
+.keyfacts span{font-size:15px;color:var(--muted)}
+.gsec{margin-top:36px}
+.gh{display:flex;align-items:baseline;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.gh h3{font-size:24px;font-weight:700;letter-spacing:-.01em}
+.gh span{color:var(--muted);font-size:15px}
+.prose ul{padding-left:20px;margin:0 0 12px;display:grid;gap:8px}
+.callout{margin-top:32px;border:1px solid var(--gul);background:color-mix(in srgb,var(--gul) 10%,var(--surface));border-radius:12px;padding:16px 18px;max-width:72ch}
+.callout b{font-family:var(--display);font-size:18px}
+.callout p{margin:8px 0 0}
+table.ov td,table.ov th{font-size:15px}
+table.ov th[scope=row]{padding-left:0}
+.ovm{background:var(--c);color:var(--on-accent);border:0;border-radius:999px;padding:4px 12px;font-family:var(--display);font-weight:500;font-size:14px;cursor:pointer;white-space:nowrap}
+.exrow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.exday{display:flex;flex-direction:column;gap:4px}
+.exl{font-family:var(--display);font-size:12px;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+.exchip{background:var(--c);color:var(--on-accent);border-radius:8px;padding:10px 8px;font-family:var(--display);font-size:14px;display:flex;flex-direction:column;gap:2px;min-height:56px}
+.exchip b{font-weight:700;font-size:16px}
+.mdesc{display:grid;gap:10px;margin:14px 0}
+.mdesc dt{font-family:var(--display);font-weight:700;display:flex;align-items:center;gap:8px}
+.mdesc dt::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--c)}
+.mdesc dd{margin:0 0 0 20px;color:var(--muted);font-size:16px}
+table.gly td,table.gly th{text-align:center;font-variant-numeric:tabular-nums;padding:6px 8px;font-size:15px}
+table.gly th{text-align:left;white-space:nowrap}
+@media (max-width:560px){.exchip{font-size:12px;padding:8px 6px}.exchip b{font-size:14px}}
+
+/* Min faste */
+.fhead{margin-top:24px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 22px 18px}
+.fhead h2{font-size:clamp(24px,4vw,34px);font-weight:700;letter-spacing:-.02em;margin-top:6px}
+.fhead .pages{color:var(--muted)}
+.daystrip{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 0}
+.dchip{border-left:4px solid var(--c);background:var(--bg);border-radius:6px;padding:5px 10px;font-family:var(--display);font-size:13px;display:flex;flex-direction:column;min-width:86px}
+.dchip b{font-size:14px}
+.dchip.now{background:var(--c);color:var(--on-accent)}
+.subtabs{display:flex;gap:4px;margin-top:18px;border-bottom:1px solid var(--line);overflow-x:auto}
+.subtabs button{background:none;border:0;border-bottom:3px solid transparent;padding:10px 14px;font-family:var(--display);font-size:15px;font-weight:500;cursor:pointer;color:var(--muted);white-space:nowrap}
+.subtabs button[aria-current="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+.daysel{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-top:18px}
+.daysel button{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 4px;font-family:var(--display);font-weight:700;font-size:15px;cursor:pointer;display:flex;flex-direction:column;align-items:center}
+.daysel small{font-weight:400;font-size:12px;color:var(--muted)}
+.daysel button[aria-current="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.daysel button[aria-current="true"] small{color:var(--bg)}
+.dhead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:22px 0 12px}
+.dhead h3{font-size:22px;font-weight:700}
+.dhead span{color:var(--muted);font-size:15px}
+.mlist{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px}
+.mcard{display:grid;grid-template-columns:72px 1fr auto;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px}
+.mcard img{width:72px;height:72px;border-radius:8px;object-fit:cover}
+.mcard.done{opacity:.6}
+.mcard.done .mlink{text-decoration:line-through}
+.mtxt{display:flex;flex-direction:column;align-items:flex-start;gap:3px}
+.mtxt .k{font-family:var(--display);font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:700}
+.mlink{background:none;border:0;padding:0;text-align:left;font-size:17px;cursor:pointer;line-height:1.25;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.eat{display:flex;align-items:center;gap:6px;font-family:var(--display);font-size:14px;cursor:pointer;padding-right:6px}
+.eat input,.glyc input{width:20px;height:20px;accent-color:var(--ink)}
+.glyc{display:flex;gap:12px;align-items:center;margin-top:12px;border:1px dashed var(--red);border-radius:12px;padding:12px 14px;cursor:pointer}
+.glyc.done{border-style:solid;background:color-mix(in srgb,var(--red) 8%,transparent)}
+.glyc.off{cursor:default;border-color:var(--line);flex-direction:column;align-items:flex-start;gap:2px;color:var(--muted)}
+.glyc b{font-family:var(--display)}
+.logf{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+.logf label,.rate legend{font-family:var(--display);font-size:13px;color:var(--muted)}
+.kgf,.notef{display:flex;flex-direction:column;gap:4px}
+.notef{grid-column:1/-1}
+.logf input[type=number],.logf textarea,.planf input,.planf select{font:inherit;font-size:16px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);max-width:100%}
+.rate{border:0;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px}
+.rate legend{padding:0;margin-bottom:4px;width:100%}
+.rate label{cursor:pointer}
+.rate input{position:absolute;opacity:0;width:1px;height:1px}
+.rate span{display:inline-grid;place-items:center;width:38px;height:38px;border:1px solid var(--line);border-radius:8px;font-family:var(--display);font-weight:700;color:var(--ink);background:var(--bg)}
+.rate input:checked+span{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.rate input:focus-visible+span{outline:2px solid var(--ink);outline-offset:2px}
+.planf{margin-top:20px;display:grid;gap:16px}
+.row2{display:flex;gap:14px;flex-wrap:wrap}
+.row2 label{display:flex;flex-direction:column;gap:4px;font-family:var(--display);font-size:13px;color:var(--muted)}
+.preset{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.preset span{font-family:var(--display);font-size:14px;color:var(--muted);margin-right:4px}
+.prows{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.prows li{display:grid;grid-template-columns:92px 1fr;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--c);border-radius:10px;padding:10px 12px}
+.pl{display:flex;flex-direction:column;font-family:var(--display)}
+.pl small{color:var(--muted);font-size:12px}
+.pr{display:flex;flex-direction:column;gap:4px;min-width:0}
+.pr select{width:100%}
+.pn2{font-size:14px;color:var(--muted)}
+.danger{display:flex;gap:8px;align-items:center;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:14px}
+.danger span{color:var(--muted);font-size:15px}
+.warnbtn{border-color:var(--red)!important;color:var(--red)}
+.kgchart{margin:0 0 14px;max-width:560px}
+.kgchart svg{width:100%;height:auto;display:block}
+.kgchart figcaption{color:var(--muted);font-size:14px}
+table.logt td{font-size:15px}
+table.logt .nt{max-width:28ch;color:var(--muted)}
+.dots{letter-spacing:1px;color:var(--ink);font-size:12px}
+.dots i{font-style:normal;color:var(--line)}
+.linkbtn{background:none;border:0;padding:0;font:inherit;font-family:var(--display);font-weight:700;cursor:pointer;text-decoration:underline}
+.swopts{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.swb{font-family:var(--display);font-size:12px;border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:2px 9px;cursor:pointer;color:var(--muted);letter-spacing:0;text-transform:none}
+.swb[aria-pressed="true"]{border-color:var(--red);color:var(--red);font-weight:700}
+.ing li.swapped .amt,.ing li.swapped .nm{color:var(--red)}
+.was{display:block;font-size:13px;color:var(--muted)}
+.swap b{display:block}
+@media (max-width:560px){.mcard{grid-template-columns:56px 1fr auto}.mcard img{width:56px;height:56px}.prows li{grid-template-columns:1fr}.daysel small{font-size:10px}}
+@media (max-width:640px){.nav{flex-wrap:nowrap;overflow-x:auto;width:100%;scrollbar-width:none;margin-inline:-16px;padding-inline:16px;width:calc(100% + 32px)}.nav::-webkit-scrollbar{display:none}.nav button{white-space:nowrap;flex:0 0 auto}}
+</style>
+
+</head>
+<body>
+<header class="top"><div class="in">
+  <div class="brand">Fastemenyene<small>5-dagers faste</small></div>
+  <nav class="nav" id="nav" aria-label="Menyer"></nav>
+</div></header>
+<div class="wrap"><main id="app"></main>
+<footer>Transkribert fra dine bilder av boka. Planen, dagboka, byttene og avkrysningene lagres bare på denne enheten. Appen virker også uten nett etter første besøk.</footer>
+</div>
+
+<script>
+const MENUS={
+  bla:{name:"Blå meny",color:"bla",pages:"s. 53–79",
+    intro:"For matglade som liker smaker fra ulike kjøkken, blant annet Marokko, India, Midtøsten, Italia og Norden. Menyen har flest retter som krever tilberedning. Fire måltider per dag.",
+    plan:[
+      {day:"Dag 1",meals:[{k:"Frokost",id:"bla-havregrot"},{k:"Lunsj",id:"kalsalat"},{k:"Middag",id:"tomatsuppe"},{k:"Kveld",id:"bla-tapas-1"}]},
+      {day:"Dag 2–5 a",meals:[{k:"Frokost",id:"bla-tapas-2a"},{k:"Lunsj",id:"pere-salat"},{k:"Middag",id:"curry"},{k:"Kveld",id:"fruktsalat-valnott"}]},
+      {day:"Dag 2–5 b",meals:[{k:"Frokost",id:"fruktsalat-cashew"},{k:"Lunsj",id:"hummus"},{k:"Middag",id:"squashpasta"},{k:"Kveld",id:"sotpotetsticks"}]}
+    ],
+    shop:{page:"s. 78–79",groups:[
+      ["Grønnsaker",[["Agurk","2 stk",400],["Baby leaf-salat","1 pose",64],["Blomkål","1 stk",255],["Grønn paprika","2 stk",250],["Gul løk","2 stk",240],["Gulrot","1 pk",400],["Hodekål","1 stk",100],["Hvitløk","1 stk",17],["Frisk ingefær","1 stk",10],["Potet (kokefast)","1 pose",200],["Rødløk","1 stk",40],["Squash","1 stk",200],["Søtpotet","1 stk",140]]],
+      ["Frukt",[["Appelsin","2 stk",225],["Eple","3 stk",240],["Lime","1 stk",6],["Pære","4 stk",460],["Sitron","1 stk",35]]],
+      ["Friske urter",[["Frisk koriander","1 potte",1],["Frisk persille","1 potte",6]]],
+      ["Tørket krydder",[["Chilipulver","1 glass",3],["Kanel","1 glass",6],["Spisskummen","1 glass",1],["Gurkemeie","1 glass",4],["Tørket oregano","1 glass",13],["Garam masala eller tandoori masala","1 glass",10],["Salt","1 pk","–"]]],
+      ["Hermetikk og oliven",[["Grønne oliven (i lake), uten stener","1 glass",40],["Hermetiske kikerter","1 boks",150],["Hele eller hakkede hermetiske tomater","1 boks",360],["Kapers","1 glass",10]]],
+      ["Nøtter, gryn, frø o.l.",[["Havregryn","1 pk",25],["Hvetekim","1 pk",5],["Cashewnøtter","1 pk",71],["Gresskarkjerner","1 pk",20],["Mandler","1 pk",20],["Valnøtter","1 boks",30]]],
+      ["Tørrvarer",[["Dijonsennep","1 glass",15],["Honning","1 glass",5],["Kokosolje","1 glass",5],["Olivenolje","1 flaske",122]]],
+      ["Glyserol",[["Glyserol","se s. 46","–"]]]
+    ]}
+  },
+  gul:{name:"Gul meny",color:"gul",pages:"s. 81–107",start:true,
+    intro:"I denne menyen er det lagt opp til at man kan lage ordentlige retter av råvarene, men i de fleste rettene er det valgt råvarer som også kan spises uten tilberedning. Boka anbefaler å starte med denne menyen hvis du er usikker. Fire måltider per dag.",
+    plan:[
+      {day:"Dag 1",meals:[{k:"Frokost",id:"bananpannekaker"},{k:"Lunsj",id:"avokadosalat"},{k:"Middag",id:"wok"},{k:"Kveld",id:"gul-tapas-1"}]},
+      {day:"Dag 2–5 a",meals:[{k:"Frokost",id:"appelsinsalat"},{k:"Lunsj",id:"gronnkal-paere"},{k:"Middag",id:"potetsalat"},{k:"Kveld",id:"bakte-gronnsaker"}]},
+      {day:"Dag 2–5 b",meals:[{k:"Frokost",id:"havregrot-banan"},{k:"Lunsj",id:"middelhavssalat"},{k:"Middag",id:"blomkalris"},{k:"Kveld",id:"gul-tapas-2b"}]}
+    ],
+    shop:{page:"s. 106–107",groups:[
+      ["Grønnsaker",[["Agurk","1 stk",300],["Asparges","1 bunt",140],["Avokado","1 stk",120],["Blomkål","1 stk",250],["Brokkoli","1 stk",160],["Grønn paprika","2 stk",260],["Grønnkål","1 pose",130],["Gulrot","1 pose",560],["Hodekål","1 stk",130],["Hvitløk","1 stk",9],["Frisk ingefær","1 stk",5],["Potet (kokefast)","1 pose",350],["Rødløk","1 stk",100],["Tomat","5 stk",400]]],
+      ["Frukt",[["Appelsin","2 stk",200],["Banan","2 stk",230],["Blåbær","1 pk",50],["Eple","2 stk",150],["Pære","2 stk",140],["Sitron","1 stk",40]]],
+      ["Friske urter",[["Frisk basilikum","1 potte",2],["Frisk persille","1 potte",6]]],
+      ["Tørkede krydder",[["Kanel","1 glass",5],["Kardemomme","1 glass",1],["Tørket oregano","1 glass",4],["Tørket timian","1 glass",2],["Salt","1 pk","–"]]],
+      ["Hermetikk og oliven",[["Grønne oliven (i lake), uten stener","1 glass",90],["Kapers","1 glass",10]]],
+      ["Nøtter, gryn, frø o.l.",[["Havregryn","1 pk",85],["Hvetekim","1 pk",10],["Cashewnøtter","1 pk",59],["Valnøtter","1 boks",63]]],
+      ["Tørrvarer",[["Bakepulver","1 boks",1],["Dijonsennep","1 glass",20],["Soyasaus","1 glass",10],["Kokosolje","1 glass",5],["Olivenolje","1 flaske",95]]],
+      ["Glyserol",[["Glyserol","se s. 46","–"]]]
+    ]}
+  },
+  lilla:{name:"Lilla meny",color:"lilla",pages:"s. 109–123",
+    intro:"Varierte retter, men bare to retter å tilberede per dag. Boka anbefaler likevel fire måltider, så del hver rett i to. Dag 1 har egne oppskrifter. For dag 2–5 velger du mellom plan a og plan b.",
+    plan:[
+      {day:"Dag 1",meals:[{k:"Frokost/lunsj",id:"salatwraps"},{k:"Middag/kveld",id:"gronnkalsalat"}]},
+      {day:"Dag 2–5 a",meals:[{k:"Frokost/lunsj",id:"smoothiebowl"},{k:"Middag/kveld",id:"gulrotsuppe-lilla"}]},
+      {day:"Dag 2–5 b",meals:[
+        {k:"Frokost/lunsj",id:"fruktsalat"},
+        {k:"Middag/kveld",id:"linsegryte"}]}
+    ],
+    shop:{page:"s. 122",groups:[
+      ["Grønnsaker",[["Agurk","1 stk",75],["Avokado","2 stk",240],["Grønn paprika","2 stk",225],["Grønnkål","1 pose",70],["Gul løk","4 stk",400],["Gulrot","1 pose",500],["Hjertesalat","1 pose",60],["Hvitløk","1 stk",12],["Rødløk","1 stk",30],["Spinat","1 pose",80],["Søtpotet","1 stk",120],["Ingefær","1 stk",30]]],
+      ["Frukt",[["Banan","3 stk",340],["Eple","1 stk",75],["Mango","2 stk",525],["Sitron","1 stk",45]]],
+      ["Tørkede krydder",[["Chilipulver","1 glass",2],["Kanel","1 glass",2],["Paprikapulver","1 glass",7],["Spisskummen","1 glass",7],["Oregano","1 glass",3],["Salt","1 pk","–"]]],
+      ["Friske urter",[["Frisk koriander","1 potte",8]]],
+      ["Hermetikk",[["Hermetiske kikerter","1 boks",120],["Hermetiske røde linser","1 boks",90],["Hermetiske tomater","1 boks",400],["Kokosmelk (fullfett, ikke lett)","1 boks",180]]],
+      ["Nøtter, gryn, frø o.l.",[["Gresskarkjerner","1 pk",24],["Cashewnøtter","1 pk",85],["Valnøtter","1 boks",20],["Kokosmasse","1 pk",10]]],
+      ["Tørrvarer",[["Dijonsennep","1 glass",5],["Honning","1 glass",5],["Olivenolje","1 flaske",60]]],
+      ["Glyserol",[["Glyserol","se s. 46","–"]]]
+    ]}
+  },
+  gronn:{name:"Grønn meny",sub:"lav-FODMAP",color:"green",pages:"s. 124–151",
+    intro:"Fire måltider per dag. Dag 1 har egne oppskrifter. For dag 2–5 velger du mellom plan a og plan b.",
+    plan:[
+      {day:"Dag 1",meals:[{k:"Frokost",id:"smoothie"},{k:"Lunsj",id:"blandet-salat"},{k:"Middag",id:"gulrotsuppe"},{k:"Kveld",id:"fastetapas-1"}]},
+      {day:"Dag 2–5 a",meals:[{k:"Frokost",id:"chia-blabaer"},{k:"Lunsj",id:"knekkebrod"},{k:"Middag",id:"ovnsbakte"},{k:"Kveld",id:"fastetapas-2"}]},
+      {day:"Dag 2–5 b",meals:[{k:"Frokost",id:"banan-te"},{k:"Lunsj",id:"frisk-salat"},{k:"Middag",id:"gronnsaksuppe"},{k:"Kveld",id:"chia-bringebaer"}]}
+    ],
+    shop:{page:"s. 150–151",groups:[
+      ["Grønnsaker",[["Agurk","1 stk",150],["Avokado","1 stk",60],["Cherrytomater","1 pk",120],["Chili","1 stk",6],["Gulrot","1 pose",695],["Frisk ingefær","1 stk",33],["Isbergsalat","1 stk",350],["Kålrot","1 stk",200],["Pastinakk","2 stk",120],["Potet","1 pose",100],["Reddik","1 pose eller bunt",30],["Ruccola","1 pose",60],["Rød paprika","2 stk",240],["Rødkål","1 stk",240],["Sellerirot","1 stk",200],["Sukkererter","1 pose",40],["Søtpotet","1 stk",70]]],
+      ["Friske urter",[["Frisk koriander","1 potte",5]]],
+      ["Frukt og bær",[["Appelsin","1 stk",150],["Banan (uten brune flekker)","3 stk",250],["Blåbær","1 pk",100],["Bringebær","1 pk",180],["Granateple","1 stk",80],["Lime","2 stk",30],["Sitron","1 stk",60]]],
+      ["Tørkede krydder",[["Kajennepepper","1 glass",1],["Gurkemeie","1 glass",6],["Tørket persille","1 glass",6],["Pepper","1 glass",2],["Salt","1 pk","–"],["Grønnsaksbuljong, terninger, Maggi","1 pk",10]]],
+      ["Hermetikk og oliven",[["Grønne oliven (i lake), uten stener","1 glass",45],["Kokosmelk (fullfett, ikke lett)","2 bokser",445]]],
+      ["Nøtter, gryn, frø o.l.",[["Gresskarkjerner","1 pk",24],["Pinjekjerner","1 pose",15],["Valnøtter","1 boks",59],["Chiafrø","1 pk",60],["Havregryn","1 pk",15],["Knekkebrød (Semper, havreknäcke)","1 pk",60]]],
+      ["Tørrvarer",[["Olivenolje","1 flaske",26]]],
+      ["Glyserol",[["Glyserol","se s. 46","–"]]]
+    ]}
+  },
+  oransje:{name:"Oransje meny",color:"oransje",pages:"",
+    intro:"Til denne menyen følger det ikke med oppskrifter, siden hensikten er å bruke den når du ikke har tid til å tilberede mat. Du velger selv hvordan du skal kombinere matvarene og når du skal spise dem.",
+    foods:[
+      {day:"Dag 1",items:[["130 g","avokado","en liten"],["160 g","gulrot","to stk"],["60 g","tørket fiken","tre stk"],["132 g","stangselleri","fire stilker"],["135 g","banan","en stk"],["64 g","sukkererter","16 stk"],["33 g","valnøtter","16 halve"],["25 g","gresskarkjerner","2,5 ss"],["15 g","pinjekjerner","1,5 ss"]]},
+      {day:"Dag 2–5",items:[["130 g","eple","ett lite"],["12 g","valnøtter","seks halve"],["40 g","tørket fiken","to stk"],["33 g","stangselleri","en stilk"],["30 g","hasselnøtter","en liten neve"],["110 g","banan","en liten"],["20 g","gresskarkjerner","to ss"]]}
+    ]
+  }
+};
+const MENU_ORDER=["bla","gul","lilla","gronn","oransje"];
+
+// swap keys refer to SWAPS below
+const R={
+ "bla-havregrot":{menu:"bla",k:"Frokost, dag 1",t:"Havregrøt med krydderstekte epler",p:"s. 54",
+   ing:[["80 g","eple","eple",80],["5 g","kokosolje"],["10 g","valnøtter","valnøtter",10],["25 g","havregryn"],["5 g","hvetekim","hvetekim",5],["200 g","vann"],["","salt"],["","kanel"]],
+   steps:["Skjær eplene i biter. Stek dem i kokosolje på middels varme. Når eplene begynner å bli myke, er de ferdige.","Grovhakk valnøttene.","Kok opp havregryn, hvetekim og vann. La småkoke til grøten har ønsket konsistens mens du rører. Smak til med salt.","Topp grøten med de stekte eplene, valnøtter og kanel."]},
+ "kalsalat":{menu:"bla",k:"Lunsj, dag 1",t:"Kålsalat med appelsin og cashewnøtter",p:"s. 57",
+   ing:[["100 g","hodekål","hodekål",100],["75 g","appelsin","appelsin",75],["1 ss","frisk persille"],["12 g","olivenolje"],["5 g","dijonsennep"],["5 g","honning"],["5 g","sitronsaft"],["en klype","salt"],["15 g","cashewnøtter","cashewnøtter",15]],
+   steps:["Snitt hodekålen i tynne strimler, skjær appelsinen i biter og finhakk persillen. Bland alt.","Pisk olivenolje, sennep, honning, sitronsaft og salt lett sammen og hell over salaten.","Grovhakk cashewnøttene og strø over salaten til slutt."]},
+ "tomatsuppe":{menu:"bla",k:"Middag, dag 1",t:"Marokkansk tomatsuppe",p:"s. 58",
+   ing:[["60 g","gul løk"],["100 g","grønn paprika"],["1 fedd","hvitløk"],["1 ss","frisk koriander"],["20 g","olivenolje"],["1 ts","tørket oregano"],["0,5 ts","spisskummen"],["en klype","kanel"],["en klype","chilipulver"],["200 g","hele eller hakkede hermetiske tomater"],["1 dl","vann"],["","salt"],["50 g","hermetiske kikerter","hermetiske kikerter",50]],
+   steps:["Skjær løken og paprikaen i biter og finhakk hvitløken. Finhakk korianderen.","Stek grønnsakene i olivenolje på middels varme til løken og paprikaen begynner å bli myk.","Ha i krydder og stek videre i noen minutter.","Ha i hermetiske tomater og vannet og la det småkoke i 15 minutter. Smak til med salt.","Skyll kikertene og ha dem i suppen rett før servering. Topp med korianderen."]},
+ "bla-tapas-1":{menu:"bla",k:"Kveld, dag 1",t:"Fastetapas",p:"s. 61",
+   ing:[["75 g","blomkål","blomkål",75],["20 g","cashewnøtter","cashewnøtter",20],["40 g","grønne oliven (i lake), uten sten"]],
+   steps:["Spises som de er."]},
+ "bla-tapas-2a":{menu:"bla",k:"Frokost, dag 2–5 a",t:"Fastetapas",p:"s. 62",
+   ing:[["100 g","gulrot","gulrot",100],["100 g","agurk","agurk",100],["8 g","cashewnøtter","cashewnøtter",8]],
+   steps:["Spises som de er.","Du kan eventuelt skjære grønnsakene i staver og drysse over litt salt og urter."]},
+ "pere-salat":{menu:"bla",k:"Lunsj, dag 2–5 a",t:"Salat med pære og mandler",p:"s. 65",
+   ing:[["20 g","rødløk"],["75 g","pære","pære",75],["32 g","baby leaf-salat","baby leaf-salat",32],["10 g","mandler","mandler",10],["10 g","olivenolje"],["5 g","dijonsennep"],["5 g","sitronsaft"],["en klype","salt"]],
+   steps:["Skjær løken i strimler, skjær pæren i biter og bland det sammen med baby leaf-salaten.","Grovhakk mandlene og rist dem i en stekepanne på middels varme i 3–6 minutter (kan sløyfes). De er ferdige når det begynner å lukte mandler og de begynner å bli gylne. Sett til side.","Pisk olivenolje, sennep, sitronsaft og salt lett sammen.","Bland dressingen inn i salaten og strø mandlene over."]},
+ "curry":{menu:"bla",k:"Middag, dag 2–5 a",t:"Indisk curry med potet og blomkål",p:"s. 66",
+   note:"Om du ikke har eller får tak i garam masala eller tandoori masala, kan du blande 1 ss spisskummen, ½ ss korianderfrø (knust), ¼ ts nellik, ¼ ts kardemomme og ¼ ts kanel. Bruk til sammen 1 ts av denne blandingen i retten.",
+   ing:[["100 g","poteter (kokefaste)"],["90 g","blomkål","blomkål",90],["50 g","gul løk"],["1 fedd","hvitløk"],["5 g","frisk ingefær"],["1 ts","garam masala eller tandoori masala* (krydderblanding som kjøpes i dagligvarebutikk)"],["0,5 ts","tørket gurkemeie"],["10 g","olivenolje"],["","sitronsaft"],["1 klype","salt"],["5 g","kapers"],["1 ss","frisk persille"]],
+   steps:["Skrell potetene og skjær dem i terninger. Skjær blomkålen i buketter.","Ha potetene i kokende vann og la småkoke i 6 minutter. Ha i blomkålen og kok i to minutter til. Ta kasserollen av platen. Det skal være litt motstand i poteten og blomkålen. Hell av vannet og sett til side.","Mens poteten koker, skjærer du løk i biter, finhakker hvitløk og rasper ingefær.","Stek løk, hvitløk og ingefær i olivenolje på middels varme til løken begynner å bli myk. Ha i krydderet og stek litt til.","Ha i potetene, blomkålen og stek til potetene får ønsket konsistens. Smak til med sitronsaft og salt. Bland godt så du får fordelt krydderne, men ikke så voldsomt at grønnsaksbitene mister fasongen. Topp med kapers og finhakket persille."]},
+ "fruktsalat-valnott":{menu:"bla",k:"Kveldsmat, dag 2–5 a",t:"Fruktsalat med valnøtter og kanel",p:"s. 69",
+   ing:[["75 g","pære","pære",75],["75 g","appelsin","appelsin",75],["10 g","valnøtter","valnøtter",10],["","kanel"]],
+   steps:["Skjær pæren og appelsinen i biter og grovhakk valnøttene.","Bland alt sammen og dryss over litt kanel."]},
+ "fruktsalat-cashew":{menu:"bla",k:"Frokost, dag 2–5 b",t:"Fruktsalat med cashewnøtter og kanel",p:"s. 70",
+   ing:[["80 g","pære","pære",80],["80 g","eple","eple",80],["10 g","cashewnøtter","cashewnøtter",10],["","kanel"]],
+   steps:["Skjær eplet og pæren i biter, og grovhakk cashewnøttene.","Bland og dryss over litt kanel."]},
+ "hummus":{menu:"bla",k:"Lunsj, dag 2–5 b",t:"Hummus med grønnsaker",p:"s. 73",
+   ing:[["50 g","hermetiske kikerter","hermetiske kikerter",50],["10 g","olivenolje"],["0,5 fedd","hvitløk"],["1 ts","sitronsaft"],["","salt"],["50 g","gulrot","gulrot",50],["75 g","grønn paprika"],["100 g","agurk","agurk",100]],
+   steps:["Skyll kikertene. Ha kikerter, olivenolje og hvitløk i en bolle. Kjør blandingen glatt med stavmikser. Du kan eventuelt spe på med kaldt vann for å få konsistensen du ønsker. Smak til hummusen med sitronsaft og salt.","Skjær gulroten, paprikaen og agurken i staver. Spis grønnsakene med hummus som dip."]},
+ "squashpasta":{menu:"bla",k:"Middag, dag 2–5 b",t:"Squashpasta med tomatsaus og gresskarkjerner",p:"s. 74",
+   ing:[["10 g","gresskarkjerner"],["40 g","gul løk"],["1 fedd","hvitløk"],["10 g","olivenolje"],["80 g","hele eller hakkede hermetiske tomater"],["1 ts","tørket oregano"],["en klype","salt"],["100 g","squash","squash",100]],
+   steps:["Rist gresskarkjernene i en tørr stekepanne på middels varme. Rør av og til, slik at de ikke svir seg. Når gresskarkjernene begynner å poppe, er de ferdige. Sett til side.","Skjær løken og finhakk hvitløken. Stek i olivenolje på middels varme til løken begynner å bli myk.","Ha i de hermetiske tomatene, oregano og salt. La blandingen småkoke i 15 minutter.","Lag båndspagetti av squashen med mandolin eller spiralkutter. Hvis du ikke har mandolin eller spiralkutter, kan du høvle tynne skiver med en ostehøvel eller skjære squashen i tynne strimler med en kniv.","Varm en tørr stekepanne på middels varme. Ha i squashen og stek til den så vidt begynner å bli myk og blank. Squashen kan eventuelt spises rå.","Server squashpastaen med tomatsaus. Topp med gresskarkjernene."]},
+ "sotpotetsticks":{menu:"bla",k:"Kvelds, dag 2–5 b",t:"Søtpotet- og gulrotsticks med lime og chili",p:"s. 77",
+   ing:[["70 g","søtpotet"],["50 g","gulrot","gulrot",50],["5 g","olivenolje"],["0,5","lime, skallet"],["en klype","chilipulver"],["en klype","salt"]],
+   steps:["Sett ovnen på 200 grader med over- og undervarme. Skrell og skjær søtpoteten og gulroten i staver. Riv limeskall på et fint rivjern.","Pisk olivenolje, limeskall, chilipulver og salt lett sammen. Smør grønnsakene med oljeblandingen. Pass på å få mest mulig av oljen på grønnsakene.","Ha grønnsakene over på et stekebrett dekket med bakepapir, og stek dem midt i ovnen i 15–20 minutter til de begynner å bli møre. De kan gjerne ha litt tyggemotstand."]},
+ "bananpannekaker":{menu:"gul",k:"Frokost, dag 1",t:"Bananpannekaker",p:"s. 82",
+   ing:[["15 g","valnøtter","valnøtter",15],["90 g","banan","banan",90],["35 g","havregryn"],["1–2 ss","vann"],["0,25 ts","bakepulver"],["en klype","kanel"],["en klype","kardemomme"],["en klype","salt"],["5 g","kokosolje"],["50 g","blåbær","blåbær",50]],
+   steps:["Grovhakk valnøttene.","Ha banan, havregryn, vann, bakepulver, kanel, kardemomme og salt i en bolle. Kjør blandingen glatt med stavmikser.","Stek små pannekaker i kokosolje på middels varme. Snu pannekakene når du ser at de begynner å stivne på overflaten. Stek dem videre til de er gylne på begge sider.","Topp pannekakene med blåbær og valnøtter."]},
+ "avokadosalat":{menu:"gul",k:"Lunsj, dag 1",t:"Avokado- og tomatsalat",p:"s. 85",
+   ing:[["120 g","avokado"],["200 g","tomat"],["5 g","olivenolje"],["0,5 ss","frisk basilikum"],["en klype","salt"]],
+   steps:["Skjær avokadoen og tomaten i terninger og finhakk basilikum. Hell over olivenolje og bland inn salt. Topp med basilikum."]},
+ "wok":{menu:"gul",k:"Middag, dag 1",t:"Asiatisk wok",p:"s. 86",
+   ing:[["1 fedd","hvitløk"],["1 ts","frisk ingefær"],["10 g","soyasaus"],["160 g","brokkoli","brokkoli",160],["100 g","gulrot","gulrot",100],["100 g","grønn paprika"],["50 g","hodekål","hodekål",50],["10 g","olivenolje"]],
+   steps:["Finhakk hvitløk og rasp ingefær. Bland sammen med soyasausen i en liten skål.","Skjær brokkoli i biter og gulrot, paprika og hodekål i strimler. Stek gulrot, brokkoli og paprika i olivenolje på middels varme i en stekepanne. Etter noen minutter har du i hodekålen. Stek til grønnsakene har ønsket konsistens. De bør gjerne være litt sprø.","Hell sausen over grønnsakene og bland godt."]},
+ "gul-tapas-1":{menu:"gul",k:"Kvelds, dag 1",t:"Fastetapas",p:"s. 89",
+   ing:[["100 g","gulrot","gulrot",100],["100 g","agurk","agurk",100],["15 g","cashewnøtter","cashewnøtter",15],["30 g","grønne oliven (i lake), uten sten"]],
+   steps:["Spises som de er."]},
+ "appelsinsalat":{menu:"gul",k:"Frokost, dag 2–5 a",t:"Appelsinsalat",p:"s. 90",
+   ing:[["100 g","appelsin","appelsin",100],["15 g","valnøtter","valnøtter",15],["","kanel"]],
+   steps:["Skjær appelsinen i biter. Grovhakk valnøttene.","Bland og dryss over litt kanel."]},
+ "gronnkal-paere":{menu:"gul",k:"Lunsj, dag 2–5 a",t:"Grønnkålsalat med pære",p:"s. 93",
+   ing:[["65 g","grønnkål","grønnkål",65],["70 g","pære","pære",70],["12 g","cashewnøtter","cashewnøtter",12],["10 g","olivenolje"],["5 g","dijonsennep"],["5 g","sitronsaft"],["en klype","salt"]],
+   steps:["Gni grønnkålen med hendene til den blir myk og mørkegrønn. Skjær pæren i biter.","Grovhakk cashewnøttene. Pisk olivenolje, sennep, sitronsaft og salt lett sammen.","Bland sammen grønnkål, pære og cashewnøtter og vend inn dressingen."]},
+ "potetsalat":{menu:"gul",k:"Middag, dag 2–5 a",t:"Potet- og aspargessalat",p:"s. 94",
+   ing:[["175 g","poteter (kokefaste)"],["70 g","asparges","asparges",70],["10 g","olivenolje"],["5 g","dijonsennep"],["5 g","sitronsaft"],["en klype","salt"],["5 g","kapers"]],
+   steps:["Skrell og kok potetene til de er møre. Dressingen og aspargesen bør være klar når potetene er ferdigkokt.","Del aspargesen i ønsket størrelse. Kok opp vann i en kasserolle. Når vannet koker, har du i aspargesen og lar den koke i 1–2 minutter avhengig av tykkelsen. Hell av kokevannet og skyll aspargesen i kaldt vann.","Pisk olivenolje, sennep, sitronsaft og salt lett sammen.","Når potetene er ferdigkokt, skjærer du dem i biter. Ha potet og asparges i en skål. Hell dressingen over mens potetene fortsatt er varme og topp med kapers."]},
+ "bakte-gronnsaker":{menu:"gul",k:"Kvelds, dag 2–5 a",t:"Bakte grønnsaker",p:"s. 97",
+   ing:[["80 g","gulrot","gulrot",80],["80 g","grønn paprika"],["0,25 ts","tørket timian"],["en klype","salt"]],
+   steps:["Sett ovnen på 200 grader med over- og undervarme. Skjær grønnsakene i staver og ha dem over på et stekebrett dekket med bakepapir.","Dryss over timian og salt.","Stek midt i ovnen i 15–20 minutter til de er møre."]},
+ "havregrot-banan":{menu:"gul",k:"Frokost, dag 2–5 b",t:"Havregrøt med banan",p:"s. 98",
+   ing:[["70 g","banan","banan",70],["25 g","havregryn"],["5 g","hvetekim","hvetekim",5],["150 g","vann"],["en klype","salt"],["","kanel"]],
+   steps:["Skjær banan i skiver.","Kok opp havregryn, hvetekim og vann. La småkoke til grøten har ønsket konsistens mens du rører underveis. Smak til med salt.","Topp grøten med kanel og banan."]},
+ "middelhavssalat":{menu:"gul",k:"Lunsj, dag 2–5 b",t:"Middelhavssalat",p:"s. 101",
+   ing:[["100 g","tomat"],["100 g","agurk","agurk",100],["50 g","rødløk"],["40 g","hodekål","hodekål",40],["10 g","olivenolje"],["5 g","sitronsaft"],["1 ts","tørket oregano"],["en klype","salt"]],
+   steps:["Skjær tomat og agurk i biter, og rødløk og hodekål i strimler. Ha alt i en skål.","Pisk olivenolje, sitronsaft, oregano og salt lett sammen. Hell over grønnsakene og bland inn."]},
+ "blomkalris":{menu:"gul",k:"Middag, dag 2–5 b",t:"Blomkålris med eple og cashewnøtter",p:"s. 102",
+   ing:[["10 g","cashewnøtter","cashewnøtter",10],["1 ss","frisk persille"],["75 g","eple","eple",75],["10 g","olivenolje"],["125 g","blomkål","blomkål",125],["1 fedd","hvitløk"],["","salt"],["5 g","sitronsaft"]],
+   steps:["Grovhakk cashewnøttene og finhakk persillen. Sett til side.","Skjær eplene i små biter. Stek eplebitene i litt av olivenoljen på middels varme til de begynner å bli myke. Sett til side.","Riv blomkål på et grovt rivjern og finhakk hvitløk. Stek blomkålen og hvitløken i resten av oljen til blomkålen så vidt begynner å bli myk.","Smak til blomkålen med salt. Skvis over litt sitronsaft, og bland inn nøtter og eple. Topp med persille."]},
+ "gul-tapas-2b":{menu:"gul",k:"Kvelds, dag 2–5 b",t:"Fastetapas",p:"s. 105",
+   ing:[["100 g","gulrot","gulrot",100],["9 g","valnøtter","valnøtter",9],["30 g","grønne oliven (i lake), uten sten"]],
+   steps:["Spises som de er."]},
+ "smoothie":{menu:"gronn",k:"Frokost, dag 1",t:"Frokostsmoothie",p:"s. 126",
+   ing:[["50 g","kokosmelk (fullfett, ikke lett)"],["1,5 dl","vann"],["110 g","bringebær","bringebær",110],["70 g","banan (uten brune flekker)","banan",70],["15 g","havregryn"],["14 g","gresskarkjerner"]],
+   steps:["Ha kokosmelk, vann, bringebær, banan og havregryn i en beholder. Kjør blandingen glatt med stavmikser. Juster eventuelt med vann dersom du synes den blir for tykk. Du kan alternativt bruke en blender.","Hell over i glass og topp med gresskarkjerner."]},
+ "blandet-salat":{menu:"gronn",k:"Lunsj, dag 1",t:"Blandet salat med granateple",p:"s. 129",
+   ing:[["150 g","isbergsalat"],["40 g","rød paprika"],["50 g","agurk","agurk",50],["30 g","granateplekjerner","granateplekjerner",30],["14 g","valnøtter","valnøtter",14],["15 g","pinjekjerner","pinjekjerner",15],["15 g","grønne oliven (i lake), gjerne stenfrie"]],
+   steps:["Skjær salaten, paprikaen og agurken i strimler. Rens granateplet slik at du kun sitter igjen med kjernene og bland alt sammen i en skål.","Grovhakk valnøttene.","Topp salaten med valnøtter, pinjekjerner og oliven."]},
+ "gulrotsuppe":{menu:"gronn",k:"Middag, dag 1",t:"Gulrot- og søtpotetsuppe",p:"s. 130",
+   ing:[["70 g","søtpotet"],["175 g","gulrot","gulrot",175],["9 g","frisk ingefær"],["75 g","kokosmelk (fullfett, ikke lett)"],["2,5 dl","vann"],["","cayennepepper"],["10 g","limesaft"],["","salt"],["1 ss","frisk koriander"]],
+   steps:["Skjær søtpoteten og gulrøttene i terninger, rasp ingefær.","Ha grønnsakene i en kjele sammen med kokosmelk og vann. Kok opp og la småkoke under lokk i 20 minutter.","Kjør suppen glatt med stavmikser. Du kan alternativt bruke en blender.","Smak til med cayennepepper, limesaft og salt. Topp med finhakket koriander."]},
+ "fastetapas-1":{menu:"gronn",k:"Kveld, dag 1",t:"Fastetapas",p:"s. 133",
+   ing:[["150 g","appelsin","appelsin",150],["25 g","valnøtter","valnøtter",25]],
+   steps:["Spises som de er."]},
+ "chia-blabaer":{menu:"gronn",k:"Frokost, dag 2–5 a",t:"Chiagrøt med blåbær",p:"s. 134",prep:"Må lages minst 6 timer før den skal spises",
+   ing:[["80 g","kokosmelk (fullfett, ikke lett)"],["50 g","vann"],["15 g","chiafrø"],["30 g","blåbær","blåbær",30]],
+   steps:["Ha kokosmelk og vann i en liten skål eller glass.","Rør inn chiafrø og to tredjedeler av blåbærene. Strø resten av blåbærene på toppen av grøten.","Dekk til og sett i kjøleskap. La stå i minimum seks timer før det skal spises."]},
+ "knekkebrod":{menu:"gronn",k:"Lunsj, dag 2–5 a",t:"Knekkebrød med avokado og tomat",p:"s. 137",
+   ing:[["30 g","avokado"],["2 stk","Semper havreknekkebrød"],["","salt"],["","pepper"],["60 g","cherrytomat","cherrytomater",60],["10 g","ruccola","ruccola",10]],
+   steps:["Spre avokadoen på knekkebrødene og ha på litt salt og pepper.","Skjær tomaten i biter.","Topp knekkebrødene med tomat og ruccola."]},
+ "ovnsbakte":{menu:"gronn",k:"Middag, dag 2–5 a",t:"Ovnsbakte grønnsaker",p:"s. 138",
+   ing:[["160 g","gulrot","gulrot",160],["120 g","rødkål","rødkål",120],["60 g","pastinakk"],["6 g","frisk ingefær"],["3 g","chili"],["5 g","olivenolje"],["1 ts","tørket persille"],["en klype","salt"]],
+   steps:["Sett ovnen på 200 grader med over- og undervarme. Skrell og skjær grønnsakene i staver og ha dem over på et stekebrett kledd med bakepapir.","Rasp ingefæren og finhakk chilien.","Pisk olivenolje, persille, ingefær, finhakket chili og salt lett sammen. Masser blandingen inn i grønnsakene slik at det blir jevnt fordelt.","Stek midt i ovnen i 20–25 minutter til de er møre."]},
+ "fastetapas-2":{menu:"gronn",k:"Kveld, dag 2–5 a",t:"Fastetapas",p:"≈ s. 141",
+   ing:[["57 g","rød paprika"],["5 g","gresskarkjerner"],["15 g","grønne oliven (i lake), gjerne stenfrie"]],
+   steps:["Spises som de er."]},
+ "banan-te":{menu:"gronn",k:"Frokost, dag 2–5 b",t:"Banan, valnøtter og en varm kopp te",p:"s. 142",
+   ing:[["","Te",null,null,true],["6 g","frisk ingefær"],["2","sitronskiver"],["1 ts","gurkemeie"],["2,5 dl","vann"],["","Til siden",null,null,true],["90 g","banan (uten brune flekker)","banan",90],["10 g","valnøtter","valnøtter",10]],
+   steps:["Rasp ingefær og skjær to skiver på ca. 3 mm av sitronen og ha i en kopp sammen med gurkemeie. Hell over kokende vann og rør rundt.","Banan og valnøtter spises som de er."]},
+ "frisk-salat":{menu:"gronn",k:"Lunsj, dag 2–5 b",t:"Frisk salat",p:"≈ s. 145",
+   ing:[["15 g","reddik","reddik",15],["20 g","sukkererter","sukkererter",20],["100 g","isbergsalat"],["50 g","agurk","agurk",50],["25 g","granateplekjerner","granateplekjerner",25],["20 g","ruccola","ruccola",20],["8 g","olivenolje"],["10 g","limesaft"]],
+   steps:["Snitt reddikene og sukkerertene i tynne skiver, og isbergsalaten og agurken i strimler. Rens granateplet slik at du kun sitter igjen med kjernene. Bland alt sammen i en bolle sammen med ruccolaen.","Pisk olivenolje og limesaft lett sammen og hell over salaten."]},
+ "gronnsaksuppe":{menu:"gronn",k:"Middag, dag 2–5 b",t:"Grønnsakssuppe",p:"s. 146",
+   ing:[["100 g","sellerirot"],["100 g","gulrot","gulrot",100],["50 g","potet"],["100 g","kålrabi"],["4,5 dl","vann"],["0,5 terning","Maggi grønnsaksbuljong"],["1 ts","tørket persille"]],
+   steps:["Skjær sellerirota, gulrota, poteten og kålrabien i biter, og ha dem over i en kjele med vann, buljong og persille.","Kok grønnsakene i 15–20 minutter, til de er møre."]},
+ "chia-bringebaer":{menu:"gronn",k:"Kveld, dag 2–5 b",t:"Chiagrøt med bringebær og blåbær",p:"≈ s. 149",prep:"Må lages minst 6 timer før den skal spises",
+   ing:[["80 g","kokosmelk (fullfett, ikke lett)"],["50 g","vann"],["15 g","chiafrø"],["20 g","blåbær","blåbær",20],["35 g","bringebær","bringebær",35]],
+   steps:["Ha kokosmelk og vann i en liten skål eller glass.","Rør inn chiafrø og to tredjedeler av bærene. Strø resten av bærene på toppen av grøten.","Dekk til og sett i kjøleskap. La stå i minimum seks timer før det skal spises."]},
+ "salatwraps":{menu:"lilla",k:"Frokost/lunsj, dag 1",t:"Salatwraps med krydrede kikerter",p:"s. 110",
+   ing:[["120 g","hermetiske kikerter","hermetiske kikerter",120],["1 ts","spisskummen"],["1 ts","paprikapulver"],["1 ts","oregano"],["en klype","salt"],["12 g","olivenolje"],["75 g","avokado"],["75 g","grønn paprika"],["75 g","agurk","agurk",75],["75 g","mango","mango",75],["60 g","hjertesalat (gjerne med store blad)","hjertesalat",60]],
+   steps:["Sett ovnen på 175 grader med over- og undervarme. Skyll kikertene og tørk dem med papir.","Bland krydderne sammen med olivenoljen. Ha i kikertene og bland godt sammen.","Ha kikertene over på et bakepapirkledd stekebrett og stek dem midt i ovnen i 40 minutter. Rør av og til.","Skjær avokado, paprika, agurk og mango i staver.","Bruk salatbladene som wraps og fyll dem med grønnsaksstavene og kikertene. Du kan eventuelt spise alt som en salat."]},
+ "gronnkalsalat":{menu:"lilla",k:"Middag/kveld, dag 1",t:"Grønnkålsalat med søtpotet",p:"s. 113",
+   ing:[["120 g","søtpotet"],["75 g","eple","eple",75],["85 g","avokado"],["30 g","rødløk"],["70 g","grønnkål","grønnkål",70],["10 g","olivenolje"],["5 g","dijonsennep"],["5 g","honning"],["5 g","sitronsaft"],["en klype","salt"],["25 g","cashewnøtter","cashewnøtter",25]],
+   steps:["Sett ovnen på 200 grader med over- og undervarme. Skjær søtpoteten i biter og ha dem over på et stekebrett dekket med bakepapir. Stek midt i ovnen i 15–20 minutter til de er møre.","Mens søtpoteten steker skjærer du eple og avokado i terninger og rødløk i skiver.","Gni grønnkålen med hendene til den blir myk og mørkegrønn.","Pisk olivenolje, sennep, honning, sitronsaft og salt lett sammen. Grovhakk cashewnøttene.","Bland sammen eple, avokado, rødløk og grønnkål i en skål og hell over dressingen. Topp med cashewnøttene."]},
+ "smoothiebowl":{menu:"lilla",k:"Frokost/lunsj, dag 2–5 a",t:"Grønn smoothiebowl",p:"s. 114",
+   ing:[["40 g","avokado"],["125 g","mango","mango",125],["40 g","spinat"],["5 g","frisk ingefær"],["10 g","sitronsaft"],["80 g","banan","banan",80],["20 g","cashewnøtter","cashewnøtter",20]],
+   steps:["Ha avokado og mango, spinat, ingefær, sitronsaft og halvparten av bananen i en beholder. Kjør blandingen jevn med stavmikser. Juster eventuelt med vann dersom du synes den blir for tykk. Du kan alternativt bruke en blender.","Ha blandingen over i en skål. Skjær resten av bananen i skiver og grovhakk cashewnøttene.","Hell smoothien over i en skål. Topp med banan og cashewnøtter."]},
+ "gulrotsuppe-lilla":{menu:"lilla",k:"Middag/kveld, dag 2–5 a",t:"Gulrotsuppe",p:"≈ s. 117",
+   ing:[["75 g","gul løk"],["1 fedd","hvitløk"],["5 g","frisk ingefær"],["5 g","olivenolje"],["250 g","gulrot","gulrot",250],["ca. 2 dl","vann"],["12 g","gresskarkjerner"],["50 g","kokosmelk (fullfett, ikke lett)"],["5 g","sitronsaft"],["","salt"],["1 ss","frisk koriander"]],
+   steps:["Hakk løk, finhakk hvitløk og rasp ingefær. Stek i olivenolje på middels varme til løken begynner å bli myk.","Skrell gulrot og skjær den i terninger. Fres gulroten sammen med løken i noen minutter.","Ha alt over i en liten kjele. Tilsett kaldt vann så det akkurat dekker grønnsakene og kok dem til de blir møre.","Mens grønnsakene koker, rist gresskarkjernene i en tørr stekepanne på middels varme. Rør av og til, slik at de ikke svir seg. Når gresskarkjernene begynner å poppe, er de ferdig. Sett til side.","Kjør suppen glatt med stavmikser. Har du mye vann i kjelen, kan du ta av noe før du bruker stavmikseren for at suppen ikke skal bli for tynn. Du kan alternativt bruke en blender.","Tilsett kokosmelk og la småkoke videre i noen få minutter.","Smak til med sitronsaft og salt.","Topp suppen med ristede gresskarkjerner og finhakket koriander."]},
+ "fruktsalat":{menu:"lilla",k:"Frokost/lunsj, dag 2–5 b",t:"Tropisk fruktsalat",p:"s. 118",
+   ing:[["90 g","banan","banan",90],["100 g","mango","mango",100],["10 g","cashewnøtter","cashewnøtter",10],["10 g","valnøtter","valnøtter",10],["5 g","kokosmasse"],["","kanel"]],
+   steps:["Skjær opp frukten og ha i en skål. Grovhakk nøttene.","Topp frukten med nøtter, kokosmasse og kanel. Har du tid, kan du riste kokosmassen lett i en middels varm panne. Da får den en karamellaktig smak. Pass på at du ikke rister den for lenge. Det kan fort bli svidd."]},
+ "linsegryte":{menu:"lilla",k:"Middag/kveld, dag 2–5 b",t:"Linsegryte",p:"s. 121",
+   ing:[["125 g","gul løk"],["75 g","grønn paprika"],["1 fedd","hvitløk"],["5 g","frisk ingefær"],["14 g","olivenolje"],["200 g","hele eller hakkede hermetiske tomater"],["40 g","kokosmelk (fullfett, ikke lett)"],["0,5 ts","spisskummen"],["0,5 ts","paprikapulver"],["en klype","chilipulver"],["45 g","hermetiske røde linser","hermetiske røde linser",45],["5 g","sitronsaft"],["","salt"],["1 ss","frisk koriander"]],
+   steps:["Skjær løk og paprika i biter. Finhakk hvitløk og rasp ingefær.","Stek løk og paprika i olivenolje på middels varme til løken begynner å bli myk.","Ha i hvitløk og ingefær og stek videre i noen minutter.","Tilsett hermetiske tomater, kokosmelk, spisskummen, paprikakrydder og chilipulver. Ha på lokk og la blandingen koke på lav varme i 10–15 minutter.","Skyll linsene og ha i rett før servering. Smak til med sitronsaft og salt. Topp med finhakket koriander."]}
+};
+
+// Bytteliste s. 156–157: per 100 g
+const SWAPS=[
+ ["agurk",[[90,"tomat"]]],["appelsin",[[70,"eple"],[80,"pære"]]],["asparges",[[80,"reddik"]]],
+ ["baby leaf-salat",[[100,"isbergsalat"],[100,"hjertesalat"]]],["banan",[[165,"eple"],[185,"pære"]]],
+ ["blomkål",[[60,"brokkoli"]]],["blåbær",[[90,"bringebær"],[110,"jordbær"]]],["bringebær",[[40,"blåbær"],[45,"jordbær"]]],
+ ["brokkoli",[[80,"blomkål"],[85,"squash"]]],["cashewnøtter",[[50,"gresskarkjerner"],[85,"pinjekjerner"],[300,"avokado"]]],
+ ["cherrytomater",[[80,"agurk"]]],["eple",[[80,"pære"]]],["tørket fiken",[[80,"rosiner"],[130,"tørket aprikos"]]],
+ ["granateplekjerner",[[150,"kiwi"]]],["grønnkål",[[180,"hjertesalat"]]],["gulrot",[[80,"kålrot"]]],
+ ["hasselnøttkjerner",[[35,"gresskarkjerner"],[35,"pinjekjerner"],[345,"avokado"]]],["hjertesalat",[[100,"isbergsalat"]]],
+ ["hodekål",[[100,"rødkål"]]],["hvetekim",[[45,"havregryn"]]],["hermetiske kikerter",[[110,"hermetiske røde linser"]]],
+ ["kålrot",[[95,"gulrot"]]],["mandler",[[55,"gresskarkjerner"],[70,"pinjekjerner"],[310,"avokado"]]],["mango",[[90,"eple"]]],
+ ["pinjekjerner",[[35,"gresskarkjerner"]]],["pære",[[75,"eple"]]],["reddik",[[90,"agurk"]]],
+ ["ruccola",[[170,"hjertesalat"]]],["hermetiske røde linser",[[70,"hermetiske kikerter"]]],["rødkål",[[90,"hodekål"]]],
+ ["squash",[[80,"grønn paprika"]]],["stangselleri",[[110,"agurk"]]],["sukkererter",[[190,"grønn paprika"]]],
+ ["valnøtter",[[40,"gresskarkjerner"],[355,"avokado"]]]
+];
+const SW=Object.fromEntries(SWAPS);
+const fmt=n=>{const r=Math.round(n*10)/10;return (Number.isInteger(r)?r:r.toFixed(1)).toString().replace(".",",")};
+const swapText=(key,g)=>SW[key]?SW[key].map(([x,n])=>`${fmt(x*g/100)} g ${n}`).join(" eller "):"";
+
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const colorVar=c=>`var(--${c})`;
+const app=document.getElementById("app");
+let state={view:(()=>{try{return localStorage.getItem("plan")?"faste":"guide"}catch(e){return "guide"}})(),recipe:null};
+
+function setAccent(c){document.documentElement.style.setProperty("--accent",colorVar(c))}
+
+function renderNav(){setTimeout(()=>{const c=document.querySelector('.nav [aria-current="true"]');if(c)c.scrollIntoView({block:"nearest",inline:"center"})},0);
+  const tabs=[["faste","Min faste","ink"],["guide","Før du starter","red"],...MENU_ORDER.map(k=>[k,MENUS[k].name,MENUS[k].color]),["bytte","Bytteliste","red"]];
+  const cur=state.recipe?R[state.recipe].menu:state.view;
+  document.getElementById("nav").innerHTML=tabs.map(([k,n,c])=>
+    `<button type="button" data-go="${k}" style="--c:${colorVar(c)}" aria-current="${k===cur}"><span class="dot"></span>${n}</button>`).join("");
+}
+
+function mealBtn(m){
+  const r=R[m.id];
+  if(!r) return `<div class="meal missing"><span class="ph">–</span><span><span class="k">${esc(m.k)}</span><span class="n">Ikke fotografert</span></span></div>`;
+  return `<button type="button" class="meal" data-recipe="${m.id}"><img src="img/${m.id}.jpg" alt="" loading="lazy"><span><span class="k">${esc(m.k)}</span><span class="n">${esc(r.t)}</span></span></button>`;
+}
+
+function renderShop(key,shop){
+  const done=store.get("shop-"+key,{});
+  return `<div class="section-h"><h3>Handleliste</h3><span>${shop.page} · omtrentlig mengde og gram totalt for alle fem dager</span><button type="button" class="btn" data-reset="${key}" style="margin-left:auto">Nullstill avkrysning</button></div>
+  <div class="shop">${shop.groups.map(([g,items])=>`<div class="grp"><h5>${esc(g)}</h5>${items.map(([n,q,gr],i)=>{const id=`${key}-${g}-${i}`;return `<label class="item"><input type="checkbox" id="${esc(id)}" data-shop="${key}" data-id="${esc(id)}" ${done[id]?"checked":""}><span class="nm">${esc(n)}</span><span class="q">${esc(q)}</span><span class="g">${gr==="–"?"–":gr+" g"}</span></label>`}).join("")}</div>`).join("")}</div>
+  <p class="note">Handlelista til hver meny er for alle fem dager, og det er lagt opp til at du bruker <b>dag 2–5 a</b> to av dagene og <b>dag 2–5 b</b> to av dagene. Du må gjerne bruke meny a alle dagene, bare en av dagene og så videre. Da må du imidlertid lage din egen handleliste.</p>`;
+}
+
+function renderMenu(key){
+  const m=MENUS[key]; setAccent(m.color);
+  let h=`<section class="band"><div class="harl" aria-hidden="true"></div><div class="txt">
+    ${m.pages?`<span class="pages">${m.pages}</span>`:""}<h2>${m.name}</h2>${m.sub?`<span class="sub">${m.sub}</span>`:""}<p>${esc(m.intro)}</p></div></section>`;
+  if(m.plan){
+    h+=`<div class="section-h"><h3>Dagsplan</h3><span>Trykk på en rett for oppskrift</span></div>
+    <div class="days">${m.plan.map(d=>`<div class="day"><h4>${d.day}<small>${d.meals.length?d.meals.length+" måltider":""}</small></h4>
+      ${d.meals.length?d.meals.map(mealBtn).join(""):`<p class="note" style="margin:0">Ikke fotografert ennå.</p>`}</div>`).join("")}</div>`;
+  }
+  if(m.foods){
+    h+=`<div class="section-h"><h3>Matvarer</h3><span>Ingen tilberedning</span></div>
+    <div class="days">${m.foods.map(d=>`<div class="day"><h4>${d.day}</h4><ul class="foods">${d.items.map(([g,n,c])=>`<li><span>${g}</span><span>${n} <em>(${c})</em></span></li>`).join("")}</ul></div>`).join("")}</div>`;
+  }
+  if(m.shop) h+=renderShop(key,m.shop);
+  app.innerHTML=h;
+}
+
+function menuSeq(menu){return MENUS[menu].plan.flatMap(d=>d.meals.map(x=>x.id)).filter(id=>R[id])}
+
+function renderRecipe(id){
+  const r=R[id], m=MENUS[r.menu]; setAccent(m.color);
+  const seq=menuSeq(r.menu), i=seq.indexOf(id), prev=seq[i-1], next=seq[i+1];
+  const done=store.get("ing-"+id,{});
+  const hasSwap=r.ing.some(x=>x[2]&&SW[x[2]]);
+  app.innerHTML=`<button type="button" class="btn back" data-go="${r.menu}">← ${m.name}</button>
+  <article class="recipe">
+    <figure><img src="img/${id}.jpg" alt="${esc(r.t)}"><figcaption>${m.name} · ${r.p}</figcaption></figure>
+    <div>
+      <div class="rhead"><span class="k">${esc(r.k)}</span><h2>${esc(r.t)}</h2>
+      <div class="pills"><span class="pill">${r.p}</span>${r.prep?`<span class="pill warn">${esc(r.prep)}</span>`:""}</div></div>
+      <ul class="ing">${r.ing.map((x,j)=>{
+        const [a,n,key,g,head]=x;
+        if(head) return `<li class="sub-h">${esc(n)}</li>`;
+        const e=effIng(id,j), o=swapOf(id,j);
+        const s=key&&SW[key]?`<span class="swap"><b>Bytt</b><span class="swopts"><button type="button" class="swb" data-sw="${id}" data-j="${j}" data-o="" aria-pressed="${o==null}">${esc(a)} ${esc(n)}</button>${SW[key].map(([x,nm],oi)=>`<button type="button" class="swb" data-sw="${id}" data-j="${j}" data-o="${oi}" aria-pressed="${o===oi}">${fmt(x*g/100)} g ${esc(nm)}</button>`).join("")}</span></span>`:"";
+        return `<li${e.swapped?' class="swapped"':""}><input type="checkbox" id="ing-${id}-${j}" data-ing="${id}" data-j="${j}" ${done[j]?"checked":""} aria-label="${esc(e.n)}"><span class="amt">${esc(e.a)}</span><span><span class="nm">${esc(e.n)}</span>${e.swapped?`<span class="was">i stedet for ${esc(e.orig)}</span>`:""}${s}</span></li>`}).join("")}</ul>
+      ${hasSwap?`<p class="note" style="font-size:14px;margin-top:8px">Trykk på et bytte for å bruke det. Mengdene er regnet om fra byttelista (s. 156–157), og handlelista for planen din oppdateres automatisk.</p>`:""}
+      ${r.note?`<p class="warnbox" style="margin-top:18px">* ${esc(r.note)}</p>`:""}
+      <ol class="steps">${r.steps.map(s=>`<li><span>${esc(s)}</span></li>`).join("")}</ol>
+      <nav class="pn">${prev?`<button type="button" data-recipe="${prev}"><small>Forrige</small>${esc(R[prev].t)}</button>`:""}${next?`<button type="button" data-recipe="${next}"><small>Neste</small>${esc(R[next].t)}</button>`:""}</nav>
+    </div>
+  </article>`;
+}
+
+function renderBytte(){
+  setAccent("red");
+  const opts=SWAPS.map(([k])=>`<option value="${esc(k)}">${esc(k)}</option>`).join("");
+  app.innerHTML=`<section class="band" style="background:var(--red)"><div class="harl" aria-hidden="true"></div><div class="txt"><span class="pages">Kapittel 3 · s. 154–157</span><h2>Bytte av ingredienser</h2><p>Gjelder for alle menyene. Mengdene i lista er oppgitt per 100 gram, så de må regnes om til mengden i oppskriften. Kalkulatoren under gjør det for deg.</p></div></section>
+  <div class="calc">
+    <div class="row">
+      <label for="c-g">Mengde i oppskriften<input id="c-g" type="number" inputmode="decimal" min="0" value="50"></label>
+      <label for="c-i">Ingrediens<select id="c-i">${opts}</select></label>
+    </div>
+    <div class="res" id="c-res" aria-live="polite"></div>
+  </div>
+  <div class="section-h"><h3>Bytteliste</h3><span>100 g av ingrediensen kan erstattes med</span></div>
+  <input class="search" id="q" type="search" placeholder="Søk, f.eks. valnøtter" aria-label="Søk i bytteliste">
+  <div class="tablewrap"><table><thead><tr><th>Ingredienser</th><th>Kan erstattes med</th></tr></thead><tbody id="tb"></tbody></table></div>
+  <p class="warnbox">Observer at byttene ikke tar hensyn til mengden FODMAPer, for deg som følger slik lavFODMAP-diett i hverdagen.</p>
+  <div class="section-h"><h3>Fra boka</h3><span>s. 154–155</span></div>
+  <div class="prose">
+    <p>I menyene er det oppgitt hvor mye du skal spise av hver ingrediens, samt mengde proteiner og kalorier i hver ingrediens, men i enkelte tilfeller kan du ha behov for eller lyst til å erstatte en ingrediens med en annen. Du kan gjøre egne bytter, eller benytte deg av byttelista som viser utvalgte ingredienser og hva de kan erstattes med. Det som er viktig, er at ingrediensen du velger i stedet, ikke har et høyere protein- eller kaloriinnhold enn den opprinnelige ingrediensen. Det kan være et poeng at også karbohydratinnholdet ikke blir høyere enn i den opprinnelige ingrediensen, men siden byttene ikke gjøres så veldig hyppig blir forskjellene så små totalt sett at det neppe spiller noen rolle.</p>
+    <p>Innholdet av karbohydrater, proteiner og fett er som regel ikke særlig forskjellig når man sammenligner matvarer innenfor samme matvaregruppe, selv om mengden vann i matvaren kan ha stor betydning for hvor mye kalorier det er per gram. Det er generelt bedre å bytte en frukt med en annen frukt, enn å bytte en frukt med en grønnsak. Med matvaregruppe menes matvarer som ligner på hverandre. Bladgrønnsaker vil derfor være forskjellige fra for eksempel søtpotet eller avokado.</p>
+    <p>For å være sikker på at du ikke erstatter ingrediensene med råvarer som har et høyere innhold av næringsstoffer, kan du bruke ulike verktøy. På <a href="https://www.matvaretabellen.no" target="_blank" rel="noopener">matvaretabellen.no</a> og <a href="https://www.kostholdsplanleggeren.no" target="_blank" rel="noopener">kostholdsplanleggeren.no</a> kan du sjekke næringsinnholdet i mange ulike matvarer før du eventuelt bytter ut noe. Ønsker du å være helt sikker på at du ikke gjør endringer som potensielt medfører at du får i deg for mye proteiner eller karbohydrater, anbefales du å følge menyene i boka til punkt og prikke.</p>
+    <p>Det er utfordrende å finne ingredienser som har tilsvarende karbohydrat-, fett-, protein- og fiberinnhold som dem du bytter ut. I de fleste tilfellene får du i deg litt færre kalorier totalt sett når du gjør bytter, for at du ikke skal få i deg for mye av enkeltnæringsstoffer. De aller fleste ingrediensene i byttelista vil fungere godt i de foreslåtte oppskriftene, men noen bytter vil kreve at du selv justerer framgangsmåten på retten. Velger du å følge oppskriftene, anbefaler vi at du leser gjennom dem og selv vurderer hvordan du skal tilberede ingrediensen du valgte.</p>
+    <p>I noen tilfeller kan det synes som at noen bytter ikke gir mening. I tabellen vil du se at du for eksempel kan bytte ut 100 g blomkål med 60 g brokkoli og 100 g brokkoli med 80 g blomkål. Årsaken er at karbohydratinnholdet er høyest i blomkål, mens proteininnholdet er høyest i brokkoli. Byttene er lagt opp slik at du ikke skal få i deg for mye av de ulike makronæringsstoffene.</p>
+    <p><b>Eksempler:</b> Inneholder en oppskrift 50 g agurk, kan du erstatte den med 45 g tomat. Inneholder en oppskrift 30 g appelsin, kan du erstatte den med 21 g eple eller 24 g pære.</p>
+  </div>`;
+  const tb=document.getElementById("tb"), q=document.getElementById("q");
+  const drawTable=()=>{const s=q.value.trim().toLowerCase();
+    tb.innerHTML=SWAPS.filter(([k,v])=>!s||k.includes(s)||v.some(([,n])=>n.includes(s))).map(([k,v])=>`<tr><td>100 g ${esc(k)}</td><td>${v.map(([x,n])=>`${x} g ${esc(n)}`).join('<span class="eller">eller</span>')}</td></tr>`).join("")||`<tr><td colspan="2" class="note">Ingen treff. Prøv et annet ord.</td></tr>`};
+  const g=document.getElementById("c-g"), sel=document.getElementById("c-i"), res=document.getElementById("c-res");
+  sel.value="agurk";
+  const calc=()=>{const n=parseFloat(String(g.value).replace(",","."));
+    if(!(n>0)){res.innerHTML=`<p class="note" style="margin:0">Skriv inn en mengde i gram.</p>`;return}
+    res.innerHTML=SW[sel.value].map(([x,nm],i)=>`${i?'<span class="or">eller</span>':""}<div class="opt"><span class="v">${fmt(x*n/100)} g</span><span>${esc(nm)}</span></div>`).join("")};
+  q.addEventListener("input",drawTable); g.addEventListener("input",calc); sel.addEventListener("change",calc);
+  drawTable(); calc();
+}
+
+const GLY=[[50,14,56],[55,15,61],[60,17,67],[65,18,72],[70,19,78],[75,21,83],[80,22,89],[85,24,94],[90,25,100],[95,26,106],[100,28,111],[105,29,117],[110,31,122],[115,32,128],[120,33,133]];
+const OVERVIEW=[
+ ["bla","Blå meny",["Havregrøt med krydderstekte epler","Kålsalat med appelsin og cashewnøtter","Marokkansk tomatsuppe","Fastetapas"],["Fastetapas","Salat med pære og mandler","Indisk curry med potet og blomkål","Fruktsalat med valnøtter og kanel"],["Fruktsalat med cashewnøtter og kanel","Hummus med grønnsaker","Stekt squashpasta med tomatsaus og gresskarkjerner","Søtpotet- og gulrotsticks med lime og chili"]],
+ ["gul","Gul meny",["Bananpannekaker","Avokado- og tomatsalat","Asiatisk wok","Fastetapas"],["Appelsinsalat","Grønnkålsalat med pære","Potet- og aspargessalat","Bakte grønnsaker"],["Havregrøt med banan","Middelhavssalat","Blomkålris med eple og cashewnøtter","Fastetapas"]],
+ ["lilla","Lilla meny",["Salatwraps med krydrede kikerter","Grønnkålsalat med søtpotet"],["Grønn smoothiebowl","Gulrotsuppe"],["Tropisk fruktsalat","Linsegryte"]],
+ ["gronn","Grønn meny",["Frokostsmoothie","Blandet salat med granateple","Gulrot- og søtpotetsuppe","Fastetapas"],["Chiagrøt med blåbær","Knekkebrød med avokado og tomat","Ovnsbakte grønnsaker","Fastetapas"],["Banan, valnøtter og en varm kopp te","Frisk salat","Grønnsakssuppe","Chiagrøt med bringebær og blåbær"]],
+ ["oransje","Oransje meny",["Avokado, gulrot, tørket fiken, stangselleri, banan, sukkererter, valnøtter, gresskarkjerner, pinjekjerner"],["Eple, valnøtter, tørket fiken, stangselleri, hasselnøtter, gresskarkjerner, banan"],["Eple, valnøtter, tørket fiken, stangselleri, hasselnøtter, gresskarkjerner, banan"]]
+];
+const G=(h,p,body)=>`<section class="gsec"><div class="gh"><h3>${h}</h3>${p?`<span>${p}</span>`:""}</div><div class="prose">${body}</div></section>`;
+
+function renderGuide(){
+  setAccent("red");
+  const ex1=[["gul","1"],["gul","2–5 a"],["gul","2–5 a"],["gul","2–5 b"],["gul","2–5 b"]];
+  const ex2=[["bla","1"],["gronn","2–5 b"],["lilla","2–5 b"],["gul","2–5 b"],["gronn","2–5 a"]];
+  const exRow=ex=>`<div class="exrow">${ex.map(([c,t],i)=>`<div class="exday"><span class="exl">Dag ${i+1}</span><span class="exchip" style="--c:var(--${c==="bla"?"bla":c==="gul"?"gul":c==="gronn"?"green":c})">${MENUS[c].name.replace(" meny","")}<b>${t}</b></span></div>`).join("")}</div>`;
+  app.innerHTML=`<section class="band" style="background:var(--red)"><div class="harl" aria-hidden="true"></div><div class="txt"><span class="pages">Kapittel 3 · s. 38–51</span><h2>Slik gjennomfører du fasten</h2><p>Nå kan du snart sette i gang med fasten! Den første gangen du gjennomfører FID kan det være best å følge opplegget nøyaktig, for det bygger på flere års erfaring med hva som passer best for de aller fleste. På senere runder kan du gjøre tilpasninger som tar større hensyn til din hverdag.</p></div></section>
+
+  <div class="keyfacts">
+    <div><b>Dag 1</b><span>Omtrent halvparten av energibehovet, lik for alle menyene. Ingen glyserol.</span></div>
+    <div><b>Dag 2–5</b><span>I underkant av en tredjedel av energibehovet, pluss glyserol etter kroppsvekt.</span></div>
+    <div><b>Fire måltider</b><span>Gjelder også lilla meny, der de to rettene deles opp. Ikke samle alt til ett stort måltid.</span></div>
+    <div><b>Ikke mer</b><span>Spis ikke mer enn det som står i menyene. Ingen alkohol, kaloriholdig drikke, tyggis eller proteinpulver.</span></div>
+  </div>
+
+  ${G("Før du skal i gang","s. 38",`<ul>
+    <li>Mengden karbohydrater, fett og proteiner i menyene er beregnet ut ifra mengden som er brukt i studier på fasteimiterende diett, og som har vist seg å gi en god fasteeffekt.</li>
+    <li>Det er en øvre grense for hvor mye du kan spise av de ulike energiholdige næringsstoffene under fasten – det vil si karbohydrater, fett, proteiner og fiber. Det samme gjelder alkohol, som også inneholder energi: Det skal unngås under fasten. Får du i deg for mye av ett eller flere av disse næringsstoffene, kan effekten av fasten bli mindre.</li>
+    <li>Det er rom for å justere menyene. Du kan for eksempel bytte ut ingredienser, endre tilberedningsmetode, slå sammen måltider eller sette sammen egne menyer. Du kan imidlertid ikke velge fritt fra menyene, siden det er ulikt innhold av næringsstoffer i de enkelte rettene.</li></ul>`)}
+
+  ${G("Slik er fasten lagt opp","s. 39",`<p>På dag én av fasten inntar du omtrent halvparten av energibehovet ditt, mens du dag to til fem inntar i underkant av en tredjedel av energibehovet – beregnet ut ifra at du ikke er spesielt aktiv eller høy. Mengden karbohydrater, fett og proteiner er lik for dag én på alle menyene og litt høyere enn de resterende dagene, slik at du får en myk start på fasten.</p>
+  <p>Du kan velge mellom fem menyer: blå, gul, lilla, grønn og oransje. Alle inneholder én dagsmeny for dag 1, og én til to dagsmenyer for dag 2–5.</p>
+  <p>På dag 2–5 anbefaler boka at du bruker samme meny to dager på rad. For eksempel blå meny 2–5 a i to dager (dag 2 og 3 av fasten), og så blå meny 2–5 b i to dager (dag 4–5). Slik vet du godt hva du skal gjøre på dag 3 og dag 5, og du kan lage doble porsjoner av enkelte retter.</p>`)}
+
+  <section class="gsec"><div class="gh"><h3>Oversikt over menyene</h3><span>s. 40</span></div>
+  <div class="tablewrap"><table class="ov"><thead><tr><th></th><th>Dag 1</th><th>Dag 2–5 a</th><th>Dag 2–5 b</th></tr></thead><tbody>
+  ${OVERVIEW.map(([k,n,a,b,c])=>`<tr><th scope="row"><button type="button" class="ovm" data-go="${k}" style="--c:var(--${k==="bla"?"bla":k==="gul"?"gul":k==="gronn"?"green":k})">${n}</button></th>${[a,b,c].map(l=>`<td>${l.map(esc).join("<br>")}</td>`).join("")}</tr>`).join("")}
+  </tbody></table></div></section>
+
+  <div class="callout"><b>For mange menyer å velge mellom? Start med den gule menyen!</b>
+  <p>Velg én meny og følg den slavisk første gang du faster. Når du har gjennomført den første fasten, kan du blande ulike menyer og gjøre andre tilpasninger. Du kan fritt velge de dagsmenyene du vil, så lenge dagsmeny 1 bare brukes første dag av fasten, og dagsmeny 2–5 brukes på nettopp dag 2–5. Du kan for eksempel velge den samme dagsmenyen dag 2 til 5.</p></div>
+
+  <section class="gsec"><div class="gh"><h3>Eksempler på kombinasjoner</h3><span>s. 42</span></div>
+  <p class="note" style="margin:0 0 6px">Eksempel 1 – følg én meny hele uka</p>${exRow(ex1)}
+  <p class="note" style="margin:16px 0 6px">Eksempel 2 – bland menyer i løpet av de fem dagene</p>${exRow(ex2)}
+  <div class="prose" style="margin-top:14px"><p>Hvilken rekkefølge måltidene spises i, er ikke viktig. Det har ingen betydning om du velger å spise frokost til kvelds eller middag til lunsj. Du kan derimot ikke velge fritt mellom måltider fra de ulike menyene.</p></div></section>
+
+  ${G("Beskrivelse av menyene","s. 43–44",`<p>Forskningsmessig er FID gjennomført med fire måltider om dagen. Det anbefales at du spiser fire måltider (dette gjelder også den lilla menyen som har to oppskrifter per dag, og da må du altså dele opp måltidene), og gjerne fordeler måltidene jevnt utover dagen. Du kan velge å slå sammen til to eller tre måltider dersom det passer deg best, men om det vil påvirke fasteeffektene vet vi ikke. Du bør i det minste ikke samle opp alle måltider til ett stort måltid. Da risikerer du å bryte fasten fordi du får i deg for mye proteiner og karbohydrater på en gang.</p>
+  <p>Les gjennom menyene i god tid før fasten, slik at du vet mer om hva som kreves av handling og tilberedning, og hva som passer deg best ut ifra dine gjøremål den uka du faster.</p>
+  <dl class="mdesc">
+   <dt style="--c:var(--bla)">Blå meny · 4 måltider</dt><dd>For matglade som liker smaker fra ulike kjøkken, blant annet Marokko, India, Midtøsten, Italia og Norden. Flest retter som krever tilberedning.</dd>
+   <dt style="--c:var(--gul)">Gul meny · 4 måltider</dt><dd>For deg som liker å lage mat fra bunnen av, men som ønsker en viss fleksibilitet. De fleste rettene kan spises slik de er, også på farta.</dd>
+   <dt style="--c:var(--lilla)">Lilla meny · 2 retter å tilberede</dt><dd>Varierte retter, men bare to retter per dag. Enklere og mer tidsbesparende.</dd>
+   <dt style="--c:var(--green)">Grønn meny (lav-FODMAP) · 4 måltider</dt><dd>For deg som ønsker å redusere mengden FODMAP. Basert på Monash University FODMAP-appen, med alle mengder på «gul» eller mindre. Den er ikke noe mindre sunn eller virkningsfull enn de andre menyene.</dd>
+   <dt style="--c:var(--oransje)">Oransje meny (på farta) · fritt antall</dt><dd>Når du ikke har tid til å stå på kjøkkenet. Litt mer energitett mat, uten oppskrifter. Boka anbefaler å dele maten i fire måltider.</dd>
+  </dl>
+  <p><b>Du må ikke spise all maten.</b> Du skal ikke presse i deg mat når du overhodet ikke er sulten. Dersom du tenker at du dermed kan spise resten neste dag, må vi skuffe deg. Da er det en ny dag med et nytt regnskap. Du er heller ikke automatisk flinkere eller får større effekt om du spiser mindre.</p>`)}
+
+  ${G("Handling og tilberedning","s. 45",`<p>Du kan handle inn all maten før første fastedag eller dele opp innkjøpene. Første gang kan det være best å unngå matbutikken når du er sulten. Prøv å ikke ha så mye annen fristende mat i kjøleskapet, og rydd unna snacks og godteri.</p>
+  <p>Hvordan maten tilberedes er ikke vesentlig for effektene. Det avgjørende er hva du spiser og i hvilke mengder. Oppskriftene er forslag. Stek, kok eller spis maten rå, valget er ditt. Du kan imidlertid ikke ha i ekstra olje for å steke maten.</p>
+  <p>Handlelista til hver meny gjelder alle fem dagene. For frukt og grønnsaker er antallet veiledende, siden vekten varierer med størrelsen. Det er beregnet litt ekstra, så du sitter sannsynligvis igjen med noen ingredienser etter fasten.</p>`)}
+
+  <section class="gsec"><div class="gh"><h3>Glyserol</h3><span>s. 46–47</span></div>
+  <div class="prose"><p>Glyserol inngår i Prolon-tilskuddene, og Valter Longo mener det kan bidra til å ta bedre vare på muskelmassen under fasten. Boka har ingen direkte holdepunkter for dette fra studier, men kaloriberegningene tar høyde for at du inntar glyserol. Om du ikke ønsker glyserol kan du droppe det, eller erstatte tilsvarende kalorimengde med fett, for eksempel olivenolje.</p>
+  <p>Glyserol fås kjøpt på apoteket og flere andre steder. Sjekk at du kjøper ren glyserol som kan drikkes eller brukes i matlaging. <b>Du skal kun innta glyserol dag 2–5.</b> Mengden er kroppsvekten i kilo delt på 3,6. Veier du mer enn 120 kilo, skal du ikke innta mer enn det som står for 120 kilo.</p></div>
+  <div class="calc">
+    <div class="row"><label for="gw">Kroppsvekt i kilo<input id="gw" type="number" inputmode="decimal" min="30" max="250" value="83"></label></div>
+    <div class="res" id="gres" aria-live="polite"></div>
+  </div>
+  <div class="tablewrap"><table class="gly"><tbody>
+   <tr><th scope="row">Kroppsvekt (kg)</th>${GLY.map(r=>`<td>${r[0]}</td>`).join("")}</tr>
+   <tr><th scope="row">Glyserol (g)</th>${GLY.map(r=>`<td>${r[1]}</td>`).join("")}</tr>
+   <tr><th scope="row">Kilokalorier</th>${GLY.map(r=>`<td>${r[2]}</td>`).join("")}</tr>
+  </tbody></table></div>
+  <div class="prose" style="margin-top:14px"><p><b>Slik inntar du glyserol:</b> Bland ut glyserolen i en vannflaske, og drikk av den gjennom hele dagen eller i to–tre omganger, gjerne til måltidene. Bland hver del glyserol med minst 10 deler væske. Unngå større mengder eller mer konsentrert glyserol, for det kan irritere slimhinnene.</p>
+  <p>Vil du smaksette vannet, anbefaler boka grønn te: Fyll en vannflaske med vann og ha i en tepose. La teen trekke noen minutter, fjern teposen og rør i glyserolen. Flere typer grønn te inneholder koffein, så vurder koffeinfri hvis du allerede drikker nok kaffe og te.</p></div></section>
+
+  ${G("Slik veier du maten","s. 47–48",`<p>Du trenger en kjøkkenvekt. Nesten all maten må veies, og det er viktig at du er nøyaktig. Du trenger ikke å veie ingrediensene som er oppgitt i spiseskjeer (ss) eller teskjeer (ts).</p>
+  <p>Et par gram fra eller til går helt fint – det vil uansett jevne seg ut i løpet av dagen. Pass imidlertid på at du ikke alltid lander på plussiden!</p>
+  <p>All mat skal veies i rå tilstand med to unntak: linser og kikerter i lake, som allerede er kokt. Da skal laken først siles av, og så veies de. Står det at maten skal stekes, veies den før steking. Du veier bare det du faktisk spiser, altså uten skall, steiner og kjerner.</p>
+  <p>Krydder, urter, hvitløk, ingefær og sitronsaft gir lite karbohydrater, fett og proteiner, så her trenger du ikke være pinlig nøyaktig, så lenge du ikke tilsetter mer enn 2 ts tørket krydder eller 2 ss friske urter ekstra per dag. Du kan bruke tørket krydder i stedet for friske urter og omvendt, og gjerne andre krydder enn de som står oppført.</p>
+  <p>Næringsinnholdet i kikerter, linser og hermetiske tomater kan variere fra merke til merke. Menyene tar høyde for at du ikke får i deg for mye uansett merke.</p>
+  <p><b>Husk å salte maten.</b> Under en faste skiller kroppen gjerne ut ekstra mye salt, og råvarene inneholder lite, så maten trenger å saltes. Bruk bare nok til at maten smaker godt. Farris inneholder en del salt og kan være et godt alternativ å drikke.</p>`)}
+
+  ${G("Drikke","s. 49",`<ul>
+   <li><b>Vann:</b> Så mye vann og mineralvann du ønsker. Sjekk at det ikke er tilsatt sukker, altså at drikken ikke inneholder kalorier.</li>
+   <li><b>Kaffe og te:</b> Under fasten øker adrenalinet noe, og søvnmønsteret kan endres. Koffein kan forsterke dette. Reduser inntaket, spesielt første gang. En tommelfingerregel er maks halvparten av det du drikker til vanlig. Drikker du bare én kopp om dagen, kan du fortsette med det. Kaffe og te må drikkes rent, uten søtningsmidler, melk eller fløte.</li>
+   <li><b>Kaloriholdig drikke:</b> Melk, saft, brus, juice, iste, kombucha, vannkefir og alkohol kan ikke drikkes under fasten.</li>
+   <li><b>Kunstig søtet drikke:</b> Har nok lite å si direkte, men boka anbefaler å gjennomføre uten kunstige søtningsmidler, både i brus og te, og å faste så «rent» som mulig.</li></ul>`)}
+
+  ${G("Tyggegummi og kosttilskudd","s. 45–50",`<p>Det anbefales at du ikke spiser noen form for pastiller, og at du ikke tygger tyggis under fasten.</p>
+  <ul>
+   <li><b>Multivitamin:</b> Tar du det til daglig, kan du fortsette.</li>
+   <li><b>Omega-3:</b> Gir litt mer fett. Du kan vurdere å redusere olivenolje tilsvarende, men litt ekstra fett har trolig ikke noe negativt å si.</li>
+   <li><b>Magnesium og andre mineraler:</b> Kan fint fortsette. Magnesium kan være en fordel for de fleste under fasten.</li>
+   <li><b>Cystein:</b> Inngår i ProLon (160 mg daglig) for økt autofagi. Fås i kapsler på 500 mg, men er relativt dyrt, og boka gir ingen generell anbefaling. Vil du følge Longos studier tett, anbefales 1/3–1/2 kapsel hver dag, helt ut i mat eller drikke.</li>
+   <li><b>Proteinpulver:</b> Skal ikke brukes under fasten.</li></ul>`)}
+
+  <p class="note">Boka viser til tabeller over næringsinnhold og veiledning for egne menyer på <a href="https://friskforlag.no/femdagers-nullstilling/ressursark" target="_blank" rel="noopener">friskforlag.no/femdagers-nullstilling/ressursark</a>.</p>`;
+  const w=document.getElementById("gw"), res=document.getElementById("gres");
+  const calc=()=>{const kg=parseFloat(String(w.value).replace(",","."));
+    if(!(kg>0)){res.innerHTML=`<p class="note" style="margin:0">Skriv inn vekten din i kilo.</p>`;return}
+    const g=Math.round(Math.min(kg,120)/3.6);
+    res.innerHTML=`<div class="opt"><span class="v">${g} g</span><span>glyserol per dag, dag 2–5</span></div><div class="opt"><span class="v">≈ ${g*10} ml</span><span>væske å blande i (minst)</span></div>${kg>120?`<p class="note" style="margin:0;align-self:center">Over 120 kg brukes mengden for 120 kg.</p>`:""}`};
+  w.addEventListener("input",calc); calc();
+}
+
+/* ---------- Min faste: plan, i dag, dagbok, handleliste, bytter ---------- */
+const MKEYS=["bla","gul","lilla","gronn","oransje"];
+const MCOL={bla:"bla",gul:"gul",lilla:"lilla",gronn:"green",oransje:"oransje"};
+const short=k=>MENUS[k].name.replace(" meny","");
+const VLAB={"1":"dag 1","a":"2–5 a","b":"2–5 b"};
+
+/* swaps: {recipeId:{j:optIndex}} */
+const getSwaps=()=>store.get("swaps",{});
+function swapOf(id,j){const s=getSwaps();return s[id]&&s[id][j]!=null?s[id][j]:null}
+function effIng(id,j){
+  const [a,n,key,g,head]=R[id].ing[j];
+  const o=swapOf(id,j);
+  if(!head&&key&&SW[key]&&o!=null&&SW[key][o]){const [x,nm]=SW[key][o];return {a:fmt(x*g/100)+" g",n:nm,swapped:true,orig:`${a} ${n}`}}
+  return {a,n,swapped:false};
+}
+
+/* plan */
+function nextMonday(){const d=new Date();d.setHours(12);const add=((8-d.getDay())%7)||7;d.setDate(d.getDate()+add);return iso(d)}
+function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function parseISO(s){const [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d,12)}
+function presetDays(k){return k==="oransje"?[[k,"1"],[k,"a"],[k,"a"],[k,"a"],[k,"a"]]:[[k,"1"],[k,"a"],[k,"a"],[k,"b"],[k,"b"]]}
+function getPlan(){
+  let p=store.get("plan",null);
+  if(!p||!p.days||p.days.length!==5) p={start:nextMonday(),kg:"",days:presetDays("gul")};
+  return p;
+}
+const savePlan=p=>store.set("plan",p);
+function dayMeals(k,v){
+  if(k==="oransje"){const f=MENUS.oransje.foods[v==="1"?0:1];return {foods:f.items}}
+  const idx=v==="1"?0:v==="a"?1:2;
+  return {meals:MENUS[k].plan[idx].meals};
+}
+function dayDate(p,n){const d=parseISO(p.start);d.setDate(d.getDate()+n-1);return d}
+function currentDay(p){
+  const t=new Date();t.setHours(12,0,0,0);
+  const diff=Math.round((t-parseISO(p.start))/864e5);
+  return diff+1; // <1 before, 1..5 during, >5 after
+}
+const glyG=p=>{const kg=parseFloat(String(p.kg).replace(",","."));return kg>0?Math.round(Math.min(kg,120)/3.6):null};
+const dfmt=(d,o={weekday:"long",day:"numeric",month:"long"})=>d.toLocaleDateString("nb-NO",o);
+
+/* log: {n:{eat:{key:true},gly:true,kg,energi,sovn,sult,note}} */
+const getLog=()=>store.get("log",{});
+function setLog(n,patch){const L=getLog();L[n]=Object.assign({},L[n],patch);store.set("log",L)}
+
+/* ---------- shopping aggregation ---------- */
+const ALIAS={"cherrytomat":"cherrytomater","poteter":"potet","hele eller hakkede hermetiske tomater":"hermetiske tomater","frisk ingefær":"ingefær","semper havreknekkebrød":"knekkebrød (Semper havreknekkebrød)","maggi grønnsaksbuljong":"grønnsaksbuljong (terning)","granateplekjerner":"granateple (kjerner)","tørket gurkemeie":"gurkemeie","lime, skallet":"lime (skall)","paprikapulver":"paprikapulver"};
+function normName(n){
+  let s=n.toLowerCase().replace(/\*/g,"").trim();
+  const full=s;
+  s=s.replace(/\s*\(.*?\)\s*/g," ").split(",")[0].trim();
+  if(full.startsWith("garam masala")) return "garam masala eller tandoori masala";
+  if(full.startsWith("kokosmelk")) return "kokosmelk (fullfett)";
+  if(full.startsWith("grønne oliven")) return "grønne oliven i lake, uten sten";
+  if(full.startsWith("poteter")||full.startsWith("potet")) return "potet (kokefast)";
+  return ALIAS[s]||s;
+}
+const CATS=[
+ ["Tørrvarer og oljer",["olivenolje","kokosolje","dijonsennep","honning","soyasaus","bakepulver","sitronsaft","limesaft"]],
+ ["Krydder",["kanel","kardemomme","spisskummen","paprikapulver","oregano","timian","gurkemeie","chilipulver","kajennepepper","cayennepepper","masala","salt","pepper","tørket persille","buljong"]],
+ ["Frukt og bær",["banan","eple","pære","appelsin","mango","sitron","lime","blåbær","bringebær","granateple","tørket fiken"]],
+ ["Grønnsaker",["agurk","avokado","paprika","tomat","gulrot","søtpotet","potet","løk","hvitløk","ingefær","kål","salat","spinat","ruccola","baby leaf","blomkål","brokkoli","squash","asparges","reddik","sukkererter","pastinakk","sellerirot","kålrabi","kålrot","chili","stangselleri","grønnkål"]],
+ ["Friske urter",["frisk koriander","frisk persille","frisk basilikum","koriander","persille","basilikum"]],
+ ["Hermetikk og oliven",["hermetiske","oliven","kapers","kokosmelk"]],
+ ["Nøtter, frø og gryn",["nøtter","valnøtter","cashew","mandler","hasselnøtter","kjerner","chiafrø","havregryn","hvetekim","kokosmasse","knekkebrød"]],
+  ];
+function catOf(k){
+  if(k.startsWith("tørket persille")) return "Krydder";
+  for(const [c,ws] of CATS) if(ws.some(w=>k===w||k.includes(w))) return c;
+  return "Annet";
+}
+const BYGRAM=/^([\d]+(?:[.,]\d+)?)\s*g$/;
+function planShopping(p){
+  const items={}; // key -> {g, other:[], uses:n}
+  const add=(name,amt)=>{
+    const k=normName(name); if(k==="vann") return;
+    const it=items[k]||(items[k]={u:{},other:[],uses:0}); it.uses++;
+    const A=String(amt).trim(); const m=A.match(/^(\d+(?:[.,]\d+)?)\s*(g|stk|fedd|ts|ss|dl|terning)?$/);
+    if(m){const u=m[2]||"stk";it.u[u]=(it.u[u]||0)+parseFloat(m[1].replace(",","."))}
+    else if(amt) it.other.push(amt);
+  };
+  p.days.forEach(([k,v])=>{
+    const d=dayMeals(k,v);
+    if(d.foods) d.foods.forEach(([g,n])=>add(n,g));
+    else d.meals.forEach(m=>{const r=R[m.id];if(!r)return;r.ing.forEach((x,j)=>{if(x[4])return;const e=effIng(m.id,j);add(e.n,e.a)})});
+  });
+  // lemon/lime juice → mention fruit
+  const groups={};
+  Object.entries(items).forEach(([k,it])=>{(groups[catOf(k)]||(groups[catOf(k)]=[])).push([k,it])});
+  const order=["Grønnsaker","Frukt og bær","Friske urter","Hermetikk og oliven","Nøtter, frø og gryn","Krydder","Tørrvarer og oljer","Annet"];
+  return order.filter(c=>groups[c]).map(c=>[c,groups[c].sort((a,b)=>a[0].localeCompare(b[0],"nb"))]);
+}
+function otherText(arr){
+  arr=arr.filter(a=>!/klype/.test(a));
+  if(!arr.length) return "";
+  const c={};arr.forEach(a=>{c[a]=(c[a]||0)+1});
+  return Object.entries(c).map(([a,n])=>(n>1?n+" × ":"")+a).join(" + ");
+}
+
+/* ---------- render ---------- */
+function renderFaste(){
+  setAccent("ink");
+  const p=getPlan(); const cur=currentDay(p);
+  const sel=state.fday||Math.min(Math.max(cur,1),5);
+  const sub=state.fsub||"idag";
+  const gg=glyG(p);
+  let status;
+  if(cur<1) status=`Fasten starter ${dfmt(parseISO(p.start))} – om ${1-cur} ${1-cur===1?"dag":"dager"}.`;
+  else if(cur<=5) status=`I dag er dag ${cur} av 5.`;
+  else status=`Fasten ble avsluttet ${dfmt(dayDate(p,5),{day:"numeric",month:"long"})}.`;
+  const tabs=[["idag","Dag for dag"],["plan","Plan"],["handle","Handleliste"],["dagbok","Dagbok"]];
+  app.innerHTML=`<section class="fhead">
+    <div><span class="pages">Min faste · lagres bare på denne enheten</span><h2>${status}</h2>
+    <p class="daystrip">${p.days.map(([k,v],i)=>`<span class="dchip${cur===i+1?" now":""}" style="--c:var(--${MCOL[k]})"><b>Dag ${i+1}</b>${short(k)} ${v==="1"?"":VLAB[v]}</span>`).join("")}</p></div>
+  </section>
+  <nav class="subtabs" aria-label="Min faste">${tabs.map(([k,n])=>`<button type="button" data-fsub="${k}" aria-current="${sub===k}">${n}</button>`).join("")}</nav>
+  <div id="fbody"></div>`;
+  const b=document.getElementById("fbody");
+  if(sub==="plan") b.innerHTML=planHTML(p);
+  else if(sub==="handle") b.innerHTML=shopHTML(p);
+  else if(sub==="dagbok") b.innerHTML=logHTML(p);
+  else b.innerHTML=dayHTML(p,sel,cur,gg);
+}
+
+function dayHTML(p,n,cur,gg){
+  const [k,v]=p.days[n-1]; const d=dayMeals(k,v); const L=getLog()[n]||{}; const eat=L.eat||{};
+  const strip=`<div class="daysel">${[1,2,3,4,5].map(i=>`<button type="button" data-fday="${i}" aria-current="${i===n}">Dag ${i}<small>${dfmt(dayDate(p,i),{weekday:"short",day:"numeric",month:"numeric"})}</small></button>`).join("")}</div>`;
+  let meals="";
+  if(d.meals){
+    meals=`<div class="mlist">${d.meals.map(m=>{const r=R[m.id];const sw=r.ing.some((x,j)=>swapOf(m.id,j)!=null);
+      return `<div class="mcard${eat[m.id]?" done":""}"><img src="img/${m.id}.jpg" alt="" loading="lazy">
+      <div class="mtxt"><span class="k" style="color:var(--${MCOL[k]})">${esc(m.k)}</span><button type="button" class="mlink" data-recipe="${m.id}">${esc(r.t)}</button>${r.prep?`<span class="pill warn">${esc(r.prep)}</span>`:""}${sw?`<span class="pill">Med bytte</span>`:""}</div>
+      <label class="eat"><input type="checkbox" data-eat="${n}" data-key="${m.id}" ${eat[m.id]?"checked":""}> Spist</label></div>`}).join("")}</div>
+      ${k==="lilla"?`<p class="note">Lilla meny: del hver rett i to, så du får fire måltider.</p>`:""}`;
+  } else {
+    meals=`<p class="note">Oransje meny har ingen oppskrifter. Fordel matvarene på omtrent fire måltider.</p><ul class="foods">${d.foods.map(([g,nm,c],i)=>`<li><label class="eat"><input type="checkbox" data-eat="${n}" data-key="f${i}" ${eat["f"+i]?"checked":""}></label><span>${g}</span><span>${nm} <em>(${c})</em></span></li>`).join("")}</ul>`;
+  }
+  const gly=n===1?`<div class="glyc off"><b>Glyserol</b><span>Ikke på dag 1.</span></div>`:
+    gg?`<label class="glyc${L.gly?" done":""}"><input type="checkbox" data-gly="${n}" ${L.gly?"checked":""}><span><b>${gg} g glyserol</b> blandet i minst ${gg*10} ml vann eller grønn te, drukket gjennom dagen.</span></label>`:
+    `<div class="glyc off"><b>Glyserol</b><span>Legg inn vekten din under «Plan», så regner appen ut dagens mengde.</span></div>`;
+  return `${strip}
+  <div class="dhead"><h3>Dag ${n} · ${esc(MENUS[k].name)} ${v==="1"?"":VLAB[v]}</h3><span>${dfmt(dayDate(p,n))}${n===cur?" · i dag":""}</span></div>
+  ${meals}${gly}
+  <section class="gsec"><div class="gh"><h3>Dagbok for dag ${n}</h3></div>${logForm(n,L)}</section>`;
+}
+
+function rating(n,f,label,val){return `<fieldset class="rate"><legend>${label}</legend>${[1,2,3,4,5].map(i=>`<label><input type="radio" name="r-${f}-${n}" data-log="${n}" data-f="${f}" value="${i}" ${Number(val)===i?"checked":""}><span>${i}</span></label>`).join("")}</fieldset>`}
+function logForm(n,L){
+  return `<div class="logf">
+    <label class="kgf" for="kg-${n}">Vekt om morgenen (kg)<input id="kg-${n}" type="number" inputmode="decimal" step="0.1" data-log="${n}" data-f="kg" value="${esc(L.kg||"")}" placeholder="f.eks. 82,4"></label>
+    ${rating(n,"energi","Energi (1 lav – 5 høy)",L.energi)}
+    ${rating(n,"sult","Sult (1 lite – 5 mye)",L.sult)}
+    ${rating(n,"sovn","Søvn i natt (1 dårlig – 5 god)",L.sovn)}
+    <label class="notef" for="note-${n}">Notat<textarea id="note-${n}" rows="3" data-log="${n}" data-f="note" placeholder="Hvordan føles det? Hodepine, humør, trening …">${esc(L.note||"")}</textarea></label>
+  </div>`;
+}
+
+function planHTML(p){
+  const opt1=MKEYS.map(k=>[k,"1"]);
+  const opt2=MKEYS.flatMap(k=>k==="oransje"?[[k,"a"]]:[[k,"a"],[k,"b"]]);
+  const lbl=([k,v])=>`${MENUS[k].name} – ${k==="oransje"&&v!=="1"?"dag 2–5":VLAB[v]}`;
+  const names=([k,v])=>{const d=dayMeals(k,v);return d.foods?d.foods.map(x=>x[1]).join(", "):d.meals.map(m=>R[m.id]?R[m.id].t:"").join(" · ")};
+  return `<div class="planf">
+    <div class="row2">
+      <label for="p-start">Første fastedag<input id="p-start" type="date" value="${esc(p.start)}" data-plan="start"></label>
+      <label for="p-kg">Vekt i kilo (for glyserol)<input id="p-kg" type="number" inputmode="decimal" step="0.1" value="${esc(p.kg)}" data-plan="kg" placeholder="f.eks. 83"></label>
+    </div>
+    <div class="preset"><span>Følg én meny hele uka:</span>${MKEYS.map(k=>`<button type="button" class="ovm" data-preset="${k}" style="--c:var(--${MCOL[k]})">${short(k)}</button>`).join("")}</div>
+    <ol class="prows">${p.days.map((dv,i)=>{const opts=i===0?opt1:opt2;
+      return `<li style="--c:var(--${MCOL[dv[0]]})"><div class="pl"><b>Dag ${i+1}</b><small>${dfmt(dayDate(p,i+1),{weekday:"short",day:"numeric",month:"short"})}</small></div>
+      <div class="pr"><select id="p-day-${i}" data-pday="${i}" aria-label="Meny for dag ${i+1}">${opts.map(o=>`<option value="${o.join("|")}" ${o[0]===dv[0]&&o[1]===dv[1]?"selected":""}>${lbl(o)}</option>`).join("")}</select>
+      <span class="pn2">${esc(names(dv))}</span></div></li>`}).join("")}</ol>
+    <p class="note">Boka anbefaler å bruke samme dagsmeny to dager på rad, og å følge én meny slavisk første gang. Dagsmeny 1 kan bare brukes på dag 1, og dagsmenyene for 2–5 bare på dag 2–5.</p>
+    <div class="danger"><button type="button" class="btn" data-newfast="1">Start ny faste</button><span id="nf-confirm" hidden> Sletter dagbok og avkrysninger i handlelista. <button type="button" class="btn warnbtn" data-newfast="2">Ja, slett</button> <button type="button" class="btn" data-newfast="0">Avbryt</button></span></div>
+  </div>`;
+}
+
+function shopHTML(p){
+  const groups=planShopping(p); const done=store.get("planshop",{}); const gg=glyG(p);
+  const total=groups.reduce((s,[,a])=>s+a.length,0), got=groups.reduce((s,[,a])=>s+a.filter(([k])=>done[k]).length,0);
+  return `<div class="section-h" style="margin-top:20px"><h3>Handleliste for planen din</h3><span>${got} av ${total} krysset av · summert fra oppskriftene for alle fem dagene${Object.keys(getSwaps()).length?", med byttene dine":""}</span><button type="button" class="btn" data-psreset="1" style="margin-left:auto">Nullstill</button></div>
+  <p class="note" style="margin-top:0">Mengdene er det du faktisk skal spise, uten skall og kjerner. Kjøp litt ekstra av frukt og grønt. Sitron- og limesaft må du presse selv.</p>
+  <div class="shop">${groups.map(([c,its])=>`<div class="grp"><h5>${c}</h5>${its.map(([k,it])=>{const id="ps-"+k;const q=[...["g","stk","fedd","terning","dl","ss","ts"].filter(u=>it.u[u]).map(u=>fmt(u==="stk"||u==="fedd"?Math.ceil(it.u[u]*2)/2:it.u[u])+" "+u),otherText(it.other)].filter(Boolean).join(" + ")||(it.other.length?"litt":"");
+    return `<label class="item"><input type="checkbox" id="${esc(id)}" data-ps="${esc(k)}" ${done[k]?"checked":""}><span class="nm">${esc(k[0].toUpperCase()+k.slice(1))}</span><span class="q"></span><span class="g">${esc(q||"etter smak")}</span></label>`}).join("")}</div>`).join("")}
+  <div class="grp"><h5>Glyserol</h5><label class="item"><input type="checkbox" data-ps="glyserol" ${done.glyserol?"checked":""}><span class="nm">Glyserol (ren, til matbruk)</span><span class="q"></span><span class="g">${gg?gg*4+" g":"se Plan"}</span></label></div></div>`;
+}
+
+function logHTML(p){
+  const L=getLog(); const rows=[1,2,3,4,5].map(n=>{const l=L[n]||{};const [k,v]=p.days[n-1];const d=dayMeals(k,v);
+    const tot=d.meals?d.meals.length:d.foods.length, e=Object.values(l.eat||{}).filter(Boolean).length;
+    return {n,l,tot,e,k}});
+  const kgs=rows.filter(r=>parseFloat(String(r.l.kg||"").replace(",","."))>0).map(r=>[r.n,parseFloat(String(r.l.kg).replace(",","."))]);
+  let chart="";
+  if(kgs.length>=2){
+    const W=520,H=160,px=40,py=22; const vals=kgs.map(x=>x[1]); let lo=Math.min(...vals),hi=Math.max(...vals); if(hi-lo<1){const m=(hi+lo)/2;lo=m-.5;hi=m+.5}
+    const X=n=>px+(n-1)*(W-2*px)/4, Y=v=>py+(hi-v)*(H-2*py)/(hi-lo);
+    const pts=kgs.map(([n,v])=>`${X(n)},${Y(v)}`).join(" ");
+    chart=`<figure class="kgchart"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Vekt per fastedag">
+      ${[1,2,3,4,5].map(n=>`<line x1="${X(n)}" x2="${X(n)}" y1="${py-6}" y2="${H-py+4}" stroke="var(--line)"/><text x="${X(n)}" y="${H-4}" text-anchor="middle" fill="var(--muted)" font-size="12">Dag ${n}</text>`).join("")}
+      <polyline points="${pts}" fill="none" stroke="var(--red)" stroke-width="2.5"/>
+      ${kgs.map(([n,v],i)=>`<circle cx="${X(n)}" cy="${Y(v)}" r="${i===kgs.length-1?5:3.5}" fill="var(--red)"/><text x="${X(n)}" y="${Y(v)-10}" text-anchor="middle" fill="var(--ink)" font-size="12">${fmt(v)}</text>`).join("")}
+    </svg><figcaption>Endring: ${(kgs[kgs.length-1][1]-kgs[0][1]>0?"+":"")+fmt(kgs[kgs.length-1][1]-kgs[0][1])} kg fra dag ${kgs[0][0]} til dag ${kgs[kgs.length-1][0]}. Mye av vekten under en kort faste er vann og mageinnhold.</figcaption></figure>`;
+  }
+  const dot=v=>v?`<span class="dots">${"●".repeat(v)}<i>${"●".repeat(5-v)}</i></span>`:"–";
+  return `<div class="section-h" style="margin-top:20px"><h3>Dagbok</h3><span>Fyll inn under «Dag for dag»</span></div>
+  ${chart}
+  <div class="tablewrap"><table class="logt"><thead><tr><th>Dag</th><th>Måltider</th><th>Glyserol</th><th>Vekt</th><th>Energi</th><th>Sult</th><th>Søvn</th><th>Notat</th></tr></thead><tbody>
+  ${rows.map(r=>`<tr><td><button type="button" class="linkbtn" data-fday="${r.n}" data-fsub="idag">Dag ${r.n}</button><br><small style="color:var(--muted)">${short(r.k)}</small></td><td>${r.e}/${r.tot}</td><td>${r.n===1?"–":r.l.gly?"✓":""}</td><td>${parseFloat(String(r.l.kg||"").replace(",","."))>0?fmt(parseFloat(String(r.l.kg).replace(",",".")))+" kg":"–"}</td><td>${dot(Number(r.l.energi))}</td><td>${dot(Number(r.l.sult))}</td><td>${dot(Number(r.l.sovn))}</td><td class="nt">${esc(r.l.note||"")}</td></tr>`).join("")}
+  </tbody></table></div>`;
+}
+
+function render(){
+  renderNav();
+  if(state.recipe) renderRecipe(state.recipe);
+  else if(state.view==="bytte") renderBytte();
+  else if(state.view==="guide") renderGuide();
+  else if(state.view==="faste") renderFaste();
+  else renderMenu(state.view);
+}
+function go(view,recipe=null){
+  state={view,recipe}; store.set("view",state);
+  try{history.replaceState(null,"","#"+(recipe||view))}catch(e){}
+  render(); window.scrollTo({top:0});
+}
+document.addEventListener("click",e=>{
+  const r=e.target.closest("[data-recipe]"); if(r){go(R[r.dataset.recipe].menu,r.dataset.recipe);return}
+  const g=e.target.closest("[data-go]"); if(g){go(g.dataset.go);return}
+  const rs=e.target.closest("[data-reset]"); if(rs){store.set("shop-"+rs.dataset.reset,{});render();return}
+  const sw=e.target.closest("[data-sw]"); if(sw){const S=getSwaps(),id=sw.dataset.sw,j=sw.dataset.j;S[id]=S[id]||{};if(sw.dataset.o==="")delete S[id][j];else S[id][j]=Number(sw.dataset.o);if(!Object.keys(S[id]).length)delete S[id];store.set("swaps",S);const y=window.scrollY;render();window.scrollTo(0,y);return}
+  const fs=e.target.closest("[data-fsub]"); if(fs){if(fs.dataset.fday)state.fday=Number(fs.dataset.fday);state.fsub=fs.dataset.fsub;render();return}
+  const fd=e.target.closest("[data-fday]"); if(fd){state.fday=Number(fd.dataset.fday);const y=window.scrollY;render();window.scrollTo(0,y);return}
+  const pr=e.target.closest("[data-preset]"); if(pr){const p=getPlan();p.days=presetDays(pr.dataset.preset);savePlan(p);render();return}
+  const nf=e.target.closest("[data-newfast]"); if(nf){const c=document.getElementById("nf-confirm");
+    if(nf.dataset.newfast==="1")c.hidden=false; else if(nf.dataset.newfast==="0")c.hidden=true;
+    else{store.set("log",{});store.set("planshop",{});state.fday=null;state.fsub="idag";render();} return}
+  const psr=e.target.closest("[data-psreset]"); if(psr){store.set("planshop",{});render();return}
+});
+document.addEventListener("input",e=>{const t=e.target;if(t.dataset.log&&t.type!=="radio")setLog(t.dataset.log,{[t.dataset.f]:t.value})});
+document.addEventListener("change",e=>{
+  const t=e.target;
+  if(t.dataset.shop){const k="shop-"+t.dataset.shop,d=store.get(k,{});d[t.dataset.id]=t.checked;store.set(k,d)}
+  if(t.dataset.ing){const k="ing-"+t.dataset.ing,d=store.get(k,{});d[t.dataset.j]=t.checked;store.set(k,d)}
+  if(t.dataset.eat){const n=t.dataset.eat,L=getLog()[n]||{},eat=Object.assign({},L.eat);eat[t.dataset.key]=t.checked;setLog(n,{eat});t.closest(".mcard")?.classList.toggle("done",t.checked)}
+  if(t.dataset.gly){setLog(t.dataset.gly,{gly:t.checked});t.closest(".glyc")?.classList.toggle("done",t.checked)}
+  if(t.dataset.log&&t.type==="radio"){setLog(t.dataset.log,{[t.dataset.f]:Number(t.value)})}
+  if(t.dataset.ps){const d=store.get("planshop",{});d[t.dataset.ps]=t.checked;store.set("planshop",d)}
+  if(t.dataset.plan){const p=getPlan();p[t.dataset.plan]=t.value;if(t.dataset.plan==="start"&&!t.value)return;savePlan(p);render()}
+  if(t.dataset.pday){const p=getPlan();p.days[Number(t.dataset.pday)]=t.value.split("|");savePlan(p);render()}
+});
+function fromHash(){
+  const h=(location.hash||"").slice(1);
+  if(R[h]) state={view:R[h].menu,recipe:h};
+  else if(MENUS[h]||h==="bytte"||h==="guide"||h==="faste") state={view:h,recipe:null};
+  else return false;
+  return true;
+}
+window.addEventListener("hashchange",()=>{const k=state.recipe||state.view;if((location.hash||"").slice(1)!==k&&fromHash())render()});
+(function init(){
+  const h=(location.hash||"").slice(1);
+  if(R[h]) state={view:R[h].menu,recipe:h};
+  else if(MENUS[h]||h==="bytte"||h==="guide"||h==="faste") state={view:h,recipe:null};
+  else {const s=store.get("view",null); if(s&&(MENUS[s.view]||s.view==="bytte"||s.view==="guide"||s.view==="faste")&&(!s.recipe||R[s.recipe])) state=s;}
+  render();
+})();
+</script>
+
+<div class="updbar" id="updbar" hidden><span>En ny versjon er klar.</span><button type="button" id="updbtn">Oppdater</button></div>
+<div class="updbar" id="instbar" hidden><span>Installer Fastemenyene på enheten</span><button type="button" id="instbtn">Installer</button><button type="button" id="instx" aria-label="Lukk" style="background:none;color:var(--bg);padding:6px 8px">✕</button></div>
+<script>
+if("serviceWorker" in navigator){
+  window.addEventListener("load",()=>{
+    navigator.serviceWorker.register("sw.js").then(reg=>{
+      const show=w=>{const b=document.getElementById("updbar");b.hidden=false;document.getElementById("updbtn").onclick=()=>w.postMessage("skipWaiting")};
+      if(reg.waiting&&navigator.serviceWorker.controller) show(reg.waiting);
+      reg.addEventListener("updatefound",()=>{const w=reg.installing;w.addEventListener("statechange",()=>{if(w.state==="installed"&&navigator.serviceWorker.controller)show(w)})});
+      setInterval(()=>reg.update().catch(()=>{}),60*60*1000);
+    }).catch(()=>{});
+    let r=false;navigator.serviceWorker.addEventListener("controllerchange",()=>{if(!r){r=true;location.reload()}});
+  });
+}
+let deferredPrompt=null;
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;
+  try{if(localStorage.getItem("instDismissed"))return}catch(_){}
+  document.getElementById("instbar").hidden=false});
+document.getElementById("instbtn").onclick=async()=>{document.getElementById("instbar").hidden=true;if(deferredPrompt){deferredPrompt.prompt();deferredPrompt=null}};
+document.getElementById("instx").onclick=()=>{document.getElementById("instbar").hidden=true;try{localStorage.setItem("instDismissed","1")}catch(_){}};
+window.addEventListener("appinstalled",()=>{document.getElementById("instbar").hidden=true});
+// be om varig lagring så nettleseren ikke rydder bort dagbok og plan
+if(navigator.storage&&navigator.storage.persist)navigator.storage.persisted().then(p=>{if(!p)navigator.storage.persist()});
+</script>
+</body>
+</html>
