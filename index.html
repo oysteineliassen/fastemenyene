@@ -319,6 +319,20 @@ table.logt tr.noterow td{white-space:normal;color:var(--muted);font-size:15px;li
 table.logt tr:has(+ tr.noterow) td{border-bottom:0}
 .nlab{display:block;font-family:var(--display);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--red);margin-bottom:2px}
 .ntx{position:sticky;left:0;width:min(100%,calc(100vw - 52px));max-width:70ch;white-space:pre-wrap}
+
+.fctx{margin-top:14px;border:1px solid var(--line);border-left:4px solid var(--accent);background:var(--surface);border-radius:10px;padding:10px 14px;display:flex;flex-direction:column;gap:2px;font-size:15px;max-width:72ch}
+.fctx b{font-family:var(--display)}
+.fctx span{color:var(--muted)}
+.adjt{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.adjb{font-family:var(--display);font-size:12px;border:1px dashed var(--line);background:none;border-radius:999px;padding:3px 10px;cursor:pointer;color:var(--muted)}
+.adjb[aria-pressed="true"]{border-style:solid;border-color:var(--ink);color:var(--ink);font-weight:700}
+.ing li.skipped .amt,.ing li.skipped .nm{text-decoration:line-through;color:var(--muted)}
+.ing li.custom .amt,.ing li.custom .nm{color:var(--accent)}
+.adjform{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center}
+.adjform input{font:inherit;font-size:16px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);min-width:0}
+.adjform #adj-a{width:8.5em}.adjform #adj-n{flex:1 1 10em}
+.adjfb{display:flex;gap:6px}
+.ing li.addrow{border-bottom:0}
 </style>
 
 </head>
@@ -616,12 +630,31 @@ function renderMenu(key){
 
 function menuSeq(menu){return MENUS[menu].plan.flatMap(d=>d.meals.map(x=>x.id)).filter(id=>R[id])}
 
+/* ---------- Endringer per fastedag (sløyfet / egen endring / ekstra) ---------- */
+const getAdj=(n,id)=>{const L=getLog()[n];return (L&&L.adj&&L.adj[id])||{}};
+function setAdj(n,id,fn){const L=getLog()[n]||{};const adj=Object.assign({},L.adj);const cur=Object.assign({},adj[id]);fn(cur);
+  Object.keys(cur).forEach(k=>{if(cur[k]==null||(k==="extra"&&!cur[k].length))delete cur[k]});
+  if(Object.keys(cur).length)adj[id]=cur;else delete adj[id];setLog(n,{adj})}
+function dayIng(n,id,j){
+  const base=effIng(id,j); if(!n) return base;
+  const a=getAdj(n,id)[j];
+  if(a&&a.skip) return Object.assign({},base,{skipped:true});
+  if(a&&a.custom) return {a:a.custom.a,n:a.custom.n,custom:true,orig:`${base.a} ${base.n}`.trim()};
+  return base;
+}
+const dayExtras=(n,id)=>n?(getAdj(n,id).extra||[]):[];
+const hasAdj=(n,id)=>Object.keys(getAdj(n,id)).length>0;
+
+function editForm(j,a,n){return `<span class="adjform"><input id="adj-a" type="text" value="${esc(a)}" placeholder="Mengde, f.eks. 40 g" aria-label="Mengde"><input id="adj-n" type="text" value="${esc(n)}" placeholder="Ingrediens" aria-label="Ingrediens"><span class="adjfb"><button type="button" class="btn" data-adjsave="${j}">Lagre</button><button type="button" class="btn" data-adjcancel="1">Avbryt</button></span></span>`}
 function renderRecipe(id){
   const r=R[id], m=MENUS[r.menu]; setAccent(m.color);
   const seq=menuSeq(r.menu), i=seq.indexOf(id), prev=seq[i-1], next=seq[i+1];
   const done=store.get("ing-"+id,{});
   const hasSwap=r.ing.some(x=>x[2]&&SW[x[2]]);
-  app.innerHTML=`<button type="button" class="btn back" data-go="${r.menu}">← ${m.name}</button>
+  const fd=state.fctx||0;
+  const fbanner=fd?`<div class="fctx"><b>Dag ${fd} i fasten din</b><span>Endringer du gjør her gjelder bare denne dagen. Marker det du har sløyfet, eller endre en ingrediens som ikke står i byttelista. Endringene kommer med i handlelista og i PDF/Excel.</span></div>`:"";
+  app.innerHTML=`${fd?`<button type="button" class="btn back" data-back="1">← Dag ${fd}</button>`:`<button type="button" class="btn back" data-go="${r.menu}">← ${m.name}</button>`}
+  ${fbanner}
   <article class="recipe">
     <figure><img src="img/${id}.jpg" alt="${esc(r.t)}"><figcaption>${m.name} · ${r.p}</figcaption></figure>
     <div>
@@ -630,9 +663,14 @@ function renderRecipe(id){
       <ul class="ing">${r.ing.map((x,j)=>{
         const [a,n,key,g,head]=x;
         if(head) return `<li class="sub-h">${esc(n)}</li>`;
-        const e=effIng(id,j), o=swapOf(id,j);
+        const fd=state.fctx||0, e=dayIng(fd,id,j), o=swapOf(id,j), ed=fd&&state.fedit===String(j);
         const s=key&&SW[key]?`<span class="swap"><b>Bytt</b><span class="swopts"><button type="button" class="swb" data-sw="${id}" data-j="${j}" data-o="" aria-pressed="${o==null}">${esc(a)} ${esc(n)}</button>${SW[key].map(([x,nm],oi)=>`<button type="button" class="swb" data-sw="${id}" data-j="${j}" data-o="${oi}" aria-pressed="${o===oi}">${fmt(x*g/100)} g ${esc(nm)}</button>`).join("")}</span></span>`:"";
-        return `<li${e.swapped?' class="swapped"':""}><input type="checkbox" id="ing-${id}-${j}" data-ing="${id}" data-j="${j}" ${done[j]?"checked":""} aria-label="${esc(e.n)}"><span class="amt">${esc(e.a)}</span><span><span class="nm">${ingBtn(e.n)}</span>${e.swapped?`<span class="was">i stedet for ${esc(e.orig)}</span>`:""}${s}</span></li>`}).join("")}</ul>
+        const tools=fd?`<span class="adjt"><button type="button" class="adjb" data-skip="${j}" aria-pressed="${!!e.skipped}">${e.skipped?"Angre sløyfet":"Sløyfet"}</button><button type="button" class="adjb" data-edit="${j}" aria-pressed="${!!e.custom}">${e.custom?"Endre igjen":"Endre"}</button>${e.custom?`<button type="button" class="adjb" data-unedit="${j}">Tilbakestill</button>`:""}</span>`:"";
+        const form=ed?editForm(String(j),e.custom?e.a:a,e.custom?e.n:n):"";
+        const cls=[e.swapped?"swapped":"",e.skipped?"skipped":"",e.custom?"custom":""].filter(Boolean).join(" ");
+        return `<li${cls?` class="${cls}"`:""}><input type="checkbox" id="ing-${id}-${j}" data-ing="${id}" data-j="${j}" ${done[j]?"checked":""} aria-label="${esc(e.n)}"><span class="amt">${esc(e.a)}</span><span><span class="nm">${ingBtn(e.n)}</span>${e.skipped?`<span class="was">Sløyfet dag ${fd}</span>`:e.custom?`<span class="was">Egen endring dag ${fd}, i stedet for ${esc(e.orig)}</span>`:e.swapped?`<span class="was">i stedet for ${esc(e.orig)}</span>`:""}${e.skipped||e.custom?"":s}${tools}${form}</span></li>`}).join("")}
+        ${state.fctx?dayExtras(state.fctx,id).map((x,xi)=>`<li class="custom"><span></span><span class="amt">${esc(x.a)}</span><span><span class="nm">${ingBtn(x.n)}</span><span class="was">Lagt til dag ${state.fctx}</span><span class="adjt"><button type="button" class="adjb" data-delextra="${xi}">Fjern</button></span></span></li>`).join(""):""}
+        ${state.fctx?(state.fedit==="new"?`<li class="addrow"><span></span><span></span><span>${editForm("new","","")}</span></li>`:`<li class="addrow"><span></span><span></span><span><button type="button" class="adjb" data-edit="new">+ Legg til ingrediens</button></span></li>`):""}</ul>
       ${hasSwap?`<p class="note" style="font-size:14px;margin-top:8px">Trykk på et bytte for å bruke det. Mengdene er regnet om fra byttelista (s. 156–157), og handlelista for planen din oppdateres automatisk.</p>`:""}
       ${r.note?`<p class="warnbox" style="margin-top:18px">* ${esc(r.note)}</p>`:""}
       <ol class="steps">${r.steps.map(s=>`<li><span>${esc(s)}</span></li>`).join("")}</ol>
@@ -864,10 +902,10 @@ function planShopping(p){
     if(m){const u=m[2]||"stk";it.u[u]=(it.u[u]||0)+parseFloat(m[1].replace(",","."))}
     else if(amt) it.other.push(amt);
   };
-  p.days.forEach(([k,v])=>{
+  p.days.forEach(([k,v],di)=>{
     const d=dayMeals(k,v);
     if(d.foods) d.foods.forEach(([g,n])=>add(n,g));
-    else d.meals.forEach(m=>{const r=R[m.id];if(!r)return;r.ing.forEach((x,j)=>{if(x[4])return;const e=effIng(m.id,j);add(e.n,e.a)})});
+    else d.meals.forEach(m=>{const r=R[m.id];if(!r)return;r.ing.forEach((x,j)=>{if(x[4])return;const e=dayIng(di+1,m.id,j);if(!e.skipped)add(e.n,e.a)});dayExtras(di+1,m.id).forEach(x=>add(x.n,x.a))});
   });
   // lemon/lime juice → mention fruit
   const groups={};
@@ -922,7 +960,7 @@ function dayHTML(p,n,cur,gg){
   if(d.meals){
     meals=`<div class="mlist">${d.meals.map(m=>{const r=R[m.id];const sw=r.ing.some((x,j)=>swapOf(m.id,j)!=null);
       return `<div class="mcard${eat[m.id]?" done":""}"><img src="img/${m.id}.jpg" alt="" loading="lazy">
-      <div class="mtxt"><span class="k" style="color:var(--${MCOL[k]})">${esc(m.k)}</span><button type="button" class="mlink" data-recipe="${m.id}">${esc(r.t)}</button>${r.prep?`<span class="pill warn">${esc(r.prep)}</span>`:""}${sw?`<span class="pill">Med bytte</span>`:""}</div>
+      <div class="mtxt"><span class="k" style="color:var(--${MCOL[k]})">${esc(m.k)}</span><button type="button" class="mlink" data-recipe="${m.id}" data-fctx="${n}">${esc(r.t)}</button>${r.prep?`<span class="pill warn">${esc(r.prep)}</span>`:""}${sw?`<span class="pill">Med bytte</span>`:""}${hasAdj(n,m.id)?`<span class="pill warn">Endret</span>`:""}</div>
       <label class="eat"><input type="checkbox" data-eat="${n}" data-key="${m.id}" ${eat[m.id]?"checked":""}> Spist</label></div>`}).join("")}</div>
       ${k==="lilla"?`<p class="note">Lilla meny: del hver rett i to, så du får fire måltider.</p>`:""}`;
   } else {
@@ -1130,7 +1168,7 @@ function fastData(){
     if(n===6) return {n,date,label:"Etter",menu:"Morgenen etter",l,meals:[],eaten:null,tot:null};
     const [k,v]=p.days[n-1],d=dayMeals(k,v),eat=l.eat||{};
     let meals;
-    if(d.meals) meals=d.meals.map(m=>{const r=R[m.id];return {k:m.k,t:r.t,done:!!eat[m.id],ing:r.ing.map((x,j)=>{if(x[4])return null;const e=effIng(m.id,j);return {a:e.a,n:e.n,sw:e.swapped}}).filter(Boolean)}});
+    if(d.meals) meals=d.meals.map(m=>{const r=R[m.id];return {k:m.k,t:r.t,done:!!eat[m.id],ing:[...r.ing.map((x,j)=>{if(x[4])return null;const e=dayIng(n,m.id,j);return {a:e.a,n:e.n,sw:e.swapped,skip:!!e.skipped,cust:!!e.custom}}).filter(Boolean),...dayExtras(n,m.id).map(x=>({a:x.a,n:x.n,cust:true,extra:true}))]}});
     else meals=d.foods.map(([g,nm,c],i)=>({k:"Matvare",t:nm,done:!!eat["f"+i],ing:[{a:g,n:nm+" ("+c+")",sw:false}]}));
     return {n,date,label:"Dag "+n,menu:MENUS[k].name+(v==="1"?" – dag 1":k==="oransje"?" – dag 2–5":" – "+VLAB[v]),mk:k,l,meals,eaten:meals.filter(m=>m.done).length,tot:meals.length};
   });
@@ -1184,7 +1222,7 @@ function buildPDF(){
     notes.forEach(d=>{const ls=pdf.wrap(d.l.note.replace(/\n+/g," "),CW-70,9.5);pdf.need(ls.length*13+6);pdf.text(M,pdf.y,d.label,{size:9.5,bold:true});ls.forEach((l,i)=>pdf.text(M+70,pdf.y-i*13,l,{size:9.5}));pdf.y-=ls.length*13+6})}
   // menus
   pdf.addPage();pdf.text(M,pdf.y,"Menyer dag for dag",{size:20,bold:true});pdf.y-=12;
-  pdf.text(M,pdf.y-8,"Mengdene er det du skal spise. Ingredienser du har byttet er merket med *.",{size:9,color:mut});pdf.y-=30;
+  pdf.text(M,pdf.y-8,"Mengdene er det du skal spise. Bytter fra byttelista er merket med *, egne endringer med **.",{size:9,color:mut});pdf.y-=30;
   days.slice(0,5).forEach(d=>{
     pdf.need(70);
     pdf.rect(M,pdf.y-24,CW,24,MHEX[d.mk]);
@@ -1192,7 +1230,7 @@ function buildPDF(){
     pdf.text(M+CW-10,pdf.y-16,d.menu+(d.n>1&&gg?` · ${gg} g glyserol`:""),{size:9.5,color:"#FFFFFF",align:"right"});
     pdf.y-=36;
     d.meals.forEach(m=>{
-      const ing=d.mk==="oransje"?m.ing[0].a+" "+m.ing[0].n.replace(/^[^(]*\(/,"(") :m.ing.map(i=>(i.a?i.a+" ":"")+i.n+(i.sw?"*":"")).join(", ");
+      const ing=d.mk==="oransje"?m.ing[0].a+" "+m.ing[0].n.replace(/^[^(]*\(/,"(") :m.ing.map(i=>(i.skip?"sløyfet: ":"")+(i.a?i.a+" ":"")+i.n+(i.sw?"*":"")+(i.cust?"**":"")).join(", ");
       const ls=pdf.wrap(ing,CW-160,9),tl=pdf.wrap(m.t,145,10,true);
       const rowsL=1+tl.length+(m.done?1:0),rowsR=1+ls.length,h=Math.max(rowsL,rowsR)*12+10;
       pdf.need(h);
@@ -1243,17 +1281,17 @@ function buildXLSX(){
     ["Dag","Dato","Meny","Måltider spist","Måltider totalt","Glyserol tatt","Glyserol (g)","Vekt (kg)","Energi (1–5)","Sult (1–5)","Søvn (1–5)","Notat"].map(H)];
   days.forEach(d=>dag.push([d.label,{v:xserial(d.date),s:2},d.menu,d.tot==null?"":d.eaten,d.tot==null?"":d.tot,d.n===1||d.n===6?"":d.l.gly?"Ja":"Nei",d.n>1&&d.n<6&&gg?gg:"",numKg(d.l.kg)!=null?{v:numKg(d.l.kg),s:3}:"",d.l.energi?Number(d.l.energi):"",d.l.sult?Number(d.l.sult):"",d.l.sovn?Number(d.l.sovn):"",d.l.note?{v:d.l.note,s:5}:""]));
   dag.push([]);dag.push(["Søvn på dag 1 gjelder natten før fasten. «Etter» er morgenen etter dag 5."]);
-  const men=[["Dag","Dato","Meny","Måltid","Rett","Spist","Mengde","Ingrediens","Byttet"].map(H)];
-  days.slice(0,5).forEach(d=>d.meals.forEach(m=>m.ing.forEach((i,ii)=>men.push([d.label,{v:xserial(d.date),s:2},d.menu,m.k,m.t,ii===0?(m.done?"Ja":"Nei"):"",i.a||"",i.n,i.sw?"Ja":""]))));
+  const men=[["Dag","Dato","Meny","Måltid","Rett","Spist","Mengde","Ingrediens","Byttet","Endring"].map(H)];
+  days.slice(0,5).forEach(d=>d.meals.forEach(m=>m.ing.forEach((i,ii)=>men.push([d.label,{v:xserial(d.date),s:2},d.menu,m.k,m.t,ii===0?(m.done?"Ja":"Nei"):"",i.a||"",i.n,i.sw?"Ja":"",i.skip?"Sløyfet":i.extra?"Lagt til":i.cust?"Egen endring":""]))));
   const shop=[["Kategori","Vare","Mengde"].map(H)];
   planShopping(p).forEach(([c,its])=>its.forEach(([k,it])=>shop.push([c,k[0].toUpperCase()+k.slice(1),[...["g","stk","fedd","terning","dl","ss","ts"].filter(u=>it.u[u]).map(u=>fmt(u==="stk"||u==="fedd"?Math.ceil(it.u[u]*2)/2:it.u[u])+" "+u),otherText(it.other)].filter(Boolean).join(" + ")||"etter smak"])));
   if(gg)shop.push(["Glyserol","Glyserol (ren, til matbruk)",gg*4+" g"]);
-  const sheets=[["Dagbok",sheetXML(dag,[9,12,24,14,14,13,12,10,12,10,10,50],{freeze:4})],["Menyer",sheetXML(men,[8,12,22,12,34,7,12,34,8],{freeze:1,filter:true})],["Handleliste",sheetXML(shop,[22,32,22],{freeze:1})]];
+  const sheets=[["Dagbok",sheetXML(dag,[9,12,24,14,14,13,12,10,12,10,10,50],{freeze:4})],["Menyer",sheetXML(men,[8,12,22,12,34,7,12,34,8,14],{freeze:1,filter:true})],["Handleliste",sheetXML(shop,[22,32,22],{freeze:1})]];
   const styles=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="2"><numFmt numFmtId="164" formatCode="dd.mm.yyyy"/><numFmt numFmtId="165" formatCode="0.0"/></numFmts><fonts count="3"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font><font><b/><sz val="16"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF1E2320"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="6"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/><xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="165" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0" applyAlignment="1"><alignment wrapText="1" vertical="top"/></xf></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
   const files=[
     ["[Content_Types].xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>${sheets.map((s,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join("")}</Types>`],
     ["_rels/.rels",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`],
-    ["xl/workbook.xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>${sheets.map((s,i)=>`<sheet name="${s[0]}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join("")}</sheets>${sheets[1]?`<definedNames><definedName name="_xlnm._FilterDatabase" localSheetId="1" hidden="1">Menyer!$A$1:$I$${men.length}</definedName></definedNames>`:""}</workbook>`],
+    ["xl/workbook.xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>${sheets.map((s,i)=>`<sheet name="${s[0]}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join("")}</sheets>${sheets[1]?`<definedNames><definedName name="_xlnm._FilterDatabase" localSheetId="1" hidden="1">Menyer!$A$1:$J$${men.length}</definedName></definedNames>`:""}</workbook>`],
     ["xl/_rels/workbook.xml.rels",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${sheets.map((s,i)=>`<Relationship Id="rId${i+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join("")}<Relationship Id="rId${sheets.length+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`],
     ["xl/styles.xml",styles],
     ...sheets.map((s,i)=>[`xl/worksheets/sheet${i+1}.xml`,s[1]])
@@ -1296,6 +1334,7 @@ function pushNav(next){
   try{history.pushState({s:state,y:0},"","#"+tok(state))}catch(e){}
   render(); window.scrollTo({top:0});
 }
+function keepScroll(){const y=window.scrollY;render();window.scrollTo(0,y);snap()}
 function go(view,recipe=null){ pushNav({view,recipe}); }
 window.addEventListener("popstate",e=>{
   window.__navDepth=Math.max(0,window.__navDepth-1);
@@ -1307,8 +1346,16 @@ document.addEventListener("click",e=>{
   const ex=e.target.closest("[data-export]"); if(ex){doExport(ex.dataset.export,ex);return}
   const ig=e.target.closest("[data-ingr]"); if(ig){e.preventDefault();const back=state.view==="ingr"?state.back:{view:state.view,recipe:state.recipe,fsub:state.fsub,fday:state.fday};pushNav({view:"ingr",recipe:null,ingr:ig.dataset.ingr,itab:state.itab||"plan",back});return}
   const it=e.target.closest("[data-itab]"); if(it){state.itab=it.dataset.itab;snap();render();return}
-  const bk=e.target.closest("[data-back]"); if(bk){if(history.state&&history.length>1&&window.__navDepth>0)history.back();else if(state.back)pushNav(Object.assign({},state.back));return}
-  const r=e.target.closest("[data-recipe]"); if(r){go(R[r.dataset.recipe].menu,r.dataset.recipe);return}
+  const bk=e.target.closest("[data-back]"); if(bk){if(history.state&&history.length>1&&window.__navDepth>0)history.back();else if(state.back)pushNav(Object.assign({},state.back));else if(state.fctx)pushNav({view:"faste",recipe:null,fsub:"idag",fday:state.fctx});return}
+  const sk=e.target.closest("[data-skip]"); if(sk&&state.fctx){const j=sk.dataset.skip;setAdj(state.fctx,state.recipe,a=>{a[j]=a[j]&&a[j].skip?null:{skip:true}});keepScroll();return}
+  const edb=e.target.closest("[data-edit]"); if(edb&&state.fctx){state.fedit=edb.dataset.edit;keepScroll();setTimeout(()=>{const i=document.getElementById(state.fedit==="new"?"adj-n":"adj-a");if(i)i.focus()},0);return}
+  const ue=e.target.closest("[data-unedit]"); if(ue&&state.fctx){const j=ue.dataset.unedit;setAdj(state.fctx,state.recipe,a=>{a[j]=null});keepScroll();return}
+  const ac=e.target.closest("[data-adjcancel]"); if(ac){state.fedit=null;keepScroll();return}
+  const as=e.target.closest("[data-adjsave]"); if(as&&state.fctx){const A=document.getElementById("adj-a").value.trim(),N=document.getElementById("adj-n").value.trim();
+    if(!N){document.getElementById("adj-n").focus();return}
+    const j=as.dataset.adjsave;setAdj(state.fctx,state.recipe,a=>{if(j==="new")a.extra=[...(a.extra||[]),{a:A,n:N}];else a[j]={custom:{a:A,n:N}}});state.fedit=null;keepScroll();return}
+  const dx=e.target.closest("[data-delextra]"); if(dx&&state.fctx){const xi=Number(dx.dataset.delextra);setAdj(state.fctx,state.recipe,a=>{a.extra=(a.extra||[]).filter((_,i)=>i!==xi)});keepScroll();return}
+  const r=e.target.closest("[data-recipe]"); if(r){const fc=r.dataset.fctx?Number(r.dataset.fctx):(state.recipe&&state.fctx&&R[r.dataset.recipe]?null:null);pushNav({view:R[r.dataset.recipe].menu,recipe:r.dataset.recipe,fctx:fc||null,fedit:null});return}
   const g=e.target.closest("[data-go]"); if(g){go(g.dataset.go);return}
   const rs=e.target.closest("[data-reset]"); if(rs){store.set("shop-"+rs.dataset.reset,{});render();return}
   const sw=e.target.closest("[data-sw]"); if(sw){const S=getSwaps(),id=sw.dataset.sw,j=sw.dataset.j;S[id]=S[id]||{};if(sw.dataset.o==="")delete S[id][j];else S[id][j]=Number(sw.dataset.o);if(!Object.keys(S[id]).length)delete S[id];store.set("swaps",S);const y=window.scrollY;render();window.scrollTo(0,y);return}
@@ -1320,6 +1367,7 @@ document.addEventListener("click",e=>{
     else{store.set("log",{});store.set("planshop",{});state.fday=null;state.fsub="idag";render();} return}
   const psr=e.target.closest("[data-psreset]"); if(psr){store.set("planshop",{});render();return}
 });
+document.addEventListener("keydown",e=>{if(e.key==="Enter"&&(e.target.id==="adj-a"||e.target.id==="adj-n")){e.preventDefault();const b=document.querySelector("[data-adjsave]");if(b)b.click()}});
 document.addEventListener("input",e=>{const t=e.target;if(t.dataset.log&&t.type!=="radio")setLog(t.dataset.log,{[t.dataset.f]:t.value})});
 document.addEventListener("change",e=>{
   const t=e.target;
