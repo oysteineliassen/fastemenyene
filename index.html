@@ -303,6 +303,11 @@ table.logt .nt{max-width:28ch;color:var(--muted)}
 .empty{color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:10px;padding:16px;max-width:66ch}
 @media (max-width:560px){.irow{grid-template-columns:52px 1fr auto}.irow img,.ph2{width:52px;height:52px}}
 table.logt td:not(.nt){white-space:nowrap}
+.expbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px;font-family:var(--display);font-size:14px;color:var(--muted)}
+.expbar .btn{font-weight:700;color:var(--ink)}
+.expbar .note{font-size:13px;margin:0}
+.expbar>span:first-child{flex-basis:100%}
+.expbar .btn{min-width:84px}
 </style>
 
 </head>
@@ -881,6 +886,7 @@ function renderFaste(){
   const tabs=[["idag","Dag for dag"],["plan","Plan"],["handle","Handleliste"],["dagbok","Dagbok"]];
   app.innerHTML=`<section class="fhead">
     <div><span class="pages">Min faste · lagres bare på denne enheten</span><h2>${status}</h2>
+    <div class="expbar"><span>Del fasten med menyer og dagbok:</span><button type="button" class="btn" data-export="pdf">PDF</button><button type="button" class="btn" data-export="xlsx">Excel</button><span id="expstatus" class="note" role="status"></span></div>
     <p class="daystrip">${p.days.map(([k,v],i)=>`<span class="dchip${cur===i+1?" now":""}" style="--c:var(--${MCOL[k]})"><b>Dag ${i+1}</b>${short(k)} ${v==="1"?"":VLAB[v]}</span>`).join("")}</p></div>
   </section>
   <nav class="subtabs" aria-label="Min faste">${tabs.map(([k,n])=>`<button type="button" data-fsub="${k}" aria-current="${sub===k}">${n}</button>`).join("")}</nav>
@@ -1062,6 +1068,204 @@ function renderIngr(){
   <div class="ibody">${body}</div>`;
 }
 
+const HELV=[278, 278, 355, 556, 556, 889, 667, 191, 333, 333, 389, 584, 278, 333, 278, 278, 556, 556, 556, 556, 556, 556, 556, 556, 556, 556, 278, 278, 584, 584, 584, 556, 1015, 667, 667, 722, 722, 667, 611, 778, 722, 278, 500, 667, 556, 833, 722, 778, 667, 778, 722, 667, 611, 722, 667, 944, 667, 667, 611, 278, 278, 278, 469, 556, 333, 556, 556, 500, 556, 556, 278, 556, 556, 222, 222, 500, 222, 833, 556, 556, 556, 556, 333, 500, 278, 556, 500, 722, 500, 500, 500, 334, 260, 334, 584, 556, 556, 0, 222, 556, 333, 1000, 556, 556, 333, 1000, 667, 333, 1000, 0, 611, 0, 0, 222, 222, 333, 333, 350, 556, 1000, 333, 1000, 500, 333, 944, 0, 500, 667, 278, 333, 556, 556, 556, 556, 260, 556, 333, 737, 370, 556, 584, 333, 737, 333, 400, 584, 556, 556, 333, 556, 537, 278, 333, 556, 365, 556, 834, 834, 834, 611, 667, 667, 667, 667, 667, 667, 1000, 722, 667, 667, 667, 667, 278, 278, 278, 278, 722, 722, 778, 778, 778, 778, 778, 584, 778, 722, 722, 722, 722, 667, 667, 611, 556, 556, 556, 556, 556, 556, 889, 500, 556, 556, 556, 556, 278, 278, 278, 278, 556, 556, 556, 556, 556, 556, 556, 584, 611, 556, 556, 556, 556, 500, 556, 500];
+const HELVB=[278, 333, 474, 556, 556, 889, 722, 238, 333, 333, 389, 584, 278, 333, 278, 278, 556, 556, 556, 556, 556, 556, 556, 556, 556, 556, 333, 333, 584, 584, 584, 611, 975, 722, 722, 722, 722, 667, 611, 778, 722, 278, 556, 722, 611, 833, 722, 778, 667, 778, 722, 667, 611, 722, 667, 944, 667, 667, 611, 333, 278, 333, 584, 556, 333, 556, 611, 556, 611, 556, 333, 611, 611, 278, 278, 556, 278, 889, 611, 611, 611, 611, 389, 556, 333, 611, 556, 778, 556, 556, 500, 389, 280, 389, 584, 556, 556, 0, 278, 556, 500, 1000, 556, 556, 333, 1000, 667, 333, 1000, 0, 611, 0, 0, 278, 278, 500, 500, 350, 556, 1000, 333, 1000, 556, 333, 944, 0, 500, 667, 278, 333, 556, 556, 556, 556, 280, 556, 333, 737, 370, 556, 584, 333, 737, 333, 400, 584, 556, 556, 333, 611, 556, 278, 333, 556, 365, 556, 834, 834, 834, 611, 722, 722, 722, 722, 722, 722, 1000, 722, 667, 667, 667, 667, 278, 278, 278, 278, 722, 722, 778, 778, 778, 778, 778, 584, 778, 722, 722, 722, 722, 667, 667, 611, 556, 556, 556, 556, 556, 556, 889, 556, 556, 556, 556, 556, 278, 278, 278, 278, 611, 611, 611, 611, 611, 611, 611, 584, 611, 611, 611, 611, 611, 556, 611, 556];
+/* ---------- Eksport: PDF og Excel (ingen eksterne bibliotek) ---------- */
+const CP1252={0x20AC:0x80,0x201A:0x82,0x0192:0x83,0x201E:0x84,0x2026:0x85,0x2020:0x86,0x2021:0x87,0x02C6:0x88,0x2030:0x89,0x0160:0x8A,0x2039:0x8B,0x0152:0x8C,0x017D:0x8E,0x2018:0x91,0x2019:0x92,0x201C:0x93,0x201D:0x94,0x2022:0x95,0x2013:0x96,0x2014:0x97,0x02DC:0x98,0x2122:0x99,0x0161:0x9A,0x203A:0x9B,0x0153:0x9C,0x017E:0x9E,0x0178:0x9F};
+function toWin(s){
+  s=String(s).replace(/≈/g,"ca. ").replace(/[✓✔]/g,"x").replace(/→/g,"->").replace(/ /g," ");
+  let o="";for(const ch of s){const c=ch.codePointAt(0);
+    if(c<128||(c>=160&&c<256))o+=String.fromCharCode(c);else if(CP1252[c])o+=String.fromCharCode(CP1252[c]);else o+="?";}
+  return o;
+}
+class MiniPDF{
+  constructor(){this.W=595.28;this.H=841.89;this.pages=[];this.addPage()}
+  addPage(){this.cur=[];this.pages.push(this.cur);this.y=this.H-56;return this}
+  op(s){this.cur.push(s)}
+  rgb(hex){const n=parseInt(hex.slice(1),16);return [(n>>16&255)/255,(n>>8&255)/255,(n&255)/255].map(v=>v.toFixed(3)).join(" ")}
+  tw(str,size,bold){const W=bold?HELVB:HELV;let w=0;for(const ch of toWin(str)){const c=ch.charCodeAt(0);w+=(c>=32?W[c-32]:0)||556}return w*size/1000}
+  text(x,y,str,o={}){const size=o.size||10,s=toWin(str).replace(/\\/g,"\\\\").replace(/\(/g,"\\(").replace(/\)/g,"\\)");
+    let xx=x; if(o.align==="right")xx=x-this.tw(str,size,o.bold); else if(o.align==="center")xx=x-this.tw(str,size,o.bold)/2;
+    this.op(`BT ${this.rgb(o.color||"#1E2320")} rg /${o.bold?"F2":"F1"} ${size} Tf ${xx.toFixed(2)} ${y.toFixed(2)} Td (${s}) Tj ET`)}
+  wrap(str,maxW,size,bold){const words=String(str).split(/\s+/).filter(Boolean),lines=[];let l="";
+    for(const w of words){const t=l?l+" "+w:w;if(this.tw(t,size,bold)<=maxW||!l)l=t;else{lines.push(l);l=w}}
+    if(l)lines.push(l);return lines.length?lines:[""]}
+  rect(x,y,w,h,fill,stroke){if(fill)this.op(`${this.rgb(fill)} rg ${x.toFixed(2)} ${y.toFixed(2)} ${w.toFixed(2)} ${h.toFixed(2)} re f`);
+    if(stroke)this.op(`${this.rgb(stroke)} RG 0.6 w ${x.toFixed(2)} ${y.toFixed(2)} ${w.toFixed(2)} ${h.toFixed(2)} re S`)}
+  line(x1,y1,x2,y2,color,w=0.6,dash){this.op(`${this.rgb(color||"#D9DDD5")} RG ${w} w ${dash?"[2 2] 0 d":"[] 0 d"} ${x1.toFixed(2)} ${y1.toFixed(2)} m ${x2.toFixed(2)} ${y2.toFixed(2)} l S [] 0 d`)}
+  poly(pts,color,w){if(pts.length<2)return;this.op(`${this.rgb(color)} RG ${w} w ${pts.map((p,i)=>`${p[0].toFixed(2)} ${p[1].toFixed(2)} ${i?"l":"m"}`).join(" ")} S`)}
+  dot(x,y,r,color){const k=0.5523*r;this.op(`${this.rgb(color)} rg ${(x+r).toFixed(2)} ${y.toFixed(2)} m ${(x+r).toFixed(2)} ${(y+k).toFixed(2)} ${(x+k).toFixed(2)} ${(y+r).toFixed(2)} ${x.toFixed(2)} ${(y+r).toFixed(2)} c ${(x-k).toFixed(2)} ${(y+r).toFixed(2)} ${(x-r).toFixed(2)} ${(y+k).toFixed(2)} ${(x-r).toFixed(2)} ${y.toFixed(2)} c ${(x-r).toFixed(2)} ${(y-k).toFixed(2)} ${(x-k).toFixed(2)} ${(y-r).toFixed(2)} ${x.toFixed(2)} ${(y-r).toFixed(2)} c ${(x+k).toFixed(2)} ${(y-r).toFixed(2)} ${(x+r).toFixed(2)} ${(y-k).toFixed(2)} ${(x+r).toFixed(2)} ${y.toFixed(2)} c f`)}
+  need(h){if(this.y-h<56){this.addPage();return true}return false}
+  output(){
+    const objs=[];const add=s=>{objs.push(s);return objs.length};
+    const cat=add(""),pagesId=add(""),f1=add("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>"),f2=add("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>");
+    const kids=[];
+    this.pages.forEach(ops=>{const c=ops.join("\n");const cid=add(`<< /Length ${c.length} >>\nstream\n${c}\nendstream`);
+      kids.push(add(`<< /Type /Page /Parent ${pagesId} 0 R /MediaBox [0 0 ${this.W} ${this.H}] /Resources << /Font << /F1 ${f1} 0 R /F2 ${f2} 0 R >> >> /Contents ${cid} 0 R >>`))});
+    objs[cat-1]=`<< /Type /Catalog /Pages ${pagesId} 0 R >>`;
+    objs[pagesId-1]=`<< /Type /Pages /Kids [${kids.map(k=>k+" 0 R").join(" ")}] /Count ${kids.length} >>`;
+    let out="%PDF-1.4\n%\xE2\xE3\xCF\xD3\n";const offs=[];
+    objs.forEach((o,i)=>{offs.push(out.length);out+=`${i+1} 0 obj\n${o}\nendobj\n`});
+    const x=out.length;out+=`xref\n0 ${objs.length+1}\n0000000000 65535 f \n`+offs.map(o=>String(o).padStart(10,"0")+" 00000 n \n").join("")+`trailer\n<< /Size ${objs.length+1} /Root ${cat} 0 R /Info << /Title (Min faste) /Producer (Fastemenyene) >> >>\nstartxref\n${x}\n%%EOF`;
+    const b=new Uint8Array(out.length);for(let i=0;i<out.length;i++)b[i]=out.charCodeAt(i)&255;return b;
+  }
+}
+const MHEX={bla:"#2F6694",gul:"#9A7A12",lilla:"#6A5EA4",gronn:"#3D7A45",oransje:"#C8704F"};
+const numKg=v=>{const n=parseFloat(String(v||"").replace(",","."));return n>0?n:null};
+function fastData(){
+  const p=getPlan(),L=getLog(),gg=glyG(p);
+  const days=[1,2,3,4,5,6].map(n=>{
+    const l=L[n]||{},date=dayDate(p,n);
+    if(n===6) return {n,date,label:"Etter",menu:"Morgenen etter",l,meals:[],eaten:null,tot:null};
+    const [k,v]=p.days[n-1],d=dayMeals(k,v),eat=l.eat||{};
+    let meals;
+    if(d.meals) meals=d.meals.map(m=>{const r=R[m.id];return {k:m.k,t:r.t,done:!!eat[m.id],ing:r.ing.map((x,j)=>{if(x[4])return null;const e=effIng(m.id,j);return {a:e.a,n:e.n,sw:e.swapped}}).filter(Boolean)}});
+    else meals=d.foods.map(([g,nm,c],i)=>({k:"Matvare",t:nm,done:!!eat["f"+i],ing:[{a:g,n:nm+" ("+c+")",sw:false}]}));
+    return {n,date,label:"Dag "+n,menu:MENUS[k].name+(v==="1"?" – dag 1":k==="oransje"?" – dag 2–5":" – "+VLAB[v]),mk:k,l,meals,eaten:meals.filter(m=>m.done).length,tot:meals.length};
+  });
+  return {p,gg,days};
+}
+const dshort=d=>d.toLocaleDateString("nb-NO",{weekday:"short",day:"numeric",month:"numeric"});
+const dlong=d=>d.toLocaleDateString("nb-NO",{day:"numeric",month:"long",year:"numeric"});
+
+function buildPDF(){
+  const {p,gg,days}=fastData(),pdf=new MiniPDF(),M=48,CW=pdf.W-2*M;
+  const ink="#1E2320",mut="#5C645E",line="#D9DDD5",red="#B0423C";
+  // header
+  pdf.rect(0,pdf.H-120,pdf.W,120,"#1E2320");
+  pdf.text(M,pdf.H-62,"Min faste",{size:26,bold:true,color:"#F3F4F0"});
+  pdf.text(M,pdf.H-86,`5-dagers fasteimiterende diett · ${dlong(dayDate(p,1))} – ${dlong(dayDate(p,5))}`,{size:11,color:"#C9CEC6"});
+  let x=M;days.slice(0,5).forEach(d=>{const t=`Dag ${d.n}: ${MENUS[d.mk].name.replace(" meny","")}`;pdf.dot(x+4,pdf.H-104,4,MHEX[d.mk]);pdf.text(x+12,pdf.H-107.5,t,{size:9,color:"#F3F4F0"});x+=pdf.tw(t,9)+28});
+  pdf.y=pdf.H-150;
+  // summary
+  const kgs=days.filter(d=>numKg(d.l.kg)).map(d=>[d.n,numKg(d.l.kg)]);
+  const eaten=days.slice(0,5).reduce((s,d)=>s+d.eaten,0),tot=days.slice(0,5).reduce((s,d)=>s+d.tot,0);
+  const gly=days.slice(1,5).filter(d=>d.l.gly).length;
+  const facts=[["Vekt før",kgs.length?fmt(kgs[0][1])+" kg":"–"],["Vekt sist",kgs.length>1?fmt(kgs[kgs.length-1][1])+" kg":"–"],["Endring",kgs.length>1?((kgs[kgs.length-1][1]-kgs[0][1]>0?"+":"")+fmt(kgs[kgs.length-1][1]-kgs[0][1]))+" kg":"–"],["Måltider spist",`${eaten} av ${tot}`],["Glyserol",`${gly} av 4 dager`]];
+  const fw=CW/facts.length;
+  facts.forEach(([a,b],i)=>{const fx=M+i*fw;pdf.rect(fx+2,pdf.y-44,fw-4,44,"#F3F4F0");pdf.text(fx+10,pdf.y-16,a.toUpperCase(),{size:7.5,bold:true,color:mut});pdf.text(fx+10,pdf.y-34,b,{size:12,bold:true})});
+  pdf.y-=66;
+  // chart
+  if(kgs.length>=2){
+    pdf.text(M,pdf.y,"Vekt",{size:14,bold:true});pdf.y-=12;
+    const h=120,top=pdf.y,bot=top-h+20,px=30;let lo=Math.min(...kgs.map(k=>k[1])),hi=Math.max(...kgs.map(k=>k[1]));if(hi-lo<1){const m=(hi+lo)/2;lo=m-.5;hi=m+.5}
+    const X=n=>M+px+(n-1)*(CW-2*px)/5,Y=v=>bot+10+(v-lo)*(top-bot-24)/(hi-lo);
+    [1,2,3,4,5,6].forEach(n=>{pdf.line(X(n),bot,X(n),top-4,line,0.5,n===6);pdf.text(X(n),bot-12,n===6?"Etter":"Dag "+n,{size:8,color:mut,align:"center"})});
+    pdf.poly(kgs.map(([n,v])=>[X(n),Y(v)]),red,1.8);
+    kgs.forEach(([n,v])=>{pdf.dot(X(n),Y(v),3,red);pdf.text(X(n),Y(v)+7,fmt(v),{size:8,align:"center"})});
+    pdf.y=bot-44;
+  }
+  // dagbok table
+  pdf.need(60);pdf.text(M,pdf.y,"Dagbok",{size:14,bold:true});pdf.y-=10;
+  const cols=[["Dag",42],["Dato",56],["Meny",112],["Spist",38],["Glyserol",46],["Vekt",50],["Energi",42],["Sult",36],["Søvn",36]];
+  const hdr=()=>{pdf.rect(M,pdf.y-18,CW,18,"#1E2320");let cx=M;cols.forEach(([t,w])=>{pdf.text(cx+5,pdf.y-12.5,t,{size:8,bold:true,color:"#F3F4F0"});cx+=w});pdf.y-=18};
+  hdr();
+  days.forEach((d,i)=>{if(pdf.need(18)){hdr()}
+    if(i%2)pdf.rect(M,pdf.y-18,CW,18,"#F3F4F0");
+    const v=[d.label,dshort(d.date),d.menu,d.tot==null?"–":`${d.eaten}/${d.tot}`,d.n===1||d.n===6?"–":d.l.gly?"Ja":"Nei",numKg(d.l.kg)?fmt(numKg(d.l.kg))+" kg":"–",d.l.energi?d.l.energi+"/5":"–",d.l.sult?d.l.sult+"/5":"–",d.l.sovn?d.l.sovn+"/5":"–"];
+    let cx=M;cols.forEach(([t,w],j)=>{let s=v[j];while(pdf.tw(s,8.5,j===0)>w-8&&s.length>3)s=s.slice(0,-2)+"…";pdf.text(cx+5,pdf.y-12.5,s,{size:8.5,bold:j===0});cx+=w});
+    if(d.mk)pdf.rect(M,pdf.y-18,2.5,18,MHEX[d.mk]);
+    pdf.y-=18;});
+  pdf.line(M,pdf.y,M+CW,pdf.y,line);pdf.y-=8;
+  pdf.text(M,pdf.y-8,"Søvn på dag 1 gjelder natten før fasten, og på «Etter» natten etter dag 5. Energi og søvn: 1 lav/dårlig – 5 høy/god. Sult: 1 lite – 5 mye.",{size:7.5,color:mut});pdf.y-=24;
+  const notes=days.filter(d=>d.l.note&&d.l.note.trim());
+  if(notes.length){pdf.need(40);pdf.text(M,pdf.y,"Notater",{size:12,bold:true});pdf.y-=16;
+    notes.forEach(d=>{const ls=pdf.wrap(d.l.note.replace(/\n+/g," "),CW-70,9.5);pdf.need(ls.length*13+6);pdf.text(M,pdf.y,d.label,{size:9.5,bold:true});ls.forEach((l,i)=>pdf.text(M+70,pdf.y-i*13,l,{size:9.5}));pdf.y-=ls.length*13+6})}
+  // menus
+  pdf.addPage();pdf.text(M,pdf.y,"Menyer dag for dag",{size:20,bold:true});pdf.y-=12;
+  pdf.text(M,pdf.y-8,"Mengdene er det du skal spise. Ingredienser du har byttet er merket med *.",{size:9,color:mut});pdf.y-=30;
+  days.slice(0,5).forEach(d=>{
+    pdf.need(70);
+    pdf.rect(M,pdf.y-24,CW,24,MHEX[d.mk]);
+    pdf.text(M+10,pdf.y-16,`${d.label} · ${d.date.toLocaleDateString("nb-NO",{weekday:"long",day:"numeric",month:"long"})}`,{size:11.5,bold:true,color:"#FFFFFF"});
+    pdf.text(M+CW-10,pdf.y-16,d.menu+(d.n>1&&gg?` · ${gg} g glyserol`:""),{size:9.5,color:"#FFFFFF",align:"right"});
+    pdf.y-=36;
+    d.meals.forEach(m=>{
+      const ing=d.mk==="oransje"?m.ing[0].a+" "+m.ing[0].n.replace(/^[^(]*\(/,"(") :m.ing.map(i=>(i.a?i.a+" ":"")+i.n+(i.sw?"*":"")).join(", ");
+      const ls=pdf.wrap(ing,CW-160,9),tl=pdf.wrap(m.t,145,10,true);
+      const rowsL=1+tl.length+(m.done?1:0),rowsR=1+ls.length,h=Math.max(rowsL,rowsR)*12+10;
+      pdf.need(h);
+      pdf.text(M,pdf.y,m.k.toUpperCase(),{size:7.5,bold:true,color:MHEX[d.mk]});
+      tl.forEach((l,i)=>pdf.text(M,pdf.y-12-i*12,l,{size:10,bold:true}));
+      if(m.done)pdf.text(M,pdf.y-12-tl.length*12,"Spist",{size:8,bold:true,color:"#3D7A45"});
+      ls.forEach((l,i)=>pdf.text(M+160,pdf.y-12-i*12,l,{size:9,color:"#2B312D"}));
+      pdf.y-=Math.max(rowsL,rowsR)*12+4;pdf.line(M,pdf.y+4,M+CW,pdf.y+4,line,0.4);pdf.y-=6;
+    });
+    pdf.y-=12;
+  });
+  // footers
+  const n=pdf.pages.length;
+  pdf.pages.forEach((pg,i)=>{pdf.cur=pg;pdf.text(M,30,"Fastemenyene · laget "+new Date().toLocaleDateString("nb-NO"),{size:7.5,color:mut});pdf.text(pdf.W-M,30,`Side ${i+1} av ${n}`,{size:7.5,color:mut,align:"right"})});
+  return new Blob([pdf.output()],{type:"application/pdf"});
+}
+
+/* ---- XLSX ---- */
+const CRC=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+function crc32(b){let c=0xFFFFFFFF;for(let i=0;i<b.length;i++)c=CRC[(c^b[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0}
+function zip(files){
+  const enc=new TextEncoder(),parts=[],central=[];let off=0;
+  const u16=v=>[v&255,v>>8&255],u32=v=>[v&255,v>>8&255,v>>16&255,v>>>24&255];
+  files.forEach(([name,str])=>{const nb=enc.encode(name),data=enc.encode(str),c=crc32(data);
+    const lh=new Uint8Array([...u32(0x04034b50),...u16(20),...u16(0x0800),...u16(0),...u16(0),...u16(0x21),...u32(c),...u32(data.length),...u32(data.length),...u16(nb.length),...u16(0)]);
+    parts.push(lh,nb,data);
+    central.push(new Uint8Array([...u32(0x02014b50),...u16(20),...u16(20),...u16(0x0800),...u16(0),...u16(0),...u16(0x21),...u32(c),...u32(data.length),...u32(data.length),...u16(nb.length),...u16(0),...u16(0),...u16(0),...u16(0),...u32(0),...u32(off)]),nb);
+    off+=lh.length+nb.length+data.length});
+  const cs=central.reduce((s,a)=>s+a.length,0);
+  const end=new Uint8Array([...u32(0x06054b50),...u16(0),...u16(0),...u16(files.length),...u16(files.length),...u32(cs),...u32(off),...u16(0)]);
+  return new Blob([...parts,...central,end],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+}
+const xesc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g,"");
+const colL=i=>{let s="";i++;while(i){const m=(i-1)%26;s=String.fromCharCode(65+m)+s;i=Math.floor((i-1)/26)}return s};
+const xserial=d=>Math.round((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())-Date.UTC(1899,11,30))/864e5);
+// cell: string | number | {v, s} ; styles: 0 normal,1 header,2 date,3 kg (0.0),4 title,5 wrap
+function sheetXML(rows,widths,opt={}){
+  const cols=widths?`<cols>${widths.map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join("")}</cols>`:"";
+  const sd=rows.map((r,ri)=>`<row r="${ri+1}">${r.map((c,ci)=>{if(c==null||c==="")return "";const ref=colL(ci)+(ri+1);const o=typeof c==="object"?c:{v:c};const s=o.s?` s="${o.s}"`:"";
+    return typeof o.v==="number"?`<c r="${ref}"${s}><v>${o.v}</v></c>`:`<c r="${ref}" t="inlineStr"${s}><is><t xml:space="preserve">${xesc(o.v)}</t></is></c>`}).join("")}</row>`).join("");
+  const pane=opt.freeze?`<sheetViews><sheetView workbookViewId="0"><pane ySplit="${opt.freeze}" topLeftCell="A${opt.freeze+1}" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>`:"";
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">${pane}${cols}<sheetData>${sd}</sheetData>${opt.filter?`<autoFilter ref="A${opt.freeze}:${colL(rows[opt.freeze-1].length-1)}${rows.length}"/>`:""}</worksheet>`;
+}
+function buildXLSX(){
+  const {p,gg,days}=fastData();
+  const H=t=>({v:t,s:1});
+  const dag=[[{v:"Dagbok – Min faste",s:4}],[`${dlong(dayDate(p,1))} – ${dlong(dayDate(p,5))}`],[],
+    ["Dag","Dato","Meny","Måltider spist","Måltider totalt","Glyserol tatt","Glyserol (g)","Vekt (kg)","Energi (1–5)","Sult (1–5)","Søvn (1–5)","Notat"].map(H)];
+  days.forEach(d=>dag.push([d.label,{v:xserial(d.date),s:2},d.menu,d.tot==null?"":d.eaten,d.tot==null?"":d.tot,d.n===1||d.n===6?"":d.l.gly?"Ja":"Nei",d.n>1&&d.n<6&&gg?gg:"",numKg(d.l.kg)!=null?{v:numKg(d.l.kg),s:3}:"",d.l.energi?Number(d.l.energi):"",d.l.sult?Number(d.l.sult):"",d.l.sovn?Number(d.l.sovn):"",d.l.note?{v:d.l.note,s:5}:""]));
+  dag.push([]);dag.push(["Søvn på dag 1 gjelder natten før fasten. «Etter» er morgenen etter dag 5."]);
+  const men=[["Dag","Dato","Meny","Måltid","Rett","Spist","Mengde","Ingrediens","Byttet"].map(H)];
+  days.slice(0,5).forEach(d=>d.meals.forEach(m=>m.ing.forEach((i,ii)=>men.push([d.label,{v:xserial(d.date),s:2},d.menu,m.k,m.t,ii===0?(m.done?"Ja":"Nei"):"",i.a||"",i.n,i.sw?"Ja":""]))));
+  const shop=[["Kategori","Vare","Mengde"].map(H)];
+  planShopping(p).forEach(([c,its])=>its.forEach(([k,it])=>shop.push([c,k[0].toUpperCase()+k.slice(1),[...["g","stk","fedd","terning","dl","ss","ts"].filter(u=>it.u[u]).map(u=>fmt(u==="stk"||u==="fedd"?Math.ceil(it.u[u]*2)/2:it.u[u])+" "+u),otherText(it.other)].filter(Boolean).join(" + ")||"etter smak"])));
+  if(gg)shop.push(["Glyserol","Glyserol (ren, til matbruk)",gg*4+" g"]);
+  const sheets=[["Dagbok",sheetXML(dag,[9,12,24,14,14,13,12,10,12,10,10,50],{freeze:4})],["Menyer",sheetXML(men,[8,12,22,12,34,7,12,34,8],{freeze:1,filter:true})],["Handleliste",sheetXML(shop,[22,32,22],{freeze:1})]];
+  const styles=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="2"><numFmt numFmtId="164" formatCode="dd.mm.yyyy"/><numFmt numFmtId="165" formatCode="0.0"/></numFmts><fonts count="3"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font><font><b/><sz val="16"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF1E2320"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="6"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/><xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="165" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0" applyAlignment="1"><alignment wrapText="1" vertical="top"/></xf></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
+  const files=[
+    ["[Content_Types].xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>${sheets.map((s,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join("")}</Types>`],
+    ["_rels/.rels",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`],
+    ["xl/workbook.xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>${sheets.map((s,i)=>`<sheet name="${s[0]}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join("")}</sheets>${sheets[1]?`<definedNames><definedName name="_xlnm._FilterDatabase" localSheetId="1" hidden="1">Menyer!$A$1:$I$${men.length}</definedName></definedNames>`:""}</workbook>`],
+    ["xl/_rels/workbook.xml.rels",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${sheets.map((s,i)=>`<Relationship Id="rId${i+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join("")}<Relationship Id="rId${sheets.length+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`],
+    ["xl/styles.xml",styles],
+    ...sheets.map((s,i)=>[`xl/worksheets/sheet${i+1}.xml`,s[1]])
+  ];
+  return zip(files);
+}
+async function shareFile(blob,name,title){
+  const file=new File([blob],name,{type:blob.type});
+  try{ if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title});return "shared"} }
+  catch(e){ if(e&&e.name==="AbortError")return "aborted" }
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000);return "downloaded";
+}
+async function doExport(kind,btn){
+  const st=document.getElementById("expstatus");const old=btn.textContent;btn.disabled=true;btn.textContent="Lager fil …";
+  try{
+    const p=getPlan(),stamp=p.start;
+    const r=kind==="pdf"?await shareFile(buildPDF(),`Min-faste-${stamp}.pdf`,"Min faste"):await shareFile(buildXLSX(),`Min-faste-${stamp}.xlsx`,"Min faste");
+    if(st)st.textContent=r==="downloaded"?"Filen er lastet ned.":r==="shared"?"Delt.":"";
+  }catch(e){if(st)st.textContent="Klarte ikke å lage filen: "+e.message}
+  btn.disabled=false;btn.textContent=old;
+}
+
 function render(){
   renderNav();
   if(state.view==="ingr"&&state.ingr) renderIngr();
@@ -1089,6 +1293,7 @@ window.addEventListener("popstate",e=>{
   else if(fromHash()){render();window.scrollTo(0,0)}
 });
 document.addEventListener("click",e=>{
+  const ex=e.target.closest("[data-export]"); if(ex){doExport(ex.dataset.export,ex);return}
   const ig=e.target.closest("[data-ingr]"); if(ig){e.preventDefault();const back=state.view==="ingr"?state.back:{view:state.view,recipe:state.recipe,fsub:state.fsub,fday:state.fday};pushNav({view:"ingr",recipe:null,ingr:ig.dataset.ingr,itab:state.itab||"plan",back});return}
   const it=e.target.closest("[data-itab]"); if(it){state.itab=it.dataset.itab;snap();render();return}
   const bk=e.target.closest("[data-back]"); if(bk){if(history.state&&history.length>1&&window.__navDepth>0)history.back();else if(state.back)pushNav(Object.assign({},state.back));return}
