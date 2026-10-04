@@ -277,6 +277,30 @@ table.logt .nt{max-width:28ch;color:var(--muted)}
 .swap b{display:block}
 @media (max-width:560px){.mcard{grid-template-columns:56px 1fr auto}.mcard img{width:56px;height:56px}.prows li{grid-template-columns:1fr}.daysel small{font-size:10px}}
 @media (max-width:640px){.nav{flex-wrap:nowrap;overflow-x:auto;width:100%;scrollbar-width:none;margin-inline:-16px;padding-inline:16px;width:calc(100% + 32px)}.nav::-webkit-scrollbar{display:none}.nav button{white-space:nowrap;flex:0 0 auto}}
+
+.ingl{background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-align:left;text-decoration:underline;text-decoration-color:color-mix(in srgb,currentColor 35%,transparent);text-decoration-style:dotted;text-underline-offset:3px}
+.ingl:hover{text-decoration-style:solid;text-decoration-color:currentColor}
+.ihead{margin-top:20px;display:flex;flex-direction:column;gap:6px}
+.ihead .pages{font-family:var(--display);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.ihead h2{font-size:clamp(30px,5vw,44px);font-weight:700;letter-spacing:-.02em}
+.ingswap{border-left:3px solid var(--red);padding:2px 0 2px 12px;margin-top:6px;font-size:15px;max-width:66ch}
+.ingswap p{margin:4px 0}
+.ibody{margin-top:16px}
+.ilist{display:grid;gap:8px}
+.irow{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--c);border-radius:10px;padding:8px 12px 8px 8px;text-align:left;cursor:pointer;width:100%}
+.irow:hover{border-color:var(--c)}
+.irow img,.ph2{width:64px;height:64px;border-radius:8px;object-fit:cover}
+.ph2{display:grid;place-items:center;background:var(--c);color:var(--on-accent);font-family:var(--display);font-weight:700;font-size:22px}
+.itx{display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:0}
+.itx .k{font-family:var(--display);font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.itx .n{font-size:17px;line-height:1.25}
+.days2{font-family:var(--display);font-size:13px;font-weight:700;color:var(--c)}
+.iamt{font-family:var(--display);font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
+.igrp{margin-bottom:22px}
+.igrp h4{font-family:var(--display);font-size:16px;margin:0 0 8px;display:flex;align-items:center;gap:8px}
+.igrp h4::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--c)}
+.empty{color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:10px;padding:16px;max-width:66ch}
+@media (max-width:560px){.irow{grid-template-columns:52px 1fr auto}.irow img,.ph2{width:52px;height:52px}}
 </style>
 
 </head>
@@ -550,7 +574,7 @@ function mealBtn(m){
 function renderShop(key,shop){
   const done=store.get("shop-"+key,{});
   return `<div class="section-h"><h3>Handleliste</h3><span>${shop.page} · omtrentlig mengde og gram totalt for alle fem dager</span><button type="button" class="btn" data-reset="${key}" style="margin-left:auto">Nullstill avkrysning</button></div>
-  <div class="shop">${shop.groups.map(([g,items])=>`<div class="grp"><h5>${esc(g)}</h5>${items.map(([n,q,gr],i)=>{const id=`${key}-${g}-${i}`;return `<label class="item"><input type="checkbox" id="${esc(id)}" data-shop="${key}" data-id="${esc(id)}" ${done[id]?"checked":""}><span class="nm">${esc(n)}</span><span class="q">${esc(q)}</span><span class="g">${gr==="–"?"–":gr+" g"}</span></label>`}).join("")}</div>`).join("")}</div>
+  <div class="shop">${shop.groups.map(([g,items])=>`<div class="grp"><h5>${esc(g)}</h5>${items.map(([n,q,gr],i)=>{const id=`${key}-${g}-${i}`;return `<label class="item"><input type="checkbox" id="${esc(id)}" data-shop="${key}" data-id="${esc(id)}" ${done[id]?"checked":""}><span class="nm">${n==="Glyserol"?esc(n):ingBtn(n)}</span><span class="q">${esc(q)}</span><span class="g">${gr==="–"?"–":gr+" g"}</span></label>`}).join("")}</div>`).join("")}</div>
   <p class="note">Handlelista til hver meny er for alle fem dager, og det er lagt opp til at du bruker <b>dag 2–5 a</b> to av dagene og <b>dag 2–5 b</b> to av dagene. Du må gjerne bruke meny a alle dagene, bare en av dagene og så videre. Da må du imidlertid lage din egen handleliste.</p>`;
 }
 
@@ -565,7 +589,7 @@ function renderMenu(key){
   }
   if(m.foods){
     h+=`<div class="section-h"><h3>Matvarer</h3><span>Ingen tilberedning</span></div>
-    <div class="days">${m.foods.map(d=>`<div class="day"><h4>${d.day}</h4><ul class="foods">${d.items.map(([g,n,c])=>`<li><span>${g}</span><span>${n} <em>(${c})</em></span></li>`).join("")}</ul></div>`).join("")}</div>`;
+    <div class="days">${m.foods.map(d=>`<div class="day"><h4>${d.day}</h4><ul class="foods">${d.items.map(([g,n,c])=>`<li><span>${g}</span><span>${ingBtn(n)} <em>(${c})</em></span></li>`).join("")}</ul></div>`).join("")}</div>`;
   }
   if(m.shop) h+=renderShop(key,m.shop);
   app.innerHTML=h;
@@ -589,7 +613,7 @@ function renderRecipe(id){
         if(head) return `<li class="sub-h">${esc(n)}</li>`;
         const e=effIng(id,j), o=swapOf(id,j);
         const s=key&&SW[key]?`<span class="swap"><b>Bytt</b><span class="swopts"><button type="button" class="swb" data-sw="${id}" data-j="${j}" data-o="" aria-pressed="${o==null}">${esc(a)} ${esc(n)}</button>${SW[key].map(([x,nm],oi)=>`<button type="button" class="swb" data-sw="${id}" data-j="${j}" data-o="${oi}" aria-pressed="${o===oi}">${fmt(x*g/100)} g ${esc(nm)}</button>`).join("")}</span></span>`:"";
-        return `<li${e.swapped?' class="swapped"':""}><input type="checkbox" id="ing-${id}-${j}" data-ing="${id}" data-j="${j}" ${done[j]?"checked":""} aria-label="${esc(e.n)}"><span class="amt">${esc(e.a)}</span><span><span class="nm">${esc(e.n)}</span>${e.swapped?`<span class="was">i stedet for ${esc(e.orig)}</span>`:""}${s}</span></li>`}).join("")}</ul>
+        return `<li${e.swapped?' class="swapped"':""}><input type="checkbox" id="ing-${id}-${j}" data-ing="${id}" data-j="${j}" ${done[j]?"checked":""} aria-label="${esc(e.n)}"><span class="amt">${esc(e.a)}</span><span><span class="nm">${ingBtn(e.n)}</span>${e.swapped?`<span class="was">i stedet for ${esc(e.orig)}</span>`:""}${s}</span></li>`}).join("")}</ul>
       ${hasSwap?`<p class="note" style="font-size:14px;margin-top:8px">Trykk på et bytte for å bruke det. Mengdene er regnet om fra byttelista (s. 156–157), og handlelista for planen din oppdateres automatisk.</p>`:""}
       ${r.note?`<p class="warnbox" style="margin-top:18px">* ${esc(r.note)}</p>`:""}
       <ol class="steps">${r.steps.map(s=>`<li><span>${esc(s)}</span></li>`).join("")}</ol>
@@ -923,7 +947,7 @@ function shopHTML(p){
   return `<div class="section-h" style="margin-top:20px"><h3>Handleliste for planen din</h3><span>${got} av ${total} krysset av · summert fra oppskriftene for alle fem dagene${Object.keys(getSwaps()).length?", med byttene dine":""}</span><button type="button" class="btn" data-psreset="1" style="margin-left:auto">Nullstill</button></div>
   <p class="note" style="margin-top:0">Mengdene er det du faktisk skal spise, uten skall og kjerner. Kjøp litt ekstra av frukt og grønt. Sitron- og limesaft må du presse selv.</p>
   <div class="shop">${groups.map(([c,its])=>`<div class="grp"><h5>${c}</h5>${its.map(([k,it])=>{const id="ps-"+k;const q=[...["g","stk","fedd","terning","dl","ss","ts"].filter(u=>it.u[u]).map(u=>fmt(u==="stk"||u==="fedd"?Math.ceil(it.u[u]*2)/2:it.u[u])+" "+u),otherText(it.other)].filter(Boolean).join(" + ")||(it.other.length?"litt":"");
-    return `<label class="item"><input type="checkbox" id="${esc(id)}" data-ps="${esc(k)}" ${done[k]?"checked":""}><span class="nm">${esc(k[0].toUpperCase()+k.slice(1))}</span><span class="q"></span><span class="g">${esc(q||"etter smak")}</span></label>`}).join("")}</div>`).join("")}
+    return `<label class="item"><input type="checkbox" id="${esc(id)}" data-ps="${esc(k)}" ${done[k]?"checked":""}><span class="nm"><button type="button" class="ingl" data-ingr="${esc(k)}">${esc(k[0].toUpperCase()+k.slice(1))}</button></span><span class="q"></span><span class="g">${esc(q||"etter smak")}</span></label>`}).join("")}</div>`).join("")}
   <div class="grp"><h5>Glyserol</h5><label class="item"><input type="checkbox" data-ps="glyserol" ${done.glyserol?"checked":""}><span class="nm">Glyserol (ren, til matbruk)</span><span class="q"></span><span class="g">${gg?gg*4+" g":"se Plan"}</span></label></div></div>`;
 }
 
@@ -951,9 +975,85 @@ function logHTML(p){
   </tbody></table></div>`;
 }
 
+/* ---------- Ingrediens-oppslag ---------- */
+const capi=s=>s?s[0].toUpperCase()+s.slice(1):s;
+const ingBtn=(name,label)=>`<button type="button" class="ingl" data-ingr="${esc(normName(name))}">${esc(label==null?name:label)}</button>`;
+function recipesWith(key){
+  // [{id, amt, swapped, via}] for every recipe that uses the ingredient (original or via your swap)
+  const out=[];
+  Object.keys(R).forEach(id=>{
+    R[id].ing.forEach((x,j)=>{
+      if(x[4]) return;
+      const orig=normName(x[1]); const e=effIng(id,j); const eff=normName(e.n);
+      if(orig===key||eff===key){
+        out.push({id,amt:x[0],name:x[1],swappedAway:orig===key&&eff!==key,swappedIn:eff===key&&orig!==key,eff:e});
+      }
+    });
+  });
+  return out;
+}
+function orangeWith(key){
+  const out=[];
+  MENUS.oransje.foods.forEach((d,i)=>d.items.forEach(([g,n,c])=>{if(normName(n)===key)out.push({v:i===0?"1":"a",day:d.day,g,n,c})}));
+  return out;
+}
+function swapLinks(key){
+  const to=SW[key]||[];
+  const from=SWAPS.filter(([k,v])=>v.some(([,n])=>normName(n)===key)).map(([k,v])=>[k,v.find(([,n])=>normName(n)===key)[0]]);
+  if(!to.length&&!from.length) return "";
+  return `<div class="ingswap">${to.length?`<p><b>100 g ${esc(key)}</b> kan byttes med ${to.map(([x,n])=>`${x} g ${ingBtn(n)}`).join(" eller ")}.</p>`:""}
+    ${from.length?`<p>Kan selv brukes i stedet for ${from.map(([k,x])=>`${ingBtn(k)} (${x} g per 100 g)`).join(", ")}.</p>`:""}</div>`;
+}
+function recRow(it,extra){
+  const r=R[it.id], m=MENUS[r.menu];
+  const amt=it.swappedIn?`${it.eff.a}`:it.amt;
+  const note=it.swappedAway?`<span class="pill">Byttet ut med ${esc(it.eff.a)} ${esc(it.eff.n)}</span>`:it.swappedIn?`<span class="pill warn">Ditt bytte, i stedet for ${esc(it.amt)} ${esc(it.name)}</span>`:"";
+  return `<button type="button" class="irow" data-recipe="${it.id}" style="--c:var(--${MCOL[r.menu]})">
+    <img src="img/${it.id}.jpg" alt="" loading="lazy">
+    <span class="itx"><span class="k">${esc(m.name)} · ${esc(r.k)}</span><span class="n">${esc(r.t)}</span>${extra||""}${note}</span>
+    <span class="iamt">${esc(amt||"etter smak")}</span></button>`;
+}
+function renderIngr(){
+  const key=state.ingr; setAccent("ink");
+  const tab=state.itab||"plan";
+  const all=recipesWith(key), orange=orangeWith(key);
+  const p=getPlan(); const hasPlan=(()=>{try{return !!localStorage.getItem("plan")}catch(e){return false}})();
+  // plan: recipe id -> day numbers
+  const inPlan={}, orangeDays=[];
+  p.days.forEach(([k,v],i)=>{const d=dayMeals(k,v);
+    if(d.meals) d.meals.forEach(mm=>{(inPlan[mm.id]=inPlan[mm.id]||[]).push(i+1)});
+    else d.foods.forEach(([g,n])=>{if(normName(n)===key)orangeDays.push([i+1,g])});
+  });
+  const planItems=all.filter(it=>inPlan[it.id]);
+  const dayTxt=id=>`<span class="days2">${inPlan[id].map(n=>`Dag ${n}`).join(", ")}</span>`;
+  let body;
+  if(tab==="plan"){
+    let total=0; planItems.forEach(it=>{if(it.swappedAway)return;const a=(it.swappedIn?it.eff.a:it.amt).match(/^(\d+(?:,\d+)?)\s*g$/);if(a)total+=parseFloat(a[1].replace(",","."))*inPlan[it.id].length});
+    orangeDays.forEach(([,g])=>{const a=g.match(/^(\d+)/);if(a)total+=Number(a[1])});
+    body=(planItems.length||orangeDays.length)?`
+      ${total?`<p class="note">Totalt i planen din: <b>${fmt(total)} g</b>, fordelt på ${planItems.reduce((s,it)=>s+(it.swappedAway?0:inPlan[it.id].length),0)+orangeDays.length} måltider.</p>`:""}
+      <div class="ilist">${planItems.map(it=>recRow(it,dayTxt(it.id))).join("")}
+      ${orangeDays.map(([n,g])=>`<button type="button" class="irow" data-go="oransje" style="--c:var(--oransje)"><span class="ph2">O</span><span class="itx"><span class="k">Oransje meny</span><span class="n">Matvareliste</span><span class="days2">Dag ${n}</span></span><span class="iamt">${esc(g)}</span></button>`).join("")}</div>`
+      :`<p class="empty">${esc(capi(key))} er ikke med i noen av måltidene i planen din${hasPlan?"":" (du har ikke laget en plan ennå, så dette er standardplanen med gul meny)"}. Se fanen «Alle oppskrifter».</p>`;
+  } else {
+    const byMenu={}; all.forEach(it=>{(byMenu[R[it.id].menu]=byMenu[R[it.id].menu]||[]).push(it)});
+    body=(all.length||orange.length)?MKEYS.filter(k=>byMenu[k]||(k==="oransje"&&orange.length)).map(k=>`<div class="igrp"><h4 style="--c:var(--${MCOL[k]})">${esc(MENUS[k].name)}</h4><div class="ilist">
+      ${k==="oransje"?orange.map(o=>`<button type="button" class="irow" data-go="oransje" style="--c:var(--oransje)"><span class="ph2">O</span><span class="itx"><span class="k">Oransje meny</span><span class="n">Matvareliste ${esc(o.day.toLowerCase())}</span></span><span class="iamt">${esc(o.g)}</span></button>`).join(""):byMenu[k].map(it=>recRow(it,inPlan[it.id]?`<span class="days2">I planen: ${inPlan[it.id].map(n=>"dag "+n).join(", ")}</span>`:"")).join("")}
+    </div></div>`).join(""):`<p class="empty">Fant ingen oppskrifter med ${esc(key)}.</p>`;
+  }
+  const back=state.back;
+  app.innerHTML=`${back?`<button type="button" class="btn back" data-back="1">← Tilbake</button>`:""}
+  <section class="ihead"><span class="pages">Ingrediens</span><h2>${esc(capi(key))}</h2>
+    <p class="note" style="margin:0">Brukes i ${all.length} ${all.length===1?"oppskrift":"oppskrifter"}${orange.length?" og i oransje meny":""}.</p>
+    ${swapLinks(key)}</section>
+  <nav class="subtabs" aria-label="Visning"><button type="button" data-itab="plan" aria-current="${tab==="plan"}">I planen min (${planItems.length+orangeDays.length})</button><button type="button" data-itab="alle" aria-current="${tab==="alle"}">Alle oppskrifter (${all.length+orange.length})</button></nav>
+  <div class="ibody">${body}</div>`;
+}
+
 function render(){
   renderNav();
-  if(state.recipe) renderRecipe(state.recipe);
+  if(state.view==="ingr"&&state.ingr) renderIngr();
+  else if(state.recipe) renderRecipe(state.recipe);
   else if(state.view==="bytte") renderBytte();
   else if(state.view==="guide") renderGuide();
   else if(state.view==="faste") renderFaste();
@@ -965,6 +1065,9 @@ function go(view,recipe=null){
   render(); window.scrollTo({top:0});
 }
 document.addEventListener("click",e=>{
+  const ig=e.target.closest("[data-ingr]"); if(ig){e.preventDefault();const back=state.view==="ingr"?state.back:{view:state.view,recipe:state.recipe,fsub:state.fsub,fday:state.fday};state={view:"ingr",recipe:null,ingr:ig.dataset.ingr,itab:state.itab||"plan",back};try{history.replaceState(null,"","#ingrediens")}catch(_){}render();window.scrollTo({top:0});return}
+  const it=e.target.closest("[data-itab]"); if(it){state.itab=it.dataset.itab;render();return}
+  const bk=e.target.closest("[data-back]"); if(bk&&state.back){const b=state.back;state=Object.assign({},b);try{history.replaceState(null,"","#"+(b.recipe||b.view))}catch(_){}render();window.scrollTo({top:0});return}
   const r=e.target.closest("[data-recipe]"); if(r){go(R[r.dataset.recipe].menu,r.dataset.recipe);return}
   const g=e.target.closest("[data-go]"); if(g){go(g.dataset.go);return}
   const rs=e.target.closest("[data-reset]"); if(rs){store.set("shop-"+rs.dataset.reset,{});render();return}
