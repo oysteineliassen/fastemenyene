@@ -333,6 +333,7 @@ table.logt tr:has(+ tr.noterow) td{border-bottom:0}
 .adjform #adj-a{width:8.5em}.adjform #adj-n{flex:1 1 10em}
 .adjfb{display:flex;gap:6px}
 .ing li.addrow{border-bottom:0}
+.loghint{margin:0 0 10px;font-size:15px}
 </style>
 
 </head>
@@ -977,10 +978,10 @@ function dayHTML(p,n,cur,gg){
 
 function rating(n,f,label,val){return `<fieldset class="rate"><legend>${label}</legend>${[1,2,3,4,5].map(i=>`<label><input type="radio" name="r-${f}-${n}" data-log="${n}" data-f="${f}" value="${i}" ${Number(val)===i?"checked":""}><span>${i}</span></label>`).join("")}</fieldset>`}
 function logForm(n,L){
-  return `<div class="logf">
+  return `<p class="note loghint">${n===6?"Fyll inn vekt og søvn om morgenen, og energi og sult når dagen er omme.":"Vekt og søvn fyller du inn om morgenen. Energi, sult og notat fyller du inn om kvelden, som et inntrykk av hele dagen."}</p><div class="logf">
     <label class="kgf" for="kg-${n}">${n===1?"Vekt om morgenen, før fasten (kg)":n===6?"Vekt om morgenen etter fasten (kg)":"Vekt om morgenen (kg)"}<input id="kg-${n}" type="number" inputmode="decimal" step="0.1" data-log="${n}" data-f="kg" value="${esc(L.kg||"")}" placeholder="f.eks. 82,4"></label>
-    ${rating(n,"energi",(n===6?"Energi i dag":"Energi")+" (1 lav – 5 høy)",L.energi)}
-    ${rating(n,"sult","Sult (1 lite – 5 mye)",L.sult)}
+    ${rating(n,"energi",(n===6?"Energi i dag":"Energi i løpet av dagen")+" (1 lav – 5 høy)",L.energi)}
+    ${rating(n,"sult",(n===6?"Sult i dag":"Sult i løpet av dagen")+" (1 lite – 5 mye)",L.sult)}
     ${rating(n,"sovn",(n===1?"Søvn natten før fasten":n===6?"Søvn natten etter dag 5":"Søvn i natt")+" (1 dårlig – 5 god)",L.sovn)}
     <label class="notef" for="note-${n}">Notat<textarea id="note-${n}" rows="3" data-log="${n}" data-f="note" placeholder="Hvordan føles det? Hodepine, humør, trening …">${esc(L.note||"")}</textarea></label>
   </div>`;
@@ -1216,7 +1217,7 @@ function buildPDF(){
     if(d.mk)pdf.rect(M,pdf.y-18,2.5,18,MHEX[d.mk]);
     pdf.y-=18;});
   pdf.line(M,pdf.y,M+CW,pdf.y,line);pdf.y-=8;
-  pdf.text(M,pdf.y-8,"Søvn på dag 1 gjelder natten før fasten, og på «Etter» natten etter dag 5. Energi og søvn: 1 lav/dårlig – 5 høy/god. Sult: 1 lite – 5 mye.",{size:7.5,color:mut});pdf.y-=24;
+  pdf.text(M,pdf.y-8,"Søvn på dag 1 gjelder natten før fasten, og på «Etter» natten etter dag 5. Vekt og søvn måles om morgenen, energi og sult gjelder hele dagen (1–5).",{size:7.5,color:mut});pdf.y-=24;
   const notes=days.filter(d=>d.l.note&&d.l.note.trim());
   if(notes.length){pdf.need(40);pdf.text(M,pdf.y,"Notater",{size:12,bold:true});pdf.y-=16;
     notes.forEach(d=>{const ls=pdf.wrap(d.l.note.replace(/\n+/g," "),CW-70,9.5);pdf.need(ls.length*13+6);pdf.text(M,pdf.y,d.label,{size:9.5,bold:true});ls.forEach((l,i)=>pdf.text(M+70,pdf.y-i*13,l,{size:9.5}));pdf.y-=ls.length*13+6})}
