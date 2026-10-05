@@ -631,7 +631,7 @@ function renderMenu(key){
 
 function menuSeq(menu){return MENUS[menu].plan.flatMap(d=>d.meals.map(x=>x.id)).filter(id=>R[id])}
 
-/* ---------- Endringer per fastedag (sløyfet / egen endring / ekstra) ---------- */
+/* ---------- Endringer per fastedag (fjernet / egen endring / ekstra) ---------- */
 const getAdj=(n,id)=>{const L=getLog()[n];return (L&&L.adj&&L.adj[id])||{}};
 function setAdj(n,id,fn){const L=getLog()[n]||{};const adj=Object.assign({},L.adj);const cur=Object.assign({},adj[id]);fn(cur);
   Object.keys(cur).forEach(k=>{if(cur[k]==null||(k==="extra"&&!cur[k].length))delete cur[k]});
@@ -653,7 +653,7 @@ function renderRecipe(id){
   const done=store.get("ing-"+id,{});
   const hasSwap=r.ing.some(x=>x[2]&&SW[x[2]]);
   const fd=state.fctx||0;
-  const fbanner=fd?`<div class="fctx"><b>Dag ${fd} i fasten din</b><span>Endringer du gjør her gjelder bare denne dagen. Marker det du har sløyfet, eller endre en ingrediens som ikke står i byttelista. Endringene kommer med i handlelista og i PDF/Excel.</span></div>`:"";
+  const fbanner=fd?`<div class="fctx"><b>Dag ${fd} i fasten din</b><span>Endringer du gjør her gjelder bare denne dagen. Marker det du har fjernet, eller endre en ingrediens som ikke står i byttelista. Endringene kommer med i handlelista og i PDF/Excel.</span></div>`:"";
   app.innerHTML=`${fd?`<button type="button" class="btn back" data-back="1">← Dag ${fd}</button>`:`<button type="button" class="btn back" data-go="${r.menu}">← ${m.name}</button>`}
   ${fbanner}
   <article class="recipe">
@@ -666,10 +666,10 @@ function renderRecipe(id){
         if(head) return `<li class="sub-h">${esc(n)}</li>`;
         const fd=state.fctx||0, e=dayIng(fd,id,j), o=swapOf(id,j), ed=fd&&state.fedit===String(j);
         const s=key&&SW[key]?`<span class="swap"><b>Bytt</b><span class="swopts"><button type="button" class="swb" data-sw="${id}" data-j="${j}" data-o="" aria-pressed="${o==null}">${esc(a)} ${esc(n)}</button>${SW[key].map(([x,nm],oi)=>`<button type="button" class="swb" data-sw="${id}" data-j="${j}" data-o="${oi}" aria-pressed="${o===oi}">${fmt(x*g/100)} g ${esc(nm)}</button>`).join("")}</span></span>`:"";
-        const tools=fd?`<span class="adjt"><button type="button" class="adjb" data-skip="${j}" aria-pressed="${!!e.skipped}">${e.skipped?"Angre sløyfet":"Sløyfet"}</button><button type="button" class="adjb" data-edit="${j}" aria-pressed="${!!e.custom}">${e.custom?"Endre igjen":"Endre"}</button>${e.custom?`<button type="button" class="adjb" data-unedit="${j}">Tilbakestill</button>`:""}</span>`:"";
+        const tools=fd?`<span class="adjt"><button type="button" class="adjb" data-skip="${j}" aria-pressed="${!!e.skipped}">${e.skipped?"Angre fjernet":"Fjernet"}</button><button type="button" class="adjb" data-edit="${j}" aria-pressed="${!!e.custom}">${e.custom?"Endre igjen":"Endre"}</button>${e.custom?`<button type="button" class="adjb" data-unedit="${j}">Tilbakestill</button>`:""}</span>`:"";
         const form=ed?editForm(String(j),e.custom?e.a:a,e.custom?e.n:n):"";
         const cls=[e.swapped?"swapped":"",e.skipped?"skipped":"",e.custom?"custom":""].filter(Boolean).join(" ");
-        return `<li${cls?` class="${cls}"`:""}><input type="checkbox" id="ing-${id}-${j}" data-ing="${id}" data-j="${j}" ${done[j]?"checked":""} aria-label="${esc(e.n)}"><span class="amt">${esc(e.a)}</span><span><span class="nm">${ingBtn(e.n)}</span>${e.skipped?`<span class="was">Sløyfet dag ${fd}</span>`:e.custom?`<span class="was">Egen endring dag ${fd}, i stedet for ${esc(e.orig)}</span>`:e.swapped?`<span class="was">i stedet for ${esc(e.orig)}</span>`:""}${e.skipped||e.custom?"":s}${tools}${form}</span></li>`}).join("")}
+        return `<li${cls?` class="${cls}"`:""}><input type="checkbox" id="ing-${id}-${j}" data-ing="${id}" data-j="${j}" ${done[j]?"checked":""} aria-label="${esc(e.n)}"><span class="amt">${esc(e.a)}</span><span><span class="nm">${ingBtn(e.n)}</span>${e.skipped?`<span class="was">Fjernet dag ${fd}</span>`:e.custom?`<span class="was">Egen endring dag ${fd}, i stedet for ${esc(e.orig)}</span>`:e.swapped?`<span class="was">i stedet for ${esc(e.orig)}</span>`:""}${e.skipped||e.custom?"":s}${tools}${form}</span></li>`}).join("")}
         ${state.fctx?dayExtras(state.fctx,id).map((x,xi)=>`<li class="custom"><span></span><span class="amt">${esc(x.a)}</span><span><span class="nm">${ingBtn(x.n)}</span><span class="was">Lagt til dag ${state.fctx}</span><span class="adjt"><button type="button" class="adjb" data-delextra="${xi}">Fjern</button></span></span></li>`).join(""):""}
         ${state.fctx?(state.fedit==="new"?`<li class="addrow"><span></span><span></span><span>${editForm("new","","")}</span></li>`:`<li class="addrow"><span></span><span></span><span><button type="button" class="adjb" data-edit="new">+ Legg til ingrediens</button></span></li>`):""}</ul>
       ${hasSwap?`<p class="note" style="font-size:14px;margin-top:8px">Trykk på et bytte for å bruke det. Mengdene er regnet om fra byttelista (s. 156–157), og handlelista for planen din oppdateres automatisk.</p>`:""}
@@ -1231,14 +1231,17 @@ function buildPDF(){
     pdf.text(M+CW-10,pdf.y-16,d.menu+(d.n>1&&gg?` · ${gg} g glyserol`:""),{size:9.5,color:"#FFFFFF",align:"right"});
     pdf.y-=36;
     d.meals.forEach(m=>{
-      const ing=d.mk==="oransje"?m.ing[0].a+" "+m.ing[0].n.replace(/^[^(]*\(/,"(") :m.ing.map(i=>(i.skip?"sløyfet: ":"")+(i.a?i.a+" ":"")+i.n+(i.sw?"*":"")+(i.cust?"**":"")).join(", ");
-      const ls=pdf.wrap(ing,CW-160,9),tl=pdf.wrap(m.t,145,10,true);
-      const rowsL=1+tl.length+(m.done?1:0),rowsR=1+ls.length,h=Math.max(rowsL,rowsR)*12+10;
+      const fi=i=>(i.a?i.a+" ":"")+i.n+(i.sw?"*":"")+(i.cust?"**":"");
+      const ing=d.mk==="oransje"?m.ing[0].a+" "+m.ing[0].n.replace(/^[^(]*\(/,"(") :m.ing.filter(i=>!i.skip).map(fi).join(", ");
+      const rem=d.mk==="oransje"?[]:m.ing.filter(i=>i.skip).map(fi);
+      const ls=pdf.wrap(ing,CW-160,9),rl=rem.length?pdf.wrap("Fjernet: "+rem.join(", "),CW-160,8.5):[],tl=pdf.wrap(m.t,145,10,true);
+      const rowsL=1+tl.length+(m.done?1:0),rowsR=1+ls.length+(rl.length?rl.length+0.4:0),h=Math.max(rowsL,rowsR)*12+10;
       pdf.need(h);
       pdf.text(M,pdf.y,m.k.toUpperCase(),{size:7.5,bold:true,color:MHEX[d.mk]});
       tl.forEach((l,i)=>pdf.text(M,pdf.y-12-i*12,l,{size:10,bold:true}));
       if(m.done)pdf.text(M,pdf.y-12-tl.length*12,"Spist",{size:8,bold:true,color:"#3D7A45"});
       ls.forEach((l,i)=>pdf.text(M+160,pdf.y-12-i*12,l,{size:9,color:"#2B312D"}));
+      rl.forEach((l,i)=>pdf.text(M+160,pdf.y-12-(ls.length+0.4+i)*12,l,{size:8.5,color:"#B0423C"}));
       pdf.y-=Math.max(rowsL,rowsR)*12+4;pdf.line(M,pdf.y+4,M+CW,pdf.y+4,line,0.4);pdf.y-=6;
     });
     pdf.y-=12;
@@ -1283,7 +1286,7 @@ function buildXLSX(){
   days.forEach(d=>dag.push([d.label,{v:xserial(d.date),s:2},d.menu,d.tot==null?"":d.eaten,d.tot==null?"":d.tot,d.n===1||d.n===6?"":d.l.gly?"Ja":"Nei",d.n>1&&d.n<6&&gg?gg:"",numKg(d.l.kg)!=null?{v:numKg(d.l.kg),s:3}:"",d.l.energi?Number(d.l.energi):"",d.l.sult?Number(d.l.sult):"",d.l.sovn?Number(d.l.sovn):"",d.l.note?{v:d.l.note,s:5}:""]));
   dag.push([]);dag.push(["Søvn på dag 1 gjelder natten før fasten. «Etter» er morgenen etter dag 5."]);
   const men=[["Dag","Dato","Meny","Måltid","Rett","Spist","Mengde","Ingrediens","Byttet","Endring"].map(H)];
-  days.slice(0,5).forEach(d=>d.meals.forEach(m=>m.ing.forEach((i,ii)=>men.push([d.label,{v:xserial(d.date),s:2},d.menu,m.k,m.t,ii===0?(m.done?"Ja":"Nei"):"",i.a||"",i.n,i.sw?"Ja":"",i.skip?"Sløyfet":i.extra?"Lagt til":i.cust?"Egen endring":""]))));
+  days.slice(0,5).forEach(d=>d.meals.forEach(m=>m.ing.forEach((i,ii)=>men.push([d.label,{v:xserial(d.date),s:2},d.menu,m.k,m.t,ii===0?(m.done?"Ja":"Nei"):"",i.a||"",i.n,i.sw?"Ja":"",i.skip?"Fjernet":i.extra?"Lagt til":i.cust?"Egen endring":""]))));
   const shop=[["Kategori","Vare","Mengde"].map(H)];
   planShopping(p).forEach(([c,its])=>its.forEach(([k,it])=>shop.push([c,k[0].toUpperCase()+k.slice(1),[...["g","stk","fedd","terning","dl","ss","ts"].filter(u=>it.u[u]).map(u=>fmt(u==="stk"||u==="fedd"?Math.ceil(it.u[u]*2)/2:it.u[u])+" "+u),otherText(it.other)].filter(Boolean).join(" + ")||"etter smak"])));
   if(gg)shop.push(["Glyserol","Glyserol (ren, til matbruk)",gg*4+" g"]);
