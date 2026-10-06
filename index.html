@@ -334,6 +334,94 @@ table.logt tr:has(+ tr.noterow) td{border-bottom:0}
 .adjfb{display:flex;gap:6px}
 .ing li.addrow{border-bottom:0}
 .loghint{margin:0 0 10px;font-size:15px}
+/* ---- nye funksjoner ---- */
+.nutbox{margin-top:14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:10px 14px}
+.nutbox.warn,.nutline.warn{border-color:var(--red)}
+.nutbox .nrow{display:flex;flex-wrap:wrap;gap:4px 14px;font-family:var(--display);font-size:14px;align-items:baseline}
+.nutbox .nrow b{font-size:15px;margin-right:4px}
+.nutbox p{margin:6px 0 0;font-size:14.5px;color:var(--muted)}
+.nwarn{color:var(--red);font-weight:600}
+.nsrc{display:block;font-size:12.5px;margin-top:2px}
+.nutline{font-size:14px;color:var(--muted);margin:10px 0 0;border-left:3px solid var(--line);padding-left:10px}
+.nutline.warn{border-left-color:var(--red);color:var(--ink)}
+.nutline b{font-family:var(--display);font-weight:600;color:var(--ink)}
+.prepbox{margin-top:14px;border-left:4px solid var(--accent);background:var(--surface);border-radius:0 10px 10px 0;padding:10px 14px}
+.prepbox .ph{font-family:var(--display);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.prepbox ul,.preplist{margin:4px 0 0;padding-left:18px;font-size:15px}
+.prepbox li,.preplist li{margin:3px 0}
+.linkbtn{background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+.cookbtn{display:inline-flex;align-items:center;gap:6px;margin-top:18px;font-family:var(--display);font-weight:700;border-color:var(--accent);color:var(--ink)}
+.stepsh{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+html.cooking body{overflow:hidden}
+#cook{position:fixed;inset:0;z-index:70;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;padding:calc(12px + env(safe-area-inset-top,0px)) 16px calc(12px + env(safe-area-inset-bottom,0px));max-width:820px;margin:0 auto}
+.ck-top{display:flex;align-items:flex-start;gap:12px;border-left:5px solid var(--c);padding-left:12px}
+.ck-t{flex:1;display:flex;flex-direction:column}
+.ck-t small{font-family:var(--display);font-size:13px;color:var(--muted)}
+.ck-t b{font-family:var(--display);font-size:20px;line-height:1.2}
+.ck-x{border:1px solid var(--line);background:var(--surface);border-radius:999px;width:44px;height:44px;font-size:18px;cursor:pointer;flex:0 0 auto}
+.ck-tabs{display:flex;gap:6px;margin-top:14px}
+.ck-tabs button{flex:1;font-family:var(--display);font-size:15px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:9px;cursor:pointer}
+.ck-tabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.ck-body{flex:1;overflow:auto;padding:22px 2px 10px}
+.ck-step{font-size:clamp(23px,5.6vw,34px);line-height:1.4;margin:0}
+.ck-tm{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.ck-tm .btn{font-family:var(--display);font-size:17px;padding:10px 16px;border-radius:999px;border-color:var(--c)}
+.ck-ing{list-style:none;margin:0;padding:0;font-size:21px}
+.ck-ing li{display:grid;grid-template-columns:110px 1fr;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.ck-ing li b{font-family:var(--display);font-size:18px;padding-top:2px}
+.ck-ing li.sub{display:block;font-family:var(--display);font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border:0;padding-top:16px}
+.ck-dots{display:flex;gap:6px;justify-content:center;padding:8px 0}
+.ck-dots i{width:9px;height:9px;border-radius:50%;background:var(--line)}
+.ck-dots i.past{background:color-mix(in srgb,var(--c) 45%,var(--line))}
+.ck-dots i.on{background:var(--c);transform:scale(1.25)}
+.ck-nav{display:grid;grid-template-columns:1fr 1.4fr;gap:10px}
+.ck-nav button{font-family:var(--display);font-size:18px;font-weight:700;padding:16px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.ck-nav button.pri{background:var(--c);border-color:var(--c);color:#fff}
+.ck-nav button:disabled{opacity:.4;cursor:default}
+.ck-wake{font-size:13px;color:var(--muted);text-align:center;margin:8px 0 0}
+#tbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:80;display:flex;flex-direction:column;gap:6px;width:min(420px,calc(100% - 24px))}
+html.cooking #tbar{bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+#tbar .tm{display:flex;align-items:center;gap:10px;background:var(--ink);color:var(--bg);border-radius:999px;padding:8px 8px 8px 16px;box-shadow:0 6px 20px rgba(0,0,0,.25);font-family:var(--display)}
+#tbar .tm span{flex:1;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#tbar .tm b{font-size:20px;font-variant-numeric:tabular-nums}
+#tbar .tm button{border:0;background:var(--bg);color:var(--ink);border-radius:999px;min-width:38px;height:34px;font-weight:700;cursor:pointer}
+#tbar .tm.done{background:var(--red);animation:tmpulse 1s ease-in-out infinite}
+@keyframes tmpulse{50%{transform:scale(1.03)}}
+@media (prefers-reduced-motion:reduce){#tbar .tm.done{animation:none}}
+#tbox{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:16px}
+.tbin{background:var(--surface);color:var(--ink);border-radius:14px;padding:16px;width:min(560px,100%);display:flex;flex-direction:column;gap:8px}
+.tbh{display:flex;justify-content:space-between;align-items:center;font-family:var(--display);font-size:17px}
+.tbh button{border:0;background:none;font-size:18px;cursor:pointer;color:var(--muted)}
+.tbin textarea{width:100%;font:13px/1.4 ui-monospace,Menlo,monospace;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--bg);color:var(--ink)}
+.tbin .note{margin:0}
+.tbf{display:flex;gap:8px;justify-content:flex-end}
+.bkrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.bkrow label.btn{display:inline-flex;align-items:center}
+#bkpaste{margin-top:10px;display:flex;flex-direction:column;gap:8px;max-width:560px}
+#bkpaste[hidden]{display:none}
+#bkpaste textarea{width:100%;font:13px ui-monospace,Menlo,monospace;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--surface);color:var(--ink)}
+#bkpaste .btn{align-self:flex-start}
+.bkconf{display:block;border:1px solid var(--red);border-radius:10px;padding:10px 12px;color:var(--ink)}
+.histt td small{color:var(--muted)}
+.histt tr.open td{background:color-mix(in srgb,var(--accent) 7%,transparent)}
+.histd{margin-top:18px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--surface)}
+.histd .gh{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.histd .gh h3{font-size:18px;margin-right:auto}
+.srch{margin-top:24px}
+.srch h2{font-size:clamp(28px,5vw,40px);font-weight:700;letter-spacing:-.02em}
+.srch input{margin-top:14px;width:100%;max-width:560px;font:inherit;font-size:18px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink)}
+.sing{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:16px}
+.sing>span{font-family:var(--display);font-size:13px;color:var(--muted);margin-right:4px}
+.chipb{font-family:var(--display);font-size:14px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;cursor:pointer;color:var(--ink)}
+.chipb:hover{border-color:var(--ink)}
+.sresl{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:8px;margin-top:8px}
+.sr{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:center;text-align:left;border:1px solid var(--line);border-left:5px solid var(--c);border-radius:12px;background:var(--surface);padding:8px;cursor:pointer;color:var(--ink);font:inherit}
+.sr img{width:64px;height:64px;object-fit:cover;border-radius:8px}
+.sr span{display:flex;flex-direction:column;gap:1px;min-width:0}
+.sr small{font-family:var(--display);font-size:12.5px;color:var(--muted)}
+.sr b{font-family:var(--display);font-size:16px;line-height:1.25}
+.sr em{font-size:13.5px;color:var(--muted)}
+mark{background:color-mix(in srgb,var(--gul) 35%,transparent);color:inherit;border-radius:3px;padding:0 1px}
 </style>
 
 </head>
@@ -593,7 +681,7 @@ let state={view:(()=>{try{return localStorage.getItem("plan")?"faste":"guide"}ca
 function setAccent(c){document.documentElement.style.setProperty("--accent",colorVar(c))}
 
 function renderNav(){setTimeout(()=>{const c=document.querySelector('.nav [aria-current="true"]');if(c)c.scrollIntoView({block:"nearest",inline:"center"})},0);
-  const tabs=[["faste","Min faste","ink"],["guide","Før du starter","red"],...MENU_ORDER.map(k=>[k,MENUS[k].name,MENUS[k].color]),["bytte","Bytteliste","red"]];
+  const tabs=[["faste","Min faste","ink"],["guide","Før du starter","red"],...MENU_ORDER.map(k=>[k,MENUS[k].name,MENUS[k].color]),["bytte","Bytteliste","red"],["sok","Søk","ink"]];
   const cur=state.recipe?R[state.recipe].menu:state.view;
   document.getElementById("nav").innerHTML=tabs.map(([k,n,c])=>
     `<button type="button" data-go="${k}" style="--c:${colorVar(c)}" aria-current="${k===cur}"><span class="dot"></span>${n}</button>`).join("");
@@ -672,8 +760,10 @@ function renderRecipe(id){
         return `<li${cls?` class="${cls}"`:""}><input type="checkbox" id="ing-${id}-${j}" data-ing="${id}" data-j="${j}" ${done[j]?"checked":""} aria-label="${esc(e.n)}"><span class="amt">${esc(e.a)}</span><span><span class="nm">${ingBtn(e.n)}</span>${e.skipped?`<span class="was">Fjernet dag ${fd}</span>`:e.custom?`<span class="was">Egen endring dag ${fd}, i stedet for ${esc(e.orig)}</span>`:e.swapped?`<span class="was">i stedet for ${esc(e.orig)}</span>`:""}${e.skipped||e.custom?"":s}${tools}${form}</span></li>`}).join("")}
         ${state.fctx?dayExtras(state.fctx,id).map((x,xi)=>`<li class="custom"><span></span><span class="amt">${esc(x.a)}</span><span><span class="nm">${ingBtn(x.n)}</span><span class="was">Lagt til dag ${state.fctx}</span><span class="adjt"><button type="button" class="adjb" data-delextra="${xi}">Fjern</button></span></span></li>`).join(""):""}
         ${state.fctx?(state.fedit==="new"?`<li class="addrow"><span></span><span></span><span>${editForm("new","","")}</span></li>`:`<li class="addrow"><span></span><span></span><span><button type="button" class="adjb" data-edit="new">+ Legg til ingrediens</button></span></li>`):""}</ul>
+      ${fd?recipeNutLine(id,fd):""}
       ${hasSwap?`<p class="note" style="font-size:14px;margin-top:8px">Trykk på et bytte for å bruke det. Mengdene er regnet om fra byttelista (s. 156–157), og handlelista for planen din oppdateres automatisk.</p>`:""}
       ${r.note?`<p class="warnbox" style="margin-top:18px">* ${esc(r.note)}</p>`:""}
+      <button type="button" class="btn cookbtn" data-cookopen="${id}">👩‍🍳 Matlagingsmodus<span class="note" style="font-weight:400;font-size:13px;margin:0">– stor tekst, tidtaker, skjermen holdes på</span></button>
       <ol class="steps">${r.steps.map(s=>`<li><span>${esc(s)}</span></li>`).join("")}</ol>
       <nav class="pn">${prev?`<button type="button" data-recipe="${prev}"><small>Forrige</small>${esc(R[prev].t)}</button>`:""}${next?`<button type="button" data-recipe="${next}"><small>Neste</small>${esc(R[next].t)}</button>`:""}</nav>
     </div>
@@ -944,7 +1034,7 @@ function renderFaste(){
   const b=document.getElementById("fbody");
   if(sub==="plan") b.innerHTML=planHTML(p);
   else if(sub==="handle") b.innerHTML=shopHTML(p);
-  else if(sub==="dagbok") b.innerHTML=logHTML(p);
+  else if(sub==="dagbok") b.innerHTML=logHTML(p)+histHTML(p);
   else b.innerHTML=dayHTML(p,sel,cur,gg);
 }
 
@@ -972,7 +1062,7 @@ function dayHTML(p,n,cur,gg){
     `<div class="glyc off"><b>Glyserol</b><span>Legg inn vekten din under «Plan», så regner appen ut dagens mengde.</span></div>`;
   return `${strip}
   <div class="dhead"><h3>Dag ${n} · ${esc(MENUS[k].name)} ${v==="1"?"":VLAB[v]}</h3><span>${dfmt(dayDate(p,n))}${n===cur?" · i dag":""}</span></div>
-  ${meals}${gly}
+  ${meals}${nutBox(p,n)}${prepBox(p,n)}${gly}
   <section class="gsec"><div class="gh"><h3>Dagbok for dag ${n}</h3></div>${logForm(n,L)}</section>`;
 }
 
@@ -1003,22 +1093,23 @@ function planHTML(p){
       <div class="pr"><select id="p-day-${i}" data-pday="${i}" aria-label="Meny for dag ${i+1}">${opts.map(o=>`<option value="${o.join("|")}" ${o[0]===dv[0]&&o[1]===dv[1]?"selected":""}>${lbl(o)}</option>`).join("")}</select>
       <span class="pn2">${esc(names(dv))}</span></div></li>`}).join("")}</ol>
     <p class="note">Boka anbefaler å bruke samme dagsmeny to dager på rad, og å følge én meny slavisk første gang. Dagsmeny 1 kan bare brukes på dag 1, og dagsmenyene for 2–5 bare på dag 2–5.</p>
-    <div class="danger"><button type="button" class="btn" data-newfast="1">Start ny faste</button><span id="nf-confirm" hidden> Sletter dagbok og avkrysninger i handlelista. <button type="button" class="btn warnbtn" data-newfast="2">Ja, slett</button> <button type="button" class="btn" data-newfast="0">Avbryt</button></span></div>
+    ${prepPlanHTML(p)}${backupHTML()}
+    <div class="danger" style="margin-top:28px"><button type="button" class="btn" data-newfast="1">Start ny faste</button><span id="nf-confirm" hidden> Fasten du har nå lagres under «Tidligere faster» i Dagbok, og dagboka og avkrysningene i handlelista tømmes. <button type="button" class="btn warnbtn" data-newfast="2">Start ny</button> <button type="button" class="btn" data-newfast="0">Avbryt</button></span></div>
   </div>`;
 }
 
 function shopHTML(p){
   const groups=planShopping(p); const done=store.get("planshop",{}); const gg=glyG(p);
   const total=groups.reduce((s,[,a])=>s+a.length,0), got=groups.reduce((s,[,a])=>s+a.filter(([k])=>done[k]).length,0);
-  return `<div class="section-h" style="margin-top:20px"><h3>Handleliste for planen din</h3><span>${got} av ${total} krysset av · summert fra oppskriftene for alle fem dagene${Object.keys(getSwaps()).length?", med byttene dine":""}</span><button type="button" class="btn" data-psreset="1" style="margin-left:auto">Nullstill</button></div>
+  return `<div class="section-h" style="margin-top:20px"><h3>Handleliste for planen din</h3><span>${got} av ${total} krysset av · summert fra oppskriftene for alle fem dagene${Object.keys(getSwaps()).length?", med byttene dine":""}</span><span class="shbtns" style="margin-left:auto;display:flex;gap:6px"><button type="button" class="btn" data-shopshare="1">Del liste</button><button type="button" class="btn" data-psreset="1">Nullstill</button></span></div><p id="shst" class="note" role="status" style="margin:0"></p>
   <p class="note" style="margin-top:0">Mengdene er det du faktisk skal spise, uten skall og kjerner. Kjøp litt ekstra av frukt og grønt. Sitron- og limesaft må du presse selv.</p>
   <div class="shop">${groups.map(([c,its])=>`<div class="grp"><h5>${c}</h5>${its.map(([k,it])=>{const id="ps-"+k;const q=[...["g","stk","fedd","terning","dl","ss","ts"].filter(u=>it.u[u]).map(u=>fmt(u==="stk"||u==="fedd"?Math.ceil(it.u[u]*2)/2:it.u[u])+" "+u),otherText(it.other)].filter(Boolean).join(" + ")||(it.other.length?"litt":"");
     return `<label class="item"><input type="checkbox" id="${esc(id)}" data-ps="${esc(k)}" ${done[k]?"checked":""}><span class="nm"><button type="button" class="ingl" data-ingr="${esc(k)}">${esc(k[0].toUpperCase()+k.slice(1))}</button></span><span class="q"></span><span class="g">${esc(q||"etter smak")}</span></label>`}).join("")}</div>`).join("")}
   <div class="grp"><h5>Glyserol</h5><label class="item"><input type="checkbox" data-ps="glyserol" ${done.glyserol?"checked":""}><span class="nm">Glyserol (ren, til matbruk)</span><span class="q"></span><span class="g">${gg?gg*4+" g":"se Plan"}</span></label></div></div>`;
 }
 
-function logHTML(p){
-  const L=getLog(); const rows=[1,2,3,4,5,6].map(n=>{const l=L[n]||{};
+function logHTML(p,L0,ro){
+  const L=L0||getLog(); const rows=[1,2,3,4,5,6].map(n=>{const l=L[n]||{};
     if(n===6) return {n,l,tot:0,e:0,k:null};
     const [k,v]=p.days[n-1];const d=dayMeals(k,v);
     const tot=d.meals?d.meals.length:d.foods.length, e=Object.values(l.eat||{}).filter(Boolean).length;
@@ -1036,10 +1127,10 @@ function logHTML(p){
     </svg><figcaption>Endring: ${(kgs[kgs.length-1][1]-kgs[0][1]>0?"+":"")+fmt(kgs[kgs.length-1][1]-kgs[0][1])} kg fra dag ${kgs[0][0]} til ${kgs[kgs.length-1][0]===6?"morgenen etter":"dag "+kgs[kgs.length-1][0]}. Mye av vekten under en kort faste er vann og mageinnhold.</figcaption></figure>`;
   }
   const dot=v=>v?`<span class="dots">${"●".repeat(v)}<i>${"●".repeat(5-v)}</i></span>`:"–";
-  return `<div class="section-h" style="margin-top:20px"><h3>Dagbok</h3><span>Fyll inn under «Dag for dag»</span></div>
+  return `${ro?"":`<div class="section-h" style="margin-top:20px"><h3>Dagbok</h3><span>Fyll inn under «Dag for dag»</span></div>`}
   ${chart}
   <div class="tablewrap"><table class="logt"><thead><tr><th>Dag</th><th>Måltider</th><th>Glyserol</th><th>Vekt</th><th>Søvn</th><th>Energi</th><th>Sult</th></tr></thead><tbody>
-  ${rows.map(r=>`<tr><td><button type="button" class="linkbtn" data-fday="${r.n}" data-fsub="idag">${r.n===6?"Etter":"Dag "+r.n}</button><br><small style="color:var(--muted)">${r.k?short(r.k):"dag 6, morgen"}</small></td><td>${r.n===6?"–":r.e+"/"+r.tot}</td><td>${r.n===1||r.n===6?"–":r.l.gly?"✓":""}</td><td>${parseFloat(String(r.l.kg||"").replace(",","."))>0?fmt(parseFloat(String(r.l.kg).replace(",",".")))+" kg":"–"}</td><td>${dot(Number(r.l.sovn))}</td><td>${dot(Number(r.l.energi))}</td><td>${dot(Number(r.l.sult))}</td></tr>${r.l.note&&r.l.note.trim()?`<tr class="noterow"><td colspan="7"><div class="ntx"><span class="nlab">Notat</span>${esc(r.l.note)}</div></td></tr>`:""}`).join("")}
+  ${rows.map(r=>`<tr><td>${ro?`<b>${r.n===6?"Etter":"Dag "+r.n}</b>`:`<button type="button" class="linkbtn" data-fday="${r.n}" data-fsub="idag">${r.n===6?"Etter":"Dag "+r.n}</button>`}<br><small style="color:var(--muted)">${r.k?short(r.k):"dag 6, morgen"}</small></td><td>${r.n===6?"–":r.e+"/"+r.tot}</td><td>${r.n===1||r.n===6?"–":r.l.gly?"✓":""}</td><td>${parseFloat(String(r.l.kg||"").replace(",","."))>0?fmt(parseFloat(String(r.l.kg).replace(",",".")))+" kg":"–"}</td><td>${dot(Number(r.l.sovn))}</td><td>${dot(Number(r.l.energi))}</td><td>${dot(Number(r.l.sult))}</td></tr>${r.l.note&&r.l.note.trim()?`<tr class="noterow"><td colspan="7"><div class="ntx"><span class="nlab">Notat</span>${esc(r.l.note)}</div></td></tr>`:""}`).join("")}
   </tbody></table></div>`;
 }
 
@@ -1319,11 +1410,312 @@ async function doExport(kind,btn){
   btn.disabled=false;btn.textContent=old;
 }
 
+
+/* ---------- Næring (omtrentlig, ikke fra boka) ---------- */
+const NUT={"NUT":{"agurk":[11,0.7,0.1,1.7,0.6],"appelsin":[47,0.9,0.1,9.0,2.0],"asparges":[20,2.2,0.1,2.0,2.0],"avokado":[200,2.0,20.0,1.0,6.7],"baby leaf-salat":[20,2.0,0.3,2.0,2.0],"banan":[90,1.1,0.3,20.0,2.0],"blomkål":[25,2.0,0.3,3.0,2.0],"blåbær":[50,0.7,0.5,9.5,2.5],"bringebær":[45,1.2,0.7,5.5,6.5],"brokkoli":[34,2.8,0.4,4.0,2.6],"cashewnøtter":[580,18.0,46.0,27.0,3.3],"cherrytomat":[25,1.0,0.3,4.0,1.3],"chiafrø":[490,17.0,31.0,8.0,34.0],"chili":[40,1.9,0.4,7.0,1.5],"dijonsennep":[100,6.0,6.0,5.0,3.0],"eple":[52,0.3,0.2,11.5,2.0],"frisk ingefær":[80,1.8,0.8,16.0,2.0],"ingefær":[80,1.8,0.8,16.0,2.0],"granateplekjerner":[83,1.7,1.2,17.0,4.0],"gresskarkjerner":[570,30.0,49.0,4.0,6.0],"grønn paprika":[20,0.9,0.2,3.0,1.7],"rød paprika":[31,1.0,0.3,5.0,1.5],"gul paprika":[27,1.0,0.2,5.0,1.0],"grønne oliven":[145,1.0,15.0,0.5,3.3],"grønnkål":[45,4.0,0.9,4.5,4.0],"gul løk":[37,1.0,0.1,7.0,1.5],"løk":[37,1.0,0.1,7.0,1.5],"rødløk":[40,1.1,0.1,8.0,1.7],"vårløk":[32,1.8,0.2,5.0,2.6],"purre":[31,1.5,0.3,5.0,1.8],"gulrot":[36,0.6,0.2,7.0,2.6],"havregryn":[370,13.0,7.0,60.0,10.0],"hermetiske tomater":[22,1.2,0.2,3.5,1.0],"hermetiske kikerter":[120,7.0,2.5,15.0,6.0],"hermetiske røde linser":[100,7.5,0.5,14.0,4.0],"hermetiske kidneybønner":[105,7.0,0.5,15.0,6.0],"hermetiske svarte bønner":[110,7.0,0.5,16.0,7.0],"hjertesalat":[15,1.2,0.3,1.7,2.0],"hodekål":[25,1.3,0.1,4.2,2.5],"honning":[304,0.3,0.0,82.0,0.0],"hvetekim":[360,29.0,10.0,37.0,15.0],"hvitløk":[140,6.0,0.5,28.0,2.0],"isbergsalat":[14,0.9,0.1,2.0,1.2],"kapers":[23,2.4,0.9,1.7,3.2],"kokosmasse":[660,6.9,65.0,7.0,16.0],"kokosmelk":[190,1.8,19.5,3.0,0.0],"kokosolje":[900,0,100,0,0],"kålrabi":[27,1.7,0.1,4.5,3.6],"limesaft":[25,0.4,0.1,8.0,0.3],"sitronsaft":[22,0.4,0.2,6.5,0.3],"mandler":[600,21.0,50.0,7.0,12.0],"mango":[62,0.8,0.4,13.5,1.6],"olivenolje":[900,0,100,0,0],"rapsolje":[900,0,100,0,0],"pastinakk":[75,1.2,0.3,15.0,4.9],"pinjekjerner":[680,14.0,68.0,4.0,3.7],"potet":[75,2.0,0.1,15.5,1.5],"pære":[55,0.4,0.1,12.0,3.0],"reddik":[16,0.7,0.1,2.4,1.6],"ruccola":[25,2.6,0.7,2.0,1.6],"rødkål":[31,1.4,0.2,5.5,2.5],"sellerirot":[35,1.5,0.3,5.5,3.0],"soyasaus":[55,8.0,0.0,5.0,0.0],"spinat":[23,2.9,0.4,1.4,2.2],"squash":[17,1.2,0.3,2.2,1.0],"sukkererter":[42,2.8,0.2,7.5,2.6],"søtpotet":[86,1.6,0.1,18.0,3.0],"tomat":[20,0.9,0.2,3.0,1.2],"valnøtter":[680,15.0,65.0,4.0,6.7],"hasselnøtter":[650,15.0,61.0,6.0,10.0],"tørket fiken":[250,3.3,1.0,50.0,10.0],"stangselleri":[16,0.7,0.2,2.0,1.6],"kålrot":[37,1.1,0.2,7.0,2.3],"knekkebrød":[400,10.0,8.0,62.0,15.0],"sesamfrø":[600,18.0,50.0,12.0,12.0],"linfrø":[530,18.0,42.0,2.0,27.0],"solsikkekjerner":[590,21.0,51.0,12.0,9.0],"rødbete":[43,1.6,0.1,8.0,2.8],"jordskokk":[73,2.0,0.0,16.0,1.6],"tyttebær":[50,0.5,0.6,9.0,3.0],"plomme":[46,0.7,0.3,10.0,1.5],"kiwi":[61,1.1,0.5,13.0,3.0],"ananas":[50,0.5,0.1,12.0,1.4],"fennikel":[31,1.2,0.2,5.0,3.1],"aubergine":[25,1.0,0.2,4.0,3.0],"sjampinjong":[22,3.1,0.3,1.0,1.0],"edamame":[120,11.0,5.0,7.0,5.0],"tofu":[120,12.0,7.0,1.5,1.0],"miso":[200,12.0,6.0,26.0,5.0],"basmatiris":[355,7.5,0.8,78.0,1.5],"risnudler":[360,6.0,0.6,80.0,1.5],"maistortilla":[220,5.7,2.9,44.0,6.0],"mais":[86,3.2,1.2,17.0,2.7],"kokosvann":[19,0.7,0.2,3.7,1.1],"peanøttsmør":[600,25.0,50.0,12.0,6.0],"tahini":[600,17.0,54.0,10.0,9.0],"kakao":[230,20.0,14.0,13.0,33.0],"rosiner":[300,3.0,0.5,66.0,4.0],"tørkede aprikoser":[240,3.4,0.5,55.0,7.0],"dadler":[280,2.5,0.4,66.0,8.0],"lønnesirup":[260,0,0.1,67.0,0],"eddik":[20,0,0,0.5,0],"tomatpuré":[80,4.3,0.5,15.0,4.0],"blandet salat":[17,1.3,0.2,2.0,1.8],"grønnsaksbuljong":[10,0.5,0.5,1.0,0],"pak choi":[13,1.5,0.2,1.2,1.0],"sesamolje":[900,0,100,0,0],"hermetiske hvite bønner":[100,7.0,0.5,13.0,6.0],"rosenkål":[43,3.4,0.3,5.0,3.8],"jordbær":[32,0.7,0.3,6.0,2.0],"sorte oliven":[150,1.0,15.0,1.0,3.3],"grapefrukt":[42,0.8,0.1,9.0,1.6],"nektarin":[44,1.1,0.3,9.0,1.7]},"NEGL":["salt","pepper","kanel","kardemomme","spisskummen","paprikapulver","oregano","timian","gurkemeie","chilipulver","cayenne","kajenne","masala","persille","koriander","basilikum","dill","gressløk","mynte","vann","bakepulver","te","sitronskiver","lime, skallet","buljong","karri","ingefærpulver","stjerneanis","muskat","nellik","laurbær","rosmarin","sesamolje-dråper","røkt paprika","fennikelfrø","chiliflak","sitronskall","limeskall","vaniljepulver","sennepsfrø","rød curry","sumak","za'atar","nori"]}.NUT, NEGL={"NUT":{"agurk":[11,0.7,0.1,1.7,0.6],"appelsin":[47,0.9,0.1,9.0,2.0],"asparges":[20,2.2,0.1,2.0,2.0],"avokado":[200,2.0,20.0,1.0,6.7],"baby leaf-salat":[20,2.0,0.3,2.0,2.0],"banan":[90,1.1,0.3,20.0,2.0],"blomkål":[25,2.0,0.3,3.0,2.0],"blåbær":[50,0.7,0.5,9.5,2.5],"bringebær":[45,1.2,0.7,5.5,6.5],"brokkoli":[34,2.8,0.4,4.0,2.6],"cashewnøtter":[580,18.0,46.0,27.0,3.3],"cherrytomat":[25,1.0,0.3,4.0,1.3],"chiafrø":[490,17.0,31.0,8.0,34.0],"chili":[40,1.9,0.4,7.0,1.5],"dijonsennep":[100,6.0,6.0,5.0,3.0],"eple":[52,0.3,0.2,11.5,2.0],"frisk ingefær":[80,1.8,0.8,16.0,2.0],"ingefær":[80,1.8,0.8,16.0,2.0],"granateplekjerner":[83,1.7,1.2,17.0,4.0],"gresskarkjerner":[570,30.0,49.0,4.0,6.0],"grønn paprika":[20,0.9,0.2,3.0,1.7],"rød paprika":[31,1.0,0.3,5.0,1.5],"gul paprika":[27,1.0,0.2,5.0,1.0],"grønne oliven":[145,1.0,15.0,0.5,3.3],"grønnkål":[45,4.0,0.9,4.5,4.0],"gul løk":[37,1.0,0.1,7.0,1.5],"løk":[37,1.0,0.1,7.0,1.5],"rødløk":[40,1.1,0.1,8.0,1.7],"vårløk":[32,1.8,0.2,5.0,2.6],"purre":[31,1.5,0.3,5.0,1.8],"gulrot":[36,0.6,0.2,7.0,2.6],"havregryn":[370,13.0,7.0,60.0,10.0],"hermetiske tomater":[22,1.2,0.2,3.5,1.0],"hermetiske kikerter":[120,7.0,2.5,15.0,6.0],"hermetiske røde linser":[100,7.5,0.5,14.0,4.0],"hermetiske kidneybønner":[105,7.0,0.5,15.0,6.0],"hermetiske svarte bønner":[110,7.0,0.5,16.0,7.0],"hjertesalat":[15,1.2,0.3,1.7,2.0],"hodekål":[25,1.3,0.1,4.2,2.5],"honning":[304,0.3,0.0,82.0,0.0],"hvetekim":[360,29.0,10.0,37.0,15.0],"hvitløk":[140,6.0,0.5,28.0,2.0],"isbergsalat":[14,0.9,0.1,2.0,1.2],"kapers":[23,2.4,0.9,1.7,3.2],"kokosmasse":[660,6.9,65.0,7.0,16.0],"kokosmelk":[190,1.8,19.5,3.0,0.0],"kokosolje":[900,0,100,0,0],"kålrabi":[27,1.7,0.1,4.5,3.6],"limesaft":[25,0.4,0.1,8.0,0.3],"sitronsaft":[22,0.4,0.2,6.5,0.3],"mandler":[600,21.0,50.0,7.0,12.0],"mango":[62,0.8,0.4,13.5,1.6],"olivenolje":[900,0,100,0,0],"rapsolje":[900,0,100,0,0],"pastinakk":[75,1.2,0.3,15.0,4.9],"pinjekjerner":[680,14.0,68.0,4.0,3.7],"potet":[75,2.0,0.1,15.5,1.5],"pære":[55,0.4,0.1,12.0,3.0],"reddik":[16,0.7,0.1,2.4,1.6],"ruccola":[25,2.6,0.7,2.0,1.6],"rødkål":[31,1.4,0.2,5.5,2.5],"sellerirot":[35,1.5,0.3,5.5,3.0],"soyasaus":[55,8.0,0.0,5.0,0.0],"spinat":[23,2.9,0.4,1.4,2.2],"squash":[17,1.2,0.3,2.2,1.0],"sukkererter":[42,2.8,0.2,7.5,2.6],"søtpotet":[86,1.6,0.1,18.0,3.0],"tomat":[20,0.9,0.2,3.0,1.2],"valnøtter":[680,15.0,65.0,4.0,6.7],"hasselnøtter":[650,15.0,61.0,6.0,10.0],"tørket fiken":[250,3.3,1.0,50.0,10.0],"stangselleri":[16,0.7,0.2,2.0,1.6],"kålrot":[37,1.1,0.2,7.0,2.3],"knekkebrød":[400,10.0,8.0,62.0,15.0],"sesamfrø":[600,18.0,50.0,12.0,12.0],"linfrø":[530,18.0,42.0,2.0,27.0],"solsikkekjerner":[590,21.0,51.0,12.0,9.0],"rødbete":[43,1.6,0.1,8.0,2.8],"jordskokk":[73,2.0,0.0,16.0,1.6],"tyttebær":[50,0.5,0.6,9.0,3.0],"plomme":[46,0.7,0.3,10.0,1.5],"kiwi":[61,1.1,0.5,13.0,3.0],"ananas":[50,0.5,0.1,12.0,1.4],"fennikel":[31,1.2,0.2,5.0,3.1],"aubergine":[25,1.0,0.2,4.0,3.0],"sjampinjong":[22,3.1,0.3,1.0,1.0],"edamame":[120,11.0,5.0,7.0,5.0],"tofu":[120,12.0,7.0,1.5,1.0],"miso":[200,12.0,6.0,26.0,5.0],"basmatiris":[355,7.5,0.8,78.0,1.5],"risnudler":[360,6.0,0.6,80.0,1.5],"maistortilla":[220,5.7,2.9,44.0,6.0],"mais":[86,3.2,1.2,17.0,2.7],"kokosvann":[19,0.7,0.2,3.7,1.1],"peanøttsmør":[600,25.0,50.0,12.0,6.0],"tahini":[600,17.0,54.0,10.0,9.0],"kakao":[230,20.0,14.0,13.0,33.0],"rosiner":[300,3.0,0.5,66.0,4.0],"tørkede aprikoser":[240,3.4,0.5,55.0,7.0],"dadler":[280,2.5,0.4,66.0,8.0],"lønnesirup":[260,0,0.1,67.0,0],"eddik":[20,0,0,0.5,0],"tomatpuré":[80,4.3,0.5,15.0,4.0],"blandet salat":[17,1.3,0.2,2.0,1.8],"grønnsaksbuljong":[10,0.5,0.5,1.0,0],"pak choi":[13,1.5,0.2,1.2,1.0],"sesamolje":[900,0,100,0,0],"hermetiske hvite bønner":[100,7.0,0.5,13.0,6.0],"rosenkål":[43,3.4,0.3,5.0,3.8],"jordbær":[32,0.7,0.3,6.0,2.0],"sorte oliven":[150,1.0,15.0,1.0,3.3],"grapefrukt":[42,0.8,0.1,9.0,1.6],"nektarin":[44,1.1,0.3,9.0,1.7]},"NEGL":["salt","pepper","kanel","kardemomme","spisskummen","paprikapulver","oregano","timian","gurkemeie","chilipulver","cayenne","kajenne","masala","persille","koriander","basilikum","dill","gressløk","mynte","vann","bakepulver","te","sitronskiver","lime, skallet","buljong","karri","ingefærpulver","stjerneanis","muskat","nellik","laurbær","rosmarin","sesamolje-dråper","røkt paprika","fennikelfrø","chiliflak","sitronskall","limeskall","vaniljepulver","sennepsfrø","rød curry","sumak","za'atar","nori"]}.NEGL;
+const NALIAS={"tørket aprikos":"tørkede aprikoser","tørkede aprikoser":"tørkede aprikoser","semper havreknekkebrød":"knekkebrød","maggi grønnsaksbuljong":"grønnsaksbuljong","poteter (kokefaste)":"potet","poteter":"potet","granateple":"granateplekjerner","kikerter":"hermetiske kikerter","linser":"hermetiske røde linser","røde linser":"hermetiske røde linser","sopp":"sjampinjong","champignon":"sjampinjong","kokosmelk":"kokosmelk","olje":"olivenolje"};
+const NSTK={"knekkebrød":13,"hvitløk":4,"eple":150,"banan":120,"tomat":100,"cherrytomat":15,"appelsin":150,"pære":170,"avokado":150,"gulrot":80,"kiwi":70,"rød paprika":150,"grønn paprika":150,"gul paprika":150,"løk":120,"gul løk":120,"rødløk":100,"vårløk":15,"potet":100,"søtpotet":250,"tørket fiken":20,"dadler":8,"valnøtter":4,"mandler":1.2,"reddik":10,"plomme":60,"mango":300,"squash":250,"agurk":300,"stangselleri":40};
+const NKEYS=Object.keys(NUT).sort((a,b)=>b.length-a.length);
+function nutKey(name){
+  const s=String(name||"").toLowerCase().replace(/\*/g,"").trim();
+  if(!s) return 0;
+  if(NALIAS[s]) return NALIAS[s];
+  if(NUT[s]) return s;
+  const base=s.replace(/\s*\(.*?\)\s*/g," ").split(",")[0].trim();
+  if(NALIAS[base]) return NALIAS[base];
+  if(NUT[base]) return base;
+  if(NEGL.some(w=>s===w||s.startsWith(w)||s.includes(" "+w))) return 0;
+  for(const k of NKEYS) if(s.includes(k)) return k;
+  for(const [a,k] of Object.entries(NALIAS)) if(s.includes(a)) return k;
+  return null;
+}
+const NUNIT={g:1,gram:1,kg:1000,ml:1,dl:100,l:1000,ss:12,ts:5,fedd:4,terning:10,klype:0,stk:-1,st:-1,stykk:-1,skive:-2,skiver:-2,neve:-3,never:-3};
+function nutGrams(a,k){
+  let A=String(a||"").toLowerCase().trim().replace(/^ca\.?\s*/,"").replace(/,/g,".");
+  if(!A||/klype/.test(A)) return 0;
+  A=A.replace(/^(en|ett|ei)\b/,"1").replace(/^halv\b/,"0.5").replace(/^½/,"0.5");
+  const m=A.match(/^(\d+(?:\.\d+)?)(?:\s*[–-]\s*(\d+(?:\.\d+)?))?\s*([a-zæøå]+)?/);
+  if(!m) return null;
+  let v=parseFloat(m[1]); if(m[2]) v=(v+parseFloat(m[2]))/2;
+  const u=m[3]||"stk", f=NUNIT[u];
+  if(f==null) return null;
+  if(f>=0) return v*f;
+  if(f===-1) return v*(NSTK[k]||100);
+  if(f===-2) return v*(NSTK[k]?NSTK[k]/8:15);
+  return v*30; // en neve
+}
+function nutAdd(t,name,amt,unk){
+  const k=nutKey(name); if(k===0) return;
+  if(k==null){unk.push(String(name));return}
+  const g=nutGrams(amt,k); if(g==null){unk.push(`${amt} ${name}`.trim());return}
+  const v=NUT[k]; for(let i=0;i<5;i++) t[i]+=v[i]*g/100;
+}
+function recipeNut(id,n){ // n = fastedag med endringer, 0 = slik boka har det
+  const t=[0,0,0,0,0],unk=[],r=R[id];
+  r.ing.forEach((x,j)=>{if(x[4])return; if(!n){nutAdd(t,x[1],x[0],unk);return} const e=dayIng(n,id,j); if(!e.skipped) nutAdd(t,e.n,e.a,unk)});
+  if(n) dayExtras(n,id).forEach(x=>nutAdd(t,x.n,x.a,unk));
+  return {t,unk};
+}
+function dayNut(p,n,orig){
+  const [k,v]=p.days[n-1], d=dayMeals(k,v), t=[0,0,0,0,0], unk=[];
+  if(d.foods) d.foods.forEach(([g,nm])=>nutAdd(t,nm,g,unk));
+  else d.meals.forEach(m=>{if(!R[m.id])return; const r=recipeNut(m.id,orig?0:n); r.t.forEach((x,i)=>t[i]+=x); unk.push(...r.unk)});
+  return {t,unk};
+}
+const r0=x=>Math.round(x);
+function nutVerdict(a,b){
+  const dp=a[1]-b[1], dk=a[0]-b[0];
+  const same=Math.abs(dk)<2&&Math.abs(dp)<0.15;
+  const warnP=dp>Math.max(1,b[1]*0.07), warnK=dk>Math.max(25,b[0]*0.08), lowK=dk< -b[0]*0.15;
+  return {same,warnP,warnK,lowK,dp,dk};
+}
+function nutBox(p,n){
+  const a=dayNut(p,n,false), b=dayNut(p,n,true), V=nutVerdict(a.t,b.t);
+  let msg=V.same?"Som bokas dag.":`Bokas dag: ${r0(b.t[0])} kcal · ${fmt(b.t[1])} g protein.`;
+  if(V.warnP) msg+=` <b class="nwarn">Endringene gir ${fmt(V.dp)} g mer protein enn bokas dag.</b> Boka sier at et bytte ikke skal gi mer protein eller energi enn originalen.`;
+  else if(V.warnK) msg+=` <b class="nwarn">Endringene gir ${r0(V.dk)} kcal mer enn bokas dag.</b>`;
+  else if(V.lowK) msg+=` Endringene gir ${r0(-V.dk)} kcal mindre enn bokas dag.`;
+  const unk=[...new Set(a.unk)];
+  return `<div class="nutbox${V.warnP||V.warnK?" warn":""}"><div class="nrow"><b>Næring i dag</b><span>${r0(a.t[0])} kcal</span><span>Protein ${fmt(a.t[1])} g</span><span>Fett ${r0(a.t[2])} g</span><span>Karbo ${r0(a.t[3])} g</span></div>
+  <p>${msg}${unk.length?` Ikke regnet med fordi appen ikke kjenner den igjen: ${esc(unk.join(", "))}.`:""}${n>1?" Glyserol kommer i tillegg.":""} <span class="nsrc">Omtrentlige tall, regnet ut av appen – ikke fra boka.</span></p></div>`;
+}
+function recipeNutLine(id,n){
+  const a=recipeNut(id,n), b=recipeNut(id,0), V=nutVerdict(a.t,b.t);
+  return `<p class="nutline${V.warnP||V.warnK?" warn":""}"><b>Næring dag ${n}:</b> ${r0(a.t[0])} kcal · protein ${fmt(a.t[1])} g${V.same?" (som i boka)":` (boka: ${r0(b.t[0])} kcal · ${fmt(b.t[1])} g)`}${V.warnP?" – mer protein enn originalen":V.warnK?" – mer energi enn originalen":""}${a.unk.length?`. Ikke regnet med: ${esc([...new Set(a.unk)].join(", "))}`:""}.</p>`;
+}
+
+/* ---------- Forberedelser og tid ---------- */
+const NUMW={en:1,ett:1,ei:1,to:2,tre:3,fire:4,fem:5,seks:6,sju:7,syv:7,"åtte":8,ni:9,ti:10,femten:15,tjue:20,tretti:30};
+function findTimes(s){
+  const out=[]; const re=/(?<![a-zæøå\d])(\d+|en|ett|to|tre|fire|fem|seks|sju|syv|åtte|ni|ti|femten|tjue|tretti)(?:\s*[–-]\s*(\d+|to|tre|fire|fem|seks))?\s*minutt/gi; let m;
+  while((m=re.exec(s))){const a=isNaN(m[1])?NUMW[m[1].toLowerCase()]:Number(m[1]); if(a)out.push(a); if(m[2]){const b=isNaN(m[2])?NUMW[m[2].toLowerCase()]:Number(m[2]); if(b)out.push(b)}}
+  return [...new Set(out)];
+}
+const recipeMinutes=id=>R[id].steps.reduce((s,st)=>{const t=findTimes(st);return s+(t.length?Math.max(...t):0)},0);
+function prepFor(p,n){
+  if(n<1||n>5) return [];
+  const [k,v]=p.days[n-1], d=dayMeals(k,v); if(!d.meals) return [];
+  return d.meals.filter(m=>R[m.id]&&R[m.id].prep).map(m=>({id:m.id,k:m.k,t:R[m.id].t,why:R[m.id].prep}));
+}
+function slowFor(p,n){
+  const [k,v]=p.days[n-1], d=dayMeals(k,v); if(!d.meals) return [];
+  return d.meals.filter(m=>R[m.id]).map(m=>({id:m.id,k:m.k,t:R[m.id].t,min:recipeMinutes(m.id)})).filter(x=>x.min>=20);
+}
+function prepBox(p,n){
+  const parts=[];
+  if(n===1){const a=prepFor(p,1); if(a.length) parts.push(`<li><b>Før dag 1:</b> ${a.map(x=>`<button type="button" class="linkbtn" data-recipe="${x.id}" data-fctx="1">${esc(x.t)}</button> (${esc(x.k.toLowerCase())}) – ${esc(x.why.toLowerCase())}`).join("; ")}.</li>`)}
+  if(n<5){const a=prepFor(p,n+1); if(a.length) parts.push(`<li><b>I kveld, til dag ${n+1}:</b> lag ${a.map(x=>`<button type="button" class="linkbtn" data-recipe="${x.id}" data-fctx="${n+1}">${esc(x.t.toLowerCase())}</button> (${esc(x.k.toLowerCase())})`).join(" og ")}. Den må stå minst 6 timer.</li>`)}
+  const s=slowFor(p,n); if(s.length) parts.push(`<li><b>Tar tid i dag:</b> ${s.map(x=>`${esc(x.t)} (ca. ${x.min} min koking/steking)`).join(", ")}.</li>`);
+  return parts.length?`<div class="prepbox"><b class="ph">Planlegg</b><ul>${parts.join("")}</ul></div>`:"";
+}
+function prepPlanHTML(p){
+  const rows=[];
+  for(let n=1;n<=5;n++){
+    const pre=prepFor(p,n), s=slowFor(p,n);
+    if(pre.length) rows.push(`<li><b>${n===1?"Før dag 1":`Kvelden før dag ${n} (${dfmt(dayDate(p,n-1),{weekday:"long"})})`}:</b> lag ${pre.map(x=>esc(x.t.toLowerCase())).join(" og ")} – må stå minst 6 timer.</li>`);
+    if(s.length) rows.push(`<li><b>Dag ${n}:</b> ${s.map(x=>`${esc(x.t)} tar ca. ${x.min} min`).join(", ")}.</li>`);
+  }
+  return `<section class="gsec"><div class="gh"><h3>Forberedelser</h3><span>Hva som må lages i forkant, og hva som tar tid</span></div>${rows.length?`<ul class="preplist">${rows.join("")}</ul>`:`<p class="note">Ingen retter i planen må lages dagen før.</p>`}</section>`;
+}
+
+/* ---------- Del tekst / vis tekst ---------- */
+async function shareText(text,title,st){
+  try{ if(navigator.share){await navigator.share({title,text}); if(st)st.textContent="Delt."; return} }catch(e){ if(e&&e.name==="AbortError")return }
+  try{ await navigator.clipboard.writeText(text); if(st)st.textContent="Kopiert – lim inn i en melding eller et notat."; return }catch(e){}
+  showTextBox(text,title);
+}
+function showTextBox(text,title,hint){
+  closeTextBox();
+  const el=document.createElement("div");el.id="tbox";el.setAttribute("role","dialog");el.setAttribute("aria-modal","true");
+  el.innerHTML=`<div class="tbin"><div class="tbh"><b>${esc(title)}</b><button type="button" data-tbclose="1" aria-label="Lukk">✕</button></div><p class="note">${esc(hint||"Merk alt og kopier teksten.")}</p><textarea readonly rows="12">${esc(text)}</textarea><div class="tbf"><button type="button" class="btn" data-tbsel="1">Merk alt</button><button type="button" class="btn" data-tbclose="1">Lukk</button></div></div>`;
+  document.body.appendChild(el);const ta=el.querySelector("textarea");ta.focus();ta.select();
+}
+function closeTextBox(){const e=document.getElementById("tbox");if(e)e.remove()}
+
+/* ---------- Handleliste som tekst ---------- */
+function shopQty(it){return [...["g","stk","fedd","terning","dl","ss","ts"].filter(u=>it.u[u]).map(u=>fmt(u==="stk"||u==="fedd"?Math.ceil(it.u[u]*2)/2:it.u[u])+" "+u),otherText(it.other)].filter(Boolean).join(" + ")||(it.other.length?"litt":"")}
+function shopText(p){
+  const groups=planShopping(p), done=store.get("planshop",{}), gg=glyG(p);
+  const any=groups.some(([,a])=>a.some(([k])=>done[k]))||done.glyserol;
+  const lines=[`Handleliste – faste fra ${dfmt(parseISO(p.start),{day:"numeric",month:"long"})}${any?" (det som gjenstår)":""}`];
+  groups.forEach(([c,its])=>{const l=its.filter(([k])=>!any||!done[k]); if(!l.length)return; lines.push("",c.toUpperCase()); l.forEach(([k,it])=>lines.push(`• ${capi(k)}${shopQty(it)?" – "+shopQty(it):""}`))});
+  if(!any||!done.glyserol){lines.push("","GLYSEROL","• Glyserol (ren, til matbruk)"+(gg?` – ${gg*4} g`:""))}
+  return lines.join("\n");
+}
+
+/* ---------- Sikkerhetskopi ---------- */
+const BK_SKIP=new Set(["iosHintClosed","instDismissed"]);
+let pendingImport=null;
+function backupObj(){const data={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!BK_SKIP.has(k))data[k]=localStorage.getItem(k)}}catch(e){}return {app:"fastemenyene",v:1,saved:new Date().toISOString(),data}}
+async function saveBackup(st){
+  const txt=JSON.stringify(backupObj()), name=`fastemenyene-sikkerhetskopi-${iso(new Date())}.json`;
+  const blob=new Blob([txt],{type:"application/json"});
+  try{const f=new File([blob],name,{type:"application/json"}); if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:"Fastemenyene – sikkerhetskopi"}); if(st)st.textContent="Sikkerhetskopien er delt. Lagre den et trygt sted, f.eks. i Filer eller på e-post til deg selv."; return}}
+  catch(e){if(e&&e.name==="AbortError")return}
+  try{const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000);
+    if(st)st.innerHTML=`Filen <b>${esc(name)}</b> er lastet ned. Kom ikke filen? <button type="button" class="linkbtn" data-bktext="1">Vis som tekst</button>`}
+  catch(e){showTextBox(txt,"Sikkerhetskopi","Kopier teksten og lagre den, f.eks. i et notat eller en e-post til deg selv.")}
+}
+function readImport(text,st){
+  let o; try{o=JSON.parse(text)}catch(e){st.textContent="Dette ser ikke ut som en sikkerhetskopi fra Fastemenyene.";return}
+  if(!o||o.app!=="fastemenyene"||typeof o.data!=="object"){st.textContent="Dette ser ikke ut som en sikkerhetskopi fra Fastemenyene.";return}
+  pendingImport=o;
+  let plan=null,log={},hist=[];try{plan=JSON.parse(o.data.plan||"null");log=JSON.parse(o.data.log||"{}");hist=JSON.parse(o.data.history||"[]")}catch(e){}
+  const days=Object.values(log).filter(l=>l&&Object.keys(l).length).length;
+  st.innerHTML=`<span class="bkconf">Sikkerhetskopi fra <b>${new Date(o.saved).toLocaleDateString("nb-NO",{day:"numeric",month:"long",year:"numeric"})}</b>${plan?`: faste fra ${dfmt(parseISO(plan.start),{day:"numeric",month:"long"})}`:""}, ${days} ${days===1?"dag":"dager"} i dagboka${hist.length?`, ${hist.length} tidligere ${hist.length===1?"faste":"faster"}`:""}. Dette erstatter alt som er lagret i appen på denne enheten. <button type="button" class="btn warnbtn" data-bkapply="1">Erstatt</button> <button type="button" class="btn" data-bkcancel="1">Avbryt</button></span>`;
+}
+function applyImport(){
+  if(!pendingImport)return;
+  try{const ks=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!BK_SKIP.has(k))ks.push(k)}ks.forEach(k=>localStorage.removeItem(k));
+    Object.entries(pendingImport.data).forEach(([k,v])=>{if(typeof v==="string")localStorage.setItem(k,v)})}catch(e){}
+  pendingImport=null; state.fsub="plan"; state.fday=null; state.bkdone=true; render(); state.bkdone=false;
+}
+function backupHTML(){
+  return `<section class="gsec bksec"><div class="gh"><h3>Sikkerhetskopi</h3><span>Alt lagres bare på denne enheten</span></div>
+  <p class="note">Lagre en kopi før du bytter telefon, sletter nettleserdata eller avinstallerer appen. Kopien har plan, dagbok, bytter, avkrysninger og tidligere faster.</p>
+  <div class="bkrow"><button type="button" class="btn" data-bksave="1">Lagre sikkerhetskopi</button><label class="btn" for="bkfile">Hent fra fil</label><input id="bkfile" type="file" accept=".json,application/json" hidden><button type="button" class="btn" data-bkpaste="1">Lim inn tekst</button></div>
+  <div id="bkpaste" hidden><textarea id="bktxt" rows="4" placeholder="Lim inn teksten fra sikkerhetskopien"></textarea><button type="button" class="btn" data-bkread="1">Les inn</button></div>
+  <p id="bkst" class="note" role="status">${state.bkdone?"Sikkerhetskopien er hentet inn.":""}</p></section>`;
+}
+
+/* ---------- Tidligere faster ---------- */
+const getHist=()=>store.get("history",[]);
+function archiveCurrent(){
+  const L=getLog(); if(!Object.values(L).some(l=>l&&Object.keys(l).length)) return false;
+  const h=getHist(); h.unshift({id:Date.now(),at:iso(new Date()),plan:getPlan(),log:L,swaps:getSwaps()}); store.set("history",h); return true;
+}
+const nkg=v=>{const n=parseFloat(String(v||"").replace(",","."));return n>0?n:null};
+function fastSum(p,L){
+  const kg=[1,2,3,4,5,6].map(n=>[n,nkg((L[n]||{}).kg)]).filter(x=>x[1]);
+  const avg=f=>{const v=[1,2,3,4,5,6].map(n=>Number((L[n]||{})[f])).filter(x=>x>0);return v.length?v.reduce((a,b)=>a+b,0)/v.length:null};
+  let eat=0,tot=0;[1,2,3,4,5].forEach(n=>{const [k,v]=p.days[n-1],d=dayMeals(k,v);tot+=d.meals?d.meals.length:d.foods.length;eat+=Object.values(((L[n]||{}).eat)||{}).filter(Boolean).length});
+  const menus=[...new Set(p.days.map(([k])=>short(k)))].join(", ");
+  return {kg0:kg.length?kg[0]:null,kg1:kg.length>1?kg[kg.length-1]:null,sovn:avg("sovn"),energi:avg("energi"),sult:avg("sult"),eat,tot,menus,
+    period:`${dfmt(dayDate(p,1),{day:"numeric",month:"short"})}–${dfmt(dayDate(p,5),{day:"numeric",month:"short",year:"numeric"})}`};
+}
+function histHTML(p){
+  const h=getHist();
+  const head=`<div class="section-h"><h3>Tidligere faster</h3><span>${h.length?"Sammenlign med fasten nå":"Ingen ennå"}</span></div>`;
+  if(!h.length) return head+`<p class="note">Når du trykker «Start ny faste» under Plan, blir denne fasten lagret her, så du kan sammenligne vekt, søvn, energi og sult neste gang.</p>`;
+  const a1=v=>v==null?"–":fmt(Math.round(v*10)/10);
+  const row=(s,lab,id)=>{const d=s.kg0&&s.kg1?s.kg1[1]-s.kg0[1]:null;
+    return `<tr${id&&state.histOpen===id?' class="open"':""}><td><b>${lab}</b><br><small>${esc(s.period)}</small></td><td>${esc(s.menus)}</td><td>${s.kg0?fmt(s.kg0[1])+" kg":"–"}${d!=null?`<br><small>${d>0?"+":""}${fmt(Math.round(d*10)/10)} kg til ${s.kg1[0]===6?"etter":"dag "+s.kg1[0]}</small>`:""}</td><td>${a1(s.sovn)}</td><td>${a1(s.energi)}</td><td>${a1(s.sult)}</td><td>${s.eat}/${s.tot}</td><td>${id?`<button type="button" class="linkbtn" data-histopen="${id}">${state.histOpen===id?"Skjul":"Vis"}</button>`:""}</td></tr>`};
+  const open=h.find(x=>x.id===state.histOpen);
+  return head+`<div class="tablewrap"><table class="logt histt"><thead><tr><th>Faste</th><th>Menyer</th><th>Vekt</th><th>Søvn</th><th>Energi</th><th>Sult</th><th>Spist</th><th></th></tr></thead><tbody>
+    ${row(fastSum(p,getLog()),"Nå",null)}${h.map((x,i)=>row(fastSum(x.plan,x.log),`#${h.length-i}`,x.id)).join("")}</tbody></table></div>
+    <p class="note">Søvn, energi og sult er snittet av dagene du fylte inn (1–5). Vekt er første og siste veiing.</p>
+    ${open?`<section class="histd"><div class="gh"><h3>Fasten ${esc(fastSum(open.plan,open.log).period)}</h3><button type="button" class="btn" data-histdel="${open.id}">Slett denne</button><span id="hd-confirm" hidden> Slette for godt? <button type="button" class="btn warnbtn" data-histdel2="${open.id}">Ja, slett</button></span></div>${logHTML(open.plan,open.log,true)}</section>`:""}`;
+}
+
+/* ---------- Søk ---------- */
+const hl=(t,ws)=>{let s=esc(t);ws.forEach(w=>{if(w.length<2)return;s=s.replace(new RegExp("("+w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","gi"),"<mark>$1</mark>")});return s};
+function renderSearch(){
+  setAccent("ink");
+  app.innerHTML=`<section class="srch"><h2>Søk i alle oppskrifter</h2><input id="q" type="search" enterkeyhint="search" placeholder="Rett, ingrediens eller meny – f.eks. kikerter" value="${esc(state.q||"")}" autocomplete="off" aria-label="Søk"><div id="sres" aria-live="polite"></div></section>`;
+  sres(); if(!state.q) setTimeout(()=>{const i=document.getElementById("q");if(i)i.focus()},0);
+}
+function sres(){
+  const el=document.getElementById("sres"); if(!el) return;
+  const q=(state.q||"").trim().toLowerCase();
+  if(q.length<2){el.innerHTML=`<p class="note">Søk på navnet på en rett, en ingrediens («avokado», «kokosmelk») eller en meny («grønn», «frokost»).</p>`;return}
+  const ws=q.split(/\s+/).filter(Boolean);
+  const hits=Object.entries(R).map(([id,r])=>{const m=MENUS[r.menu], ing=r.ing.filter(x=>!x[4]).map(x=>x[1].toLowerCase());let score=0;const why=[];
+    for(const w of ws){let ok=false; if(r.t.toLowerCase().includes(w)){score+=3;ok=true}
+      const im=ing.filter(n=>n.includes(w)); if(im.length){score+=2;ok=true;why.push(...im)}
+      if(m.name.toLowerCase().includes(w)||r.k.toLowerCase().includes(w)){score+=1;ok=true}
+      if(!ok) return null}
+    return {id,r,m,score,why:[...new Set(why)]}}).filter(Boolean).sort((a,b)=>b.score-a.score||MENU_ORDER.indexOf(a.r.menu)-MENU_ORDER.indexOf(b.r.menu));
+  const allIng=[...new Set(Object.values(R).flatMap(r=>r.ing.filter(x=>!x[4]).map(x=>normName(x[1]))).concat(MENUS.oransje.foods.flatMap(d=>d.items.map(x=>normName(x[1])))))].filter(k=>k!=="vann"&&ws.every(w=>k.includes(w))).sort((a,b)=>a.localeCompare(b,"nb"));
+  el.innerHTML=(allIng.length?`<div class="sing"><span>Ingredienser</span>${allIng.slice(0,14).map(k=>`<button type="button" class="chipb" data-ingr="${esc(k)}">${hl(capi(k),ws)}</button>`).join("")}</div>`:"")+
+    (hits.length?`<p class="note">${hits.length} ${hits.length===1?"rett":"retter"}</p><div class="sresl">${hits.map(h=>`<button type="button" class="sr" data-recipe="${h.id}" style="--c:${colorVar(h.m.color)}"><img src="img/${h.id}.jpg" alt="" loading="lazy"><span><small>${esc(h.m.name)} · ${esc(h.r.k)}</small><b>${hl(h.r.t,ws)}</b>${h.why.length?`<em>${hl(h.why.slice(0,4).join(", "),ws)}</em>`:""}</span></button>`).join("")}</div>`:`<p class="note">Ingen retter passer «${esc(q)}».</p>`);
+}
+
+/* ---------- Matlagingsmodus ---------- */
+let cook=null, wake=null, wakeMsg="", TIMERS=[], tInt=null, actx=null;
+function openCook(id){
+  cook={id,i:0,fd:state.fctx||0,ing:false};
+  window.__navDepth++; try{history.pushState({s:state,y:window.scrollY,cook:1},"","#"+tok(state))}catch(e){}
+  renderCook(); reqWake();
+}
+function closeCook(){cook=null;const el=document.getElementById("cook");if(el)el.remove();document.documentElement.classList.remove("cooking");relWake()}
+function renderCook(){
+  if(!cook) return; const r=R[cook.id]; let el=document.getElementById("cook");
+  if(!el){el=document.createElement("div");el.id="cook";el.setAttribute("role","dialog");el.setAttribute("aria-modal","true");el.setAttribute("aria-label","Matlagingsmodus");document.body.appendChild(el)}
+  document.documentElement.classList.add("cooking");
+  el.style.setProperty("--c",colorVar(MENUS[r.menu].color));
+  const N=r.steps.length, i=cook.i, s=r.steps[i], tms=findTimes(s);
+  const ing=r.ing.map((x,j)=>{if(x[4])return `<li class="sub">${esc(x[1])}</li>`;const e=cook.fd?dayIng(cook.fd,cook.id,j):effIng(cook.id,j);return e.skipped?"":`<li><b>${esc(e.a)}</b><span>${esc(e.n)}</span></li>`}).join("")+(cook.fd?dayExtras(cook.fd,cook.id).map(x=>`<li><b>${esc(x.a)}</b><span>${esc(x.n)}</span></li>`).join(""):"");
+  el.innerHTML=`<div class="ck-top"><div class="ck-t"><small>${esc(r.k)}</small><b>${esc(r.t)}</b></div><button type="button" class="ck-x" data-cook="close" aria-label="Lukk matlagingsmodus">✕</button></div>
+  <div class="ck-tabs" role="tablist"><button type="button" data-cook="steps" aria-pressed="${!cook.ing}">Steg ${i+1} av ${N}</button><button type="button" data-cook="ing" aria-pressed="${cook.ing}">Ingredienser</button></div>
+  <div class="ck-body">${cook.ing?`<ul class="ck-ing">${ing}</ul>`:`<p class="ck-step">${esc(s)}</p>${tms.length?`<div class="ck-tm">${tms.map(m=>`<button type="button" class="btn" data-ckt="${m}">⏱ Tidtaker ${m} min</button>`).join("")}</div>`:""}`}</div>
+  <div class="ck-dots" aria-hidden="true">${r.steps.map((_,k)=>`<i class="${k===i?"on":k<i?"past":""}"></i>`).join("")}</div>
+  <div class="ck-nav"><button type="button" data-cook="prev" ${i===0||cook.ing?"disabled":""}>← Forrige</button><button type="button" data-cook="next" class="pri">${cook.ing?"Til stegene":i===N-1?"Ferdig":"Neste →"}</button></div>
+  <p class="ck-wake">${esc(wakeMsg)}</p>`;
+}
+async function reqWake(){
+  try{ if("wakeLock" in navigator){wake=await navigator.wakeLock.request("screen");wakeMsg="Skjermen holdes på så lenge matlagingsmodus er åpen.";wake.addEventListener("release",()=>{wake=null})}
+       else wakeMsg="Denne nettleseren kan ikke holde skjermen på. Trykk på skjermen av og til." }
+  catch(e){ wakeMsg="Fikk ikke holde skjermen på. Trykk på skjermen av og til." }
+  const w=document.querySelector(".ck-wake"); if(w) w.textContent=wakeMsg;
+}
+function relWake(){try{if(wake)wake.release()}catch(e){}wake=null}
+document.addEventListener("visibilitychange",()=>{if(cook&&document.visibilityState==="visible"&&!wake)reqWake();if(document.visibilityState==="visible")tick()});
+function cookMove(d){if(!cook)return;const N=R[cook.id].steps.length;if(cook.ing){cook.ing=false;renderCook();return}
+  if(d>0&&cook.i===N-1){history.state&&history.state.cook?history.back():closeCook();return}
+  cook.i=Math.max(0,Math.min(N-1,cook.i+d));renderCook()}
+function startTimer(min){
+  try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();if(actx.state==="suspended")actx.resume()}catch(e){}
+  const r=cook?R[cook.id]:null;
+  TIMERS.push({id:String(Date.now()),label:(r?r.t.split(" ").slice(0,3).join(" ")+" – ":"")+min+" min",end:Date.now()+min*60000,done:false});
+  tick(); if(!tInt) tInt=setInterval(tick,1000);
+}
+function beep(){
+  try{navigator.vibrate&&navigator.vibrate([400,200,400,200,400])}catch(e){}
+  try{if(!actx)return;const t0=actx.currentTime;for(let k=0;k<6;k++){const o=actx.createOscillator(),g=actx.createGain();o.frequency.value=k%2?660:880;o.connect(g);g.connect(actx.destination);g.gain.setValueAtTime(0.0001,t0+k*0.35);g.gain.exponentialRampToValueAtTime(0.4,t0+k*0.35+0.02);g.gain.exponentialRampToValueAtTime(0.0001,t0+k*0.35+0.3);o.start(t0+k*0.35);o.stop(t0+k*0.35+0.32)}}catch(e){}
+}
+function tick(){
+  const now=Date.now(); TIMERS.forEach(t=>{if(!t.done&&now>=t.end){t.done=true;beep()}});
+  let b=document.getElementById("tbar");
+  if(!TIMERS.length){if(b)b.remove();if(tInt){clearInterval(tInt);tInt=null}return}
+  if(!b){b=document.createElement("div");b.id="tbar";b.setAttribute("role","status");document.body.appendChild(b)}
+  b.innerHTML=TIMERS.map(t=>{const s=Math.max(0,Math.ceil((t.end-now)/1000));return `<div class="tm${t.done?" done":""}"><span>${esc(t.label)}</span><b>${t.done?"Ferdig!":Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}</b><button type="button" data-tstop="${t.id}" aria-label="${t.done?"OK":"Stopp tidtaker"}">${t.done?"OK":"✕"}</button></div>`}).join("");
+}
+document.addEventListener("keydown",e=>{if(!cook)return;if(e.key==="ArrowRight")cookMove(1);else if(e.key==="ArrowLeft")cookMove(-1);else if(e.key==="Escape"){history.state&&history.state.cook?history.back():closeCook()}});
+
+/* klikk for nye funksjoner (kjøres før hovedhåndtereren) */
+document.addEventListener("click",e=>{
+  const t=e.target;
+  const co=t.closest("[data-cookopen]"); if(co){e.stopImmediatePropagation();openCook(co.dataset.cookopen);return}
+  const c=t.closest("[data-cook]"); if(c&&cook){e.stopImmediatePropagation();const a=c.dataset.cook;
+    if(a==="close"){history.state&&history.state.cook?history.back():closeCook()}
+    else if(a==="prev")cookMove(-1); else if(a==="next")cookMove(1);
+    else if(a==="ing"){cook.ing=true;renderCook()} else if(a==="steps"){cook.ing=false;renderCook()} return}
+  const ck=t.closest("[data-ckt]"); if(ck){e.stopImmediatePropagation();startTimer(Number(ck.dataset.ckt));ck.textContent="⏱ Startet";return}
+  const ts=t.closest("[data-tstop]"); if(ts){e.stopImmediatePropagation();TIMERS=TIMERS.filter(x=>x.id!==ts.dataset.tstop);tick();return}
+  if(t.closest("[data-tbclose]")){e.stopImmediatePropagation();closeTextBox();return}
+  if(t.closest("[data-tbsel]")){e.stopImmediatePropagation();const ta=document.querySelector("#tbox textarea");ta.focus();ta.select();return}
+  if(t.closest("[data-shopshare]")){e.stopImmediatePropagation();shareText(shopText(getPlan()),"Handleliste",document.getElementById("shst"));return}
+  if(t.closest("[data-bksave]")){e.stopImmediatePropagation();saveBackup(document.getElementById("bkst"));return}
+  if(t.closest("[data-bktext]")){e.stopImmediatePropagation();showTextBox(JSON.stringify(backupObj()),"Sikkerhetskopi","Kopier teksten og lagre den, f.eks. i et notat eller en e-post til deg selv. Lim den inn under «Lim inn tekst» for å hente den tilbake.");return}
+  if(t.closest("[data-bkpaste]")){e.stopImmediatePropagation();const b=document.getElementById("bkpaste");b.hidden=!b.hidden;if(!b.hidden)document.getElementById("bktxt").focus();return}
+  if(t.closest("[data-bkread]")){e.stopImmediatePropagation();readImport(document.getElementById("bktxt").value,document.getElementById("bkst"));return}
+  if(t.closest("[data-bkapply]")){e.stopImmediatePropagation();applyImport();return}
+  if(t.closest("[data-bkcancel]")){e.stopImmediatePropagation();pendingImport=null;document.getElementById("bkst").textContent="";return}
+  const ho=t.closest("[data-histopen]"); if(ho){e.stopImmediatePropagation();const id=Number(ho.dataset.histopen);state.histOpen=state.histOpen===id?null:id;keepScroll();return}
+  const hd=t.closest("[data-histdel]"); if(hd){e.stopImmediatePropagation();document.getElementById("hd-confirm").hidden=false;return}
+  const hd2=t.closest("[data-histdel2]"); if(hd2){e.stopImmediatePropagation();const id=Number(hd2.dataset.histdel2);store.set("history",getHist().filter(x=>x.id!==id));state.histOpen=null;keepScroll();return}
+},true);
+document.addEventListener("change",e=>{const t=e.target;
+  if(t.id==="bkfile"&&t.files&&t.files[0]){const f=t.files[0],rd=new FileReader();rd.onload=()=>readImport(String(rd.result),document.getElementById("bkst"));rd.readAsText(f);t.value=""}});
+document.addEventListener("input",e=>{if(e.target.id==="q"){state.q=e.target.value;sres();clearTimeout(window.__qT);window.__qT=setTimeout(snap,400)}});
+
+
 function render(){
   renderNav();
   if(state.view==="ingr"&&state.ingr) renderIngr();
   else if(state.recipe) renderRecipe(state.recipe);
   else if(state.view==="bytte") renderBytte();
+  else if(state.view==="sok") renderSearch();
   else if(state.view==="guide") renderGuide();
   else if(state.view==="faste") renderFaste();
   else renderMenu(state.view);
@@ -1341,6 +1733,7 @@ function pushNav(next){
 function keepScroll(){const y=window.scrollY;render();window.scrollTo(0,y);snap()}
 function go(view,recipe=null){ pushNav({view,recipe}); }
 window.addEventListener("popstate",e=>{
+  if(cook) closeCook();
   window.__navDepth=Math.max(0,window.__navDepth-1);
   if(e.state&&e.state.root){const t=document.getElementById("exitbar");if(t){t.hidden=false;clearTimeout(window.__exitT);window.__exitT=setTimeout(()=>{t.hidden=true;try{history.pushState({s:state,y:window.scrollY},"","#"+tok(state))}catch(_){}} ,2500)}}
   if(e.state&&e.state.s){state=e.state.s; if(state.view!=="ingr") store.set("view",{view:state.view,recipe:state.recipe}); render(); const y=e.state.y||0; requestAnimationFrame(()=>window.scrollTo(0,y));}
@@ -1368,7 +1761,7 @@ document.addEventListener("click",e=>{
   const pr=e.target.closest("[data-preset]"); if(pr){const p=getPlan();p.days=presetDays(pr.dataset.preset);savePlan(p);render();return}
   const nf=e.target.closest("[data-newfast]"); if(nf){const c=document.getElementById("nf-confirm");
     if(nf.dataset.newfast==="1")c.hidden=false; else if(nf.dataset.newfast==="0")c.hidden=true;
-    else{store.set("log",{});store.set("planshop",{});state.fday=null;state.fsub="idag";render();} return}
+    else{archiveCurrent();store.set("log",{});store.set("planshop",{});state.fday=null;state.fsub="idag";render();} return}
   const psr=e.target.closest("[data-psreset]"); if(psr){store.set("planshop",{});render();return}
 });
 document.addEventListener("keydown",e=>{if(e.key==="Enter"&&(e.target.id==="adj-a"||e.target.id==="adj-n")){e.preventDefault();const b=document.querySelector("[data-adjsave]");if(b)b.click()}});
@@ -1387,7 +1780,7 @@ document.addEventListener("change",e=>{
 function fromHash(){
   const h=(location.hash||"").slice(1);
   if(R[h]) state={view:R[h].menu,recipe:h};
-  else if(MENUS[h]||h==="bytte"||h==="guide"||h==="faste") state={view:h,recipe:null};
+  else if(MENUS[h]||h==="bytte"||h==="guide"||h==="faste"||h==="sok") state={view:h,recipe:null};
   else return false;
   return true;
 }
@@ -1395,8 +1788,8 @@ function fromHash(){
 (function init(){
   const h=(location.hash||"").slice(1);
   if(R[h]) state={view:R[h].menu,recipe:h};
-  else if(MENUS[h]||h==="bytte"||h==="guide"||h==="faste") state={view:h,recipe:null};
-  else {const s=store.get("view",null); if(s&&(MENUS[s.view]||s.view==="bytte"||s.view==="guide"||s.view==="faste")&&(!s.recipe||R[s.recipe])) state=s;}
+  else if(MENUS[h]||h==="bytte"||h==="guide"||h==="faste"||h==="sok") state={view:h,recipe:null};
+  else {const s=store.get("view",null); if(s&&(MENUS[s.view]||s.view==="bytte"||s.view==="guide"||s.view==="faste"||s.view==="sok")&&(!s.recipe||R[s.recipe])) state=s;}
   try{history.replaceState({s:state,y:0,root:true},"","#"+tok(state));history.pushState({s:state,y:0},"","#"+tok(state))}catch(e){}
   render();
 })();
