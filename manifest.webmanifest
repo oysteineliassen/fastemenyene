@@ -11,12 +11,55 @@
   "background_color": "#F3F4F0",
   "theme_color": "#F3F4F0",
   "icons": [
-    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
-    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
-    {"src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ],
   "shortcuts": [
-    {"name": "Min faste", "url": "./#faste", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]},
-    {"name": "Bytteliste", "url": "./#bytte", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]}
-  ]
+    {
+      "name": "Min faste",
+      "url": "./#faste",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Bytteliste",
+      "url": "./#bytte",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "user_preferences": {
+    "color_scheme": {
+      "dark": {
+        "theme_color": "#131614",
+        "background_color": "#131614"
+      }
+    }
+  },
+  "theme_color_dark": "#131614",
+  "background_color_dark": "#131614"
 }
